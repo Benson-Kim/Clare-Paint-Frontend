@@ -119,7 +119,9 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<ReactQueryProvider>{children}</ReactQueryProvider>
+				<ReactQueryProvider>
+					<main id="main-content">{children}</main>
+				</ReactQueryProvider>
 				{/* Analytics and tracking scripts  */}
 			</body>
 		</html>

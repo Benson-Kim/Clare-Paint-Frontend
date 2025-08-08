@@ -1,17 +1,15 @@
-/* tailwind.css
-
-  This file replaces your tailwind.config.ts for Tailwind CSS v4.
-  The `content` paths are now configured in your build tool (e.g., vite.config.js, postcss.config.js).
-*/
-
-/* Import Tailwind's base, components, and utilities. */
 @import "tailwindcss";
 
-/* 1. DEFINE YOUR DESIGN TOKENS (CSS VARIABLES)
-  ==========================================================================
-  Define all your theme variables here, for both light and dark modes.
-  This includes colors, border radius, etc.
-*/
+/* Import Inter font */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+	--sat: env(safe-area-inset-top);
+	--sab: env(safe-area-inset-bottom);
+	--sal: env(safe-area-inset-left);
+	--sar: env(safe-area-inset-right);
+}
+
 :root {
 	/* Shadcn/UI Style Variables (Light Mode) */
 	--background: 0 0% 100%;
@@ -55,6 +53,13 @@
 
 	/* Border Radius */
 	--radius: 0.5rem;
+
+	/* Footer specific variables */
+	--footer-bg: var(--ds-neutral-darkSlate);
+	--footer-text: var(--ds-neutral-lightGray);
+	--footer-heading: var(--ds-neutral-white);
+	--footer-accent: var(--ds-accent-warmBeige);
+	--footer-hover: var(--ds-accent-warmBeige);
 }
 
 /* Dark Mode Variables */
@@ -79,21 +84,183 @@
 		--border: 217.2 32.6% 17.5%;
 		--input: 217.2 32.6% 17.5%;
 		--ring: 212.7 26.8% 83.9%;
+
+		/* Footer dark mode adjustments */
+		--footer-bg: 217.2 32.6% 17.5%;
+		--footer-text: 215 20.2% 65.1%;
+		--footer-heading: 210 40% 98%;
 	}
 }
 
-/* 2. APPLY BASE STYLES
-  ==========================================================================
-*/
 body {
 	background-color: hsl(var(--background));
 	color: hsl(var(--foreground));
-	font-family: Arial, Helvetica, sans-serif; /* Example font */
+	font-family: "Inter", system-ui, -apple-system, sans-serif;
+	overflow-x: hidden;
+	padding-top: var(--sat);
+	padding-bottom: var(--sab);
+	padding-left: var(--sal);
+	padding-right: var(--sar);
 }
 
-/* 3. DEFINE CUSTOM KEYFRAMES
-  ==========================================================================
-*/
+html {
+	scroll-behavior: smooth;
+}
+
+/* Landing page specific styles */
+.landing-hero-bg {
+	background: linear-gradient(135deg, #5b7b7a 0%, #4a6b6a 100%);
+}
+
+.landing-section-padding {
+	padding: 80px 0;
+}
+
+.landing-component-spacing {
+	margin-bottom: 32px;
+}
+
+.landing-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 32px;
+}
+
+/* Smooth animations for landing page */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes scaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes slideInLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideInRight {
+	from {
+		opacity: 0;
+		transform: translateX(30px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.animate-fade-in-up {
+	animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-scale-in {
+	animation: scaleIn 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+	animation: slideInLeft 0.8s ease-out;
+}
+
+.animate-slide-in-right {
+	animation: slideInRight 0.8s ease-out;
+}
+
+/* Color palette hover effects */
+.color-swatch-hover {
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.color-swatch-hover:hover {
+	transform: scale(1.1) rotate(5deg);
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Product card animations */
+.product-card {
+	transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+	transform: translateY(-8px);
+	box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Testimonial carousel */
+.testimonial-slide {
+	transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Instagram feed hover effects */
+.instagram-post {
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.instagram-post:hover {
+	transform: translateY(-4px) scale(1.02);
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1024px) {
+	.landing-container {
+		padding: 0 24px;
+	}
+
+	.landing-section-padding {
+		padding: 60px 0;
+	}
+}
+
+@media (max-width: 768px) {
+	.landing-container {
+		padding: 0 16px;
+	}
+
+	.landing-section-padding {
+		padding: 40px 0;
+	}
+
+	.landing-component-spacing {
+		margin-bottom: 24px;
+	}
+}
+
+@media (max-width: 480px) {
+	.landing-section-padding {
+		padding: 32px 0;
+	}
+
+	.landing-component-spacing {
+		margin-bottom: 16px;
+	}
+}
+
+*:focus-visible {
+	outline: 2px solid var(--ds-primary-sage);
+	outline-offset: 2px;
+}
+
 @keyframes accordion-down {
 	from {
 		height: 0;
@@ -112,11 +279,49 @@ body {
 	}
 }
 
-/* 4. EXTEND TAILWIND'S THEME
-  ==========================================================================
-  Use the @theme directive to extend Tailwind's default theme.
-  You can add new values or override existing ones.
-*/
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slide-in-from-top {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slide-out-to-top {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+}
+
 @theme {
 	/* Spacing */
 	--spacing-element: 1rem;
@@ -172,6 +377,10 @@ body {
 	/* Animations */
 	--animation-accordion-down: accordion-down 0.2s ease-out;
 	--animation-accordion-up: accordion-up 0.2s ease-out;
+	--animation-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	--animation-fadeIn: fadeIn 0.3s ease-out;
+	--animation-slide-in-from-top: slide-in-from-top 0.3s ease-out;
+	--animation-slide-out-to-top: slide-out-to-top 0.3s ease-in;
 
 	/* Background Images */
 	--background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
@@ -179,4 +388,370 @@ body {
 		from 180deg at 50% 50%,
 		var(--tw-gradient-stops)
 	);
+}
+
+.layout-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+	.layout-container {
+		padding: 0 1.5rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.layout-container {
+		padding: 0 2rem;
+	}
+}
+
+.header-sticky {
+	position: sticky;
+	top: 0;
+	z-index: 40;
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+}
+
+.layout-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.layout-main {
+	flex: 1;
+}
+
+/* Header specific styles */
+.header-shadow {
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.header-blur {
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+}
+
+/* Navigation underline animation */
+.nav-underline {
+	position: relative;
+}
+
+.nav-underline::after {
+	content: "";
+	position: absolute;
+	bottom: -4px;
+	left: 0;
+	width: 0;
+	height: 2px;
+	background-color: var(--ds-primary-sage);
+	transition: width 0.3s ease-in-out;
+}
+
+.nav-underline:hover::after,
+.nav-underline.active::after {
+	width: 100%;
+}
+
+/* Dropdown animations */
+.dropdown-enter {
+	opacity: 0;
+	transform: translateY(-10px) scale(0.95);
+}
+
+.dropdown-enter-active {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+	transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.dropdown-exit {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+
+.dropdown-exit-active {
+	opacity: 0;
+	transform: translateY(-10px) scale(0.95);
+	transition: opacity 150ms ease-in, transform 150ms ease-in;
+}
+
+/* Mobile menu animations */
+.mobile-menu-enter {
+	transform: translateX(100%);
+}
+
+.mobile-menu-enter-active {
+	transform: translateX(0);
+	transition: transform 300ms ease-out;
+}
+
+.mobile-menu-exit {
+	transform: translateX(0);
+}
+
+.mobile-menu-exit-active {
+	transform: translateX(100%);
+	transition: transform 250ms ease-in;
+}
+
+/* Search overlay animations */
+.search-overlay-enter {
+	opacity: 0;
+	transform: translateY(-20px);
+}
+
+.search-overlay-enter-active {
+	opacity: 1;
+	transform: translateY(0);
+	transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+.search-overlay-exit {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.search-overlay-exit-active {
+	opacity: 0;
+	transform: translateY(-20px);
+	transition: opacity 200ms ease-in, transform 200ms ease-in;
+}
+
+/* Badge animations */
+.badge-bounce {
+	animation: badge-bounce 0.6s ease-in-out;
+}
+
+@keyframes badge-bounce {
+	0%,
+	20%,
+	53%,
+	80%,
+	100% {
+		transform: translate3d(0, 0, 0);
+	}
+	40%,
+	43% {
+		transform: translate3d(0, -8px, 0);
+	}
+	70% {
+		transform: translate3d(0, -4px, 0);
+	}
+	90% {
+		transform: translate3d(0, -2px, 0);
+	}
+}
+
+/* Scrollbar styling for dropdowns */
+.dropdown-scrollbar::-webkit-scrollbar {
+	width: 6px;
+}
+
+.dropdown-scrollbar::-webkit-scrollbar-track {
+	background: var(--ds-neutral-lightGray);
+	border-radius: 3px;
+}
+
+.dropdown-scrollbar::-webkit-scrollbar-thumb {
+	background: var(--ds-primary-sage);
+	border-radius: 3px;
+}
+
+.dropdown-scrollbar::-webkit-scrollbar-thumb:hover {
+	background: var(--ds-primary-charcoal);
+}
+
+/* Focus styles for better accessibility */
+.focus-ring {
+	outline: 2px solid var(--ds-primary-sage);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+	.header-link {
+		border: 1px solid transparent;
+	}
+
+	.header-link:focus {
+		border-color: currentColor;
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.dropdown-item:focus {
+		outline: 2px solid currentColor;
+		outline-offset: 2px;
+	}
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	.nav-underline::after,
+	.dropdown-enter-active,
+	.dropdown-exit-active,
+	.mobile-menu-enter-active,
+	.mobile-menu-exit-active,
+	.search-overlay-enter-active,
+	.search-overlay-exit-active {
+		transition: none !important;
+		animation: none !important;
+	}
+}
+
+.footer-link {
+	position: relative;
+	transition: all 0.2s ease-in-out;
+}
+
+.footer-link::after {
+	content: "";
+	position: absolute;
+	bottom: -2px;
+	left: 0;
+	width: 0;
+	height: 1px;
+	background-color: var(--ds-accent-warmBeige);
+	transition: width 0.2s ease-in-out;
+}
+
+.footer-link:hover::after,
+.footer-link:focus::after {
+	width: 100%;
+}
+
+.footer-social-icon {
+	transition: all 0.2s ease-in-out;
+}
+
+.footer-social-icon:hover {
+	transform: translateY(-2px);
+}
+
+.footer-newsletter-input {
+	transition: all 0.2s ease-in-out;
+}
+
+.footer-newsletter-input:focus {
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.footer-trust-signal {
+	transition: all 0.2s ease-in-out;
+}
+
+.footer-trust-signal:hover {
+	transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+	.footer-section-mobile {
+		border-bottom: 1px solid rgba(204, 204, 204, 0.1);
+		padding-bottom: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.footer-section-mobile:last-child {
+		border-bottom: none;
+		margin-bottom: 0;
+	}
+
+	.footer-collapsible {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease-in-out;
+	}
+
+	.footer-collapsible.expanded {
+		max-height: 500px;
+	}
+}
+
+@keyframes footerFadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.footer-animate-in {
+	animation: footerFadeIn 0.6s ease-out;
+}
+
+.newsletter-form-container {
+	position: relative;
+}
+
+.newsletter-success-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(34, 197, 94, 0.1);
+	border: 1px solid rgb(34, 197, 94);
+	border-radius: 0.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: blur(4px);
+}
+
+.footer-skip-link {
+	position: absolute;
+	top: -40px;
+	left: 6px;
+	background: var(--ds-accent-warmBeige);
+	color: var(--ds-neutral-white);
+	padding: 8px 16px;
+	border-radius: 4px;
+	text-decoration: none;
+	font-weight: 500;
+	z-index: 100;
+	transition: top 0.2s ease-in-out;
+}
+
+.footer-skip-link:focus {
+	top: 6px;
+}
+
+@media (prefers-contrast: high) {
+	.footer-link {
+		border: 1px solid transparent;
+	}
+
+	.footer-link:focus {
+		border-color: currentColor;
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.footer-link::after,
+	.footer-social-icon,
+	.footer-newsletter-input,
+	.footer-trust-signal,
+	.footer-collapsible {
+		transition: none;
+	}
+
+	.footer-animate-in {
+		animation: none;
+	}
 }
