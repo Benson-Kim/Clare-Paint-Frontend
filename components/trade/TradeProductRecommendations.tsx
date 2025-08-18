@@ -17,6 +17,7 @@ import {
 	CheckCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface TradeProduct {
 	id: string;
@@ -327,10 +328,11 @@ export const TradeProductRecommendations: React.FC = () => {
 									: "w-48 h-48 flex-shrink-0"
 							)}
 						>
-							<img
+							<Image
 								src={product.image}
 								alt={product.name}
-								className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+								fill
+								className="object-cover group-hover:scale-105 transition-transform duration-300"
 								loading="lazy"
 							/>
 

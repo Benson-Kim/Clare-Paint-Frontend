@@ -13,8 +13,10 @@ import {
 	Headphones,
 	FileText,
 	Video,
+	X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface SupportTicket {
 	id: string;
@@ -185,7 +187,9 @@ export const TradeSupportContact: React.FC = () => {
 					].map((tab) => (
 						<button
 							key={tab.id}
-							onClick={() => setActiveTab(tab.id as any)}
+							onClick={() =>
+								setActiveTab(tab.id as "contact" | "tickets" | "resources")
+							}
 							className={cn(
 								"flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
 								activeTab === tab.id
@@ -300,10 +304,12 @@ export const TradeSupportContact: React.FC = () => {
 										key={index}
 										className="bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg p-8 text-center"
 									>
-										<img
+										<Image
 											src={member.image}
 											alt={member.name}
-											className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
+											width={80}
+											height={80}
+											className="rounded-full mx-auto mb-4 object-cover"
 											loading="lazy"
 										/>
 										<h4 className="font-semibold text-ds-primary-charcoal mb-2">

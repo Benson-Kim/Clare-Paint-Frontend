@@ -181,7 +181,11 @@ export const ProjectManagementTools: React.FC = () => {
 				].map((tab) => (
 					<button
 						key={tab.id}
-						onClick={() => setActiveTab(tab.id as any)}
+						onClick={() =>
+							setActiveTab(
+								tab.id as "overview" | "projects" | "calendar" | "reports"
+							)
+						}
 						className={cn(
 							"flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200",
 							activeTab === tab.id
