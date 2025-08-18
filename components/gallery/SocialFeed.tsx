@@ -4,17 +4,14 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { mockFetchSocialMediaFeed } from "@/lib/api";
 import { SocialMediaPost } from "@/types/gallery";
-import {
-	Instagram,
-	Facebook,
-	Pinterest,
-	Heart,
-	MessageCircle,
-	ExternalLink,
-	Loader2,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Heart, MessageCircle, ExternalLink } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import Image from "next/image";
+import {
+	SiInstagram,
+	SiFacebook,
+	SiPinterest,
+} from "@icons-pack/react-simple-icons";
 
 export const SocialFeed: React.FC = () => {
 	const {
@@ -30,11 +27,11 @@ export const SocialFeed: React.FC = () => {
 	const getPlatformIcon = (platform: SocialMediaPost["platform"]) => {
 		switch (platform) {
 			case "instagram":
-				return <Instagram className="w-5 h-5 text-pink-500" />;
+				return <SiInstagram className="w-5 h-5 text-pink-500" />;
 			case "facebook":
-				return <Facebook className="w-5 h-5 text-blue-600" />;
+				return <SiFacebook className="w-5 h-5 text-blue-600" />;
 			case "pinterest":
-				return <Pinterest className="w-5 h-5 text-red-600" />;
+				return <SiPinterest className="w-5 h-5 text-red-600" />;
 			default:
 				return null;
 		}
@@ -104,7 +101,7 @@ export const SocialFeed: React.FC = () => {
 						className="bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg shadow-sm overflow-hidden"
 					>
 						<div className="relative aspect-square overflow-hidden">
-							<img
+							<Image
 								src={post.imageUrl}
 								alt={post.caption}
 								className="w-full h-full object-cover"

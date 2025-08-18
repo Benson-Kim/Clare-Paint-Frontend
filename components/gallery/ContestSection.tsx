@@ -20,6 +20,7 @@ import { format, isPast, isFuture, isToday } from "date-fns";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import Image from "next/image";
 
 // Zod schema for contest submission form
 const contestSubmissionSchema = z.object({
@@ -150,7 +151,7 @@ export const ContestSection: React.FC = () => {
 								className="bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg shadow-sm overflow-hidden"
 							>
 								<div className="relative h-48 overflow-hidden">
-									<img
+									<Image
 										src={contest.imageUrl}
 										alt={contest.name}
 										className="w-full h-full object-cover"
@@ -204,7 +205,7 @@ export const ContestSection: React.FC = () => {
 								className="bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg shadow-sm overflow-hidden"
 							>
 								<div className="relative h-48 overflow-hidden">
-									<img
+									<Image
 										src={contest.imageUrl}
 										alt={contest.name}
 										className="w-full h-full object-cover"
@@ -369,7 +370,7 @@ export const ContestSection: React.FC = () => {
 										aria-label="Upload project image"
 									/>
 									{imagePreview ? (
-										<img
+										<Image
 											src={imagePreview}
 											alt="Project Preview"
 											className="w-full h-full object-cover rounded-lg"

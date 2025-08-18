@@ -8,7 +8,6 @@ import { ContestSection } from "@/components/gallery/ContestSection";
 import { FeaturedStories } from "@/components/gallery/FeaturedStories";
 import { useGalleryStore } from "@/store/gallery-store";
 import { Loader2, Plus } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 // Lazy load modals for performance
 const LazyProjectSubmissionModal = lazy(() =>

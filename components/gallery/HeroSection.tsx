@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Paintbrush, Camera, Users, Sparkles, ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useGalleryStore } from "@/store/gallery-store";
 
 export const HeroSection: React.FC = () => {

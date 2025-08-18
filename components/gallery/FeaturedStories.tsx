@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { mockFetchCustomerStories } from "@/lib/api";
 import { CustomerStory } from "@/types/gallery";
 import { Star, Quote, ArrowRight, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export const FeaturedStories: React.FC = () => {
 	const {
@@ -80,7 +80,7 @@ export const FeaturedStories: React.FC = () => {
 						className="bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg shadow-sm overflow-hidden flex flex-col md:flex-row"
 					>
 						<div className="relative md:w-1/2 aspect-video md:aspect-auto overflow-hidden">
-							<img
+							<Image
 								src={story.imageUrl}
 								alt={story.title}
 								className="w-full h-full object-cover"

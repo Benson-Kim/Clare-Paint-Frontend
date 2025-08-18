@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mockVoteProject } from "@/lib/api";
 import { format } from "date-fns";
+import Image from "next/image";
 
 export const ProjectDetailModal: React.FC = () => {
 	const { isProjectDetailModalOpen, selectedProject, closeProjectDetailModal } =
@@ -102,7 +103,7 @@ export const ProjectDetailModal: React.FC = () => {
 				<div className="p-8 flex-1 overflow-y-auto space-y-8">
 					{/* Image Gallery */}
 					<div className="relative w-full aspect-video bg-ds-neutral-lightGray/20 rounded-lg overflow-hidden">
-						<img
+						<Image
 							src={images[currentImageIndex].url}
 							alt={`${images[currentImageIndex].label}: ${selectedProject.title}`}
 							className="w-full h-full object-cover"

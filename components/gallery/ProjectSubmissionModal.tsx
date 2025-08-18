@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import {
 	X,
 	Upload,
-	Image,
+	Image as IconImage,
 	Palette,
 	Tag,
 	CheckCircle,
@@ -19,6 +19,7 @@ import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mockSubmitProject } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 // Zod schema for form validation
 const projectSubmissionSchema = z.object({
@@ -258,7 +259,7 @@ export const ProjectSubmissionModal: React.FC = () => {
 									aria-label="Upload before image"
 								/>
 								{beforeImagePreview ? (
-									<img
+									<Image
 										src={beforeImagePreview}
 										alt="Before Preview"
 										className="w-full h-full object-cover rounded-lg"
@@ -296,7 +297,7 @@ export const ProjectSubmissionModal: React.FC = () => {
 									aria-label="Upload after image"
 								/>
 								{afterImagePreview ? (
-									<img
+									<Image
 										src={afterImagePreview}
 										alt="After Preview"
 										className="w-full h-full object-cover rounded-lg"

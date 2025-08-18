@@ -9,12 +9,13 @@ import {
 	Eye,
 	MessageCircle,
 	Loader2,
-	Image,
+	Image as IconImage,
 	ChevronLeft,
 	ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useGalleryStore } from "@/store/gallery-store";
+import Image from "next/image";
 
 interface GalleryGridProps {
 	filter?: string; // e.g., 'residential', 'commercial', 'before-after'
@@ -113,7 +114,7 @@ export const GalleryGrid: React.FC<GalleryGridProps> = ({
 	if (!projects || projects.length === 0) {
 		return (
 			<div className="text-center p-8 bg-ds-primary-cream/30 border border-ds-accent-warmBeige/20 rounded-lg">
-				<Image className="w-16 h-16 text-ds-neutral-mediumGray mx-auto mb-4" />
+				<IconImage className="w-16 h-16 text-ds-neutral-mediumGray mx-auto mb-4" />
 				<p className="text-lg font-semibold text-ds-primary-charcoal mb-4">
 					No projects found.
 				</p>
@@ -134,7 +135,7 @@ export const GalleryGrid: React.FC<GalleryGridProps> = ({
 					aria-label={`View project: ${project.title} by ${project.userName}`}
 				>
 					<div className="relative aspect-square overflow-hidden">
-						<img
+						<Image
 							src={project.afterImageUrl}
 							alt={`After: ${project.title}`}
 							className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
