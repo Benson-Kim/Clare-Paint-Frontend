@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useConsultationStore } from "@/store/consultation-store";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export const ConsultationPackages: React.FC = () => {
 	const { openBookingModal } = useConsultationStore();
@@ -96,12 +97,13 @@ export const ConsultationPackages: React.FC = () => {
 							className="bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-200 flex flex-col"
 						>
 							<div className="relative h-48 overflow-hidden rounded-t-lg">
-								<img
-									src={pkg.image}
-									alt={pkg.name}
-									className="w-full h-full object-cover"
-									loading="lazy"
+								<Image
+									src={pkg.image || "/placeholder.png"}
+									alt={pkg.name || "Package image"}
+									fill
+									className="object-cover"
 								/>
+
 								<div className="absolute inset-0 bg-black/20" />
 								<div className="absolute top-4 left-4 bg-ds-primary-sage text-ds-neutral-white px-2 py-2 rounded-full text-sm font-bold flex items-center space-x-2">
 									{pkg.type === "virtual" && <Monitor className="w-4 h-4" />}

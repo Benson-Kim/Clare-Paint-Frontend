@@ -1,8 +1,13 @@
 "use client";
 
 import React from "react";
-import { FileText, Lightbulb, Image, Download, ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {
+	FileText,
+	Lightbulb,
+	Image as IconImage,
+	Download,
+	ArrowRight,
+} from "lucide-react";
 
 export const ConsultationPrep: React.FC = () => {
 	const prepMaterials = [
@@ -23,7 +28,7 @@ export const ConsultationPrep: React.FC = () => {
 			type: "Article",
 		},
 		{
-			icon: <Image className="w-6 h-6" />,
+			icon: <IconImage className="w-6 h-6" />,
 			title: "How to Gather Inspiration",
 			description:
 				"Tips on collecting images and ideas to share with your consultant.",

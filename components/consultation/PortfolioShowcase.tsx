@@ -122,10 +122,11 @@ export const PortfolioShowcase: React.FC = () => {
 							aria-label={`View project: ${project.name}`}
 						>
 							<div className="relative h-48 overflow-hidden">
-								<img
+								<Image
 									src={project.imageUrls[0]}
 									alt={project.name}
-									className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+									fill
+									className="object-cover group-hover:scale-105 transition-transform duration-300"
 									loading="lazy"
 								/>
 								<div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -187,12 +188,14 @@ export const PortfolioShowcase: React.FC = () => {
 
 						{/* Image Gallery */}
 						<div className="relative flex-1 overflow-hidden">
-							<img
+							<Image
 								src={selectedProject.imageUrls[currentImageIndex]}
 								alt={`${selectedProject.name} - Image ${currentImageIndex + 1}`}
-								className="w-full h-full object-cover"
+								className="object-cover"
+								fill
 								loading="lazy"
 							/>
+
 							{selectedProject.imageUrls.length > 1 && (
 								<>
 									<button

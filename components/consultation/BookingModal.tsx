@@ -13,7 +13,10 @@ import {
 	MapPin,
 	Briefcase,
 	Mail,
-	Phone,
+	Clock,
+	Monitor,
+	Home,
+	Building,
 } from "lucide-react";
 import { useConsultationStore } from "@/store/consultation-store";
 import { ConsultationSlot, BookingFormData } from "@/types/consultation";
@@ -39,7 +42,7 @@ import { z } from "zod";
 const bookingSchema = z.object({
 	firstName: z.string().min(1, "First name is required"),
 	lastName: z.string().min(1, "Last name is required"),
-	email: z.string().email("Valid email is required"),
+	email: z.email("Valid email is required"),
 	phone: z.string().min(10, "Valid phone number is required (min 10 digits)"),
 	address: z.string().optional(), // Only required for in-home
 	projectBrief: z
