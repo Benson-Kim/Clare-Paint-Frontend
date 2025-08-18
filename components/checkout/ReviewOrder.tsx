@@ -23,6 +23,7 @@ import { CartItem } from "@/types/product";
 import { formatCurrency, validatePromoCode } from "@/utils/cartUtils";
 import { mockProducts } from "@/data/mock-products";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ReviewOrderProps {
 	onNext: () => void;
@@ -272,15 +273,17 @@ export const ReviewOrder: React.FC<ReviewOrderProps> = ({
 									key={`${item.productId}-${item.colorId}-${item.finishId}`}
 									className="flex items-center space-x-4"
 								>
-									<img
+									<Image
 										src={
 											color?.image ||
 											"https://images.pexels.com/photos/6782371/pexels-photo-6782371.jpeg?auto=compress&cs=tinysrgb&w=800"
 										}
-										alt={product?.name}
-										className="w-16 h-16 object-cover rounded-md border border-ds-neutral-lightGray"
-										loading="lazy"
+										alt={product?.name || "Product image"}
+										width={64}
+										height={64}
+										className="object-cover rounded-md border border-ds-neutral-lightGray"
 									/>
+
 									<div className="flex-1">
 										<p className="font-medium text-ds-primary-charcoal text-sm">
 											{product?.name}

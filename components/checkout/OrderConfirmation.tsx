@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { formatCurrency } from "@/utils/cartUtils";
+import Image from "next/image";
 
 export const OrderConfirmation: React.FC = () => {
 	const { orderData } = useCheckoutStore();
@@ -68,10 +69,12 @@ export const OrderConfirmation: React.FC = () => {
 					<div className="space-y-2">
 						{orderData.items.map((item, index) => (
 							<div key={index} className="flex items-center space-x-4">
-								<img
-									src={item.image}
-									alt={item.name}
-									className="w-12 h-12 object-cover rounded-md"
+								<Image
+									src={item.image || "/placeholder.png"}
+									alt={item.name || "Item image"}
+									width={48}
+									height={48}
+									className="object-cover rounded-md"
 								/>
 								<div className="flex-1">
 									<p className="text-sm font-medium text-ds-primary-charcoal">

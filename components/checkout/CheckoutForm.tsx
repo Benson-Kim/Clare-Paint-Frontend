@@ -44,7 +44,7 @@ export const CheckoutForm: React.FC = () => {
 
 	useEffect(() => {
 		if (items.length === 0 && currentStep < 4) {
-			router.push("/cart");
+			router.push("/shopping/cart");
 		}
 	}, [items, router, currentStep]);
 
