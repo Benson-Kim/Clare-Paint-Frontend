@@ -12,8 +12,8 @@ export const ContactEscalation: React.FC = () => {
 				Still Need Help?
 			</h2>
 			<p className="text-lg text-ds-neutral-mediumGray max-w-2xl mx-auto">
-				If you couldn't find the answer you were looking for, our support team
-				is here to assist you.
+				If you couldn&apos;t find the answer you were looking for, our support
+				team is here to assist you.
 			</p>
 
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
