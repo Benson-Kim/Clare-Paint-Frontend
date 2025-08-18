@@ -6,6 +6,7 @@ import { mockFetchProfessionalEndorsements } from "@/lib/api";
 import { ProfessionalEndorsement } from "@/types/reviews";
 import { Quote, Award, Loader2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export const ProfessionalEndorsementsSection: React.FC = () => {
 	const {
@@ -99,7 +100,7 @@ export const ProfessionalEndorsementsSection: React.FC = () => {
 							key={endorsement.id}
 							className="bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg shadow-sm p-8 text-center flex flex-col items-center"
 						>
-							<img
+							<Image
 								src={endorsement.photoUrl}
 								alt={endorsement.professionalName}
 								className="w-24 h-24 rounded-full object-cover mb-4 border-2 border-ds-primary-sage"

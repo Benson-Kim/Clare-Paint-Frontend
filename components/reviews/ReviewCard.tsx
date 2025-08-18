@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import Image from "next/image";
 
 interface ReviewCardProps {
 	review: CustomerReview;
@@ -101,11 +102,13 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
 			{review.photos && review.photos.length > 0 && (
 				<div className="flex flex-wrap gap-2 mb-4">
 					{review.photos.map((photo, index) => (
-						<img
+						<Image
 							key={index}
 							src={photo}
+							width={80}
+							height={80}
 							alt={`Review photo ${index + 1}`}
-							className="w-20 h-20 object-cover rounded-lg border border-ds-neutral-lightGray"
+							className="object-cover rounded-lg border border-ds-neutral-lightGray"
 							loading="lazy"
 						/>
 					))}

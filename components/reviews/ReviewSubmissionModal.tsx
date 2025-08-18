@@ -5,7 +5,7 @@ import {
 	X,
 	Star,
 	Upload,
-	Image,
+	Image as IconImage,
 	CheckCircle,
 	AlertCircle,
 	Loader2,
@@ -18,6 +18,7 @@ import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mockSubmitReview } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 // Zod schema for form validation
 const reviewSubmissionSchema = z.object({
@@ -280,7 +281,7 @@ export const ReviewSubmissionModal: React.FC = () => {
 							<div className="mt-2 flex flex-wrap gap-2">
 								{photoPreviews.map((src, index) => (
 									<div key={index} className="relative">
-										<img
+										<Image
 											src={src}
 											alt={`Preview ${index + 1}`}
 											className="w-20 h-20 object-cover rounded-lg border border-ds-neutral-lightGray"

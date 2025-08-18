@@ -10,8 +10,10 @@ import {
 	ArrowRight,
 	Loader2,
 	AlertCircle,
+	Award,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export const CaseStudiesSection: React.FC = () => {
 	const {
@@ -106,10 +108,11 @@ export const CaseStudiesSection: React.FC = () => {
 							className="bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg shadow-sm overflow-hidden flex flex-col"
 						>
 							<div className="relative h-64 overflow-hidden">
-								<img
+								<Image
 									src={study.imageUrl}
 									alt={study.title}
-									className="w-full h-full object-cover"
+									fill
+									className="object-cover"
 									loading="lazy"
 								/>
 							</div>
