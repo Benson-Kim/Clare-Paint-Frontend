@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import {
 	X,
-	Image,
+	Image as IconImage,
 	ChevronLeft,
 	ChevronRight,
 	Download,
@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { BeforeAfterImage } from "@/types/product";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 interface ProjectGalleryProps {
 	images: BeforeAfterImage[];
@@ -55,7 +56,7 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
 				{/* Header */}
 				<div className="flex items-center justify-between p-8 border-b border-ds-neutral-lightGray">
 					<div className="flex items-center space-x-2">
-						<Image className="w-6 h-6 text-ds-primary-sage" />
+						<IconImage className="w-6 h-6 text-ds-primary-sage" />
 						<h2
 							id="gallery-title"
 							className="text-2xl font-bold text-ds-primary-charcoal"
@@ -91,10 +92,11 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
 					<div className="flex-1 flex flex-col items-center justify-center space-y-4 md:space-y-0 md:space-x-4 md:flex-row">
 						{/* Before Image */}
 						<div className="relative w-full md:w-1/2 aspect-video overflow-hidden rounded-lg shadow-md">
-							<img
+							<Image
 								src={currentImage.before}
 								alt={`Before: ${currentImage.description || "Project image"}`}
-								className="w-full h-full object-cover"
+								fill
+								className="object-cover"
 								loading="lazy"
 							/>
 							<span className="absolute top-4 left-4 bg-ds-primary-charcoal text-ds-neutral-white text-xs font-bold px-2 py-2 rounded-full">
@@ -103,10 +105,11 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
 						</div>
 						{/* After Image */}
 						<div className="relative w-full md:w-1/2 aspect-video overflow-hidden rounded-lg shadow-md">
-							<img
+							<Image
 								src={currentImage.after}
 								alt={`After: ${currentImage.description || "Project image"}`}
-								className="w-full h-full object-cover"
+								fill
+								className="object-cover"
 								loading="lazy"
 							/>
 							<span className="absolute top-4 left-4 bg-ds-primary-sage text-ds-neutral-white text-xs font-bold px-2 py-2 rounded-full">
@@ -156,10 +159,11 @@ export const ProjectGallery: React.FC<ProjectGalleryProps> = ({
 								)}
 								aria-label={`View project image ${index + 1}`}
 							>
-								<img
+								<Image
 									src={img.after}
 									alt={`Thumbnail for ${img.description || "project image"}`}
-									className="w-full h-full object-cover"
+									fill
+									className="object-cover"
 									loading="lazy"
 								/>
 							</button>
