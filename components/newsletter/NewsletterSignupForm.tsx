@@ -96,8 +96,8 @@ export const NewsletterSignupForm: React.FC = () => {
 					Subscription Confirmed!
 				</h3>
 				<p className="text-ds-neutral-darkSlate">
-					Thank you for subscribing to our newsletter. You'll receive updates
-					based on your preferences.
+					Thank you for subscribing to our newsletter. You&apos;ll receive
+					updates based on your preferences.
 				</p>
 				<button
 					onClick={() => setSubmissionSuccess(false)}
@@ -159,7 +159,7 @@ export const NewsletterSignupForm: React.FC = () => {
 
 				<div>
 					<label className="block text-sm font-medium text-ds-neutral-darkSlate mb-2">
-						I'm interested in: *
+						I&apos;m interested in: *
 					</label>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						{preferenceOptions.map((option) => (

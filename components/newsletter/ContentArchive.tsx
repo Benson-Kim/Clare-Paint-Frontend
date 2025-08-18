@@ -7,6 +7,7 @@ import { ContentArchiveItem } from "@/types/newsletter";
 import { Archive, Calendar, Tag, Loader2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import Image from "next/image";
 
 export const ContentArchive: React.FC = () => {
 	const [filterCategory, setFilterCategory] = useState<string | null>(null);
@@ -103,7 +104,7 @@ export const ContentArchive: React.FC = () => {
 							aria-label={`Read ${item.title}`}
 						>
 							<div className="relative h-48 overflow-hidden">
-								<img
+								<Image
 									src={item.imageUrl}
 									alt={item.title}
 									className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

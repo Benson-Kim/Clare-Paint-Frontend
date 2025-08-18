@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useNewsletterStore } from "@/store/newsletter-store";
 import { format } from "date-fns";
+import Image from "next/image";
 
 export const PersonalizedRecommendations: React.FC = () => {
 	const { userEmail, subscriptionStatus } = useNewsletterStore();
@@ -79,8 +80,8 @@ export const PersonalizedRecommendations: React.FC = () => {
 					No Recommendations Yet
 				</h3>
 				<p className="text-ds-neutral-darkSlate">
-					We're still learning your preferences! Check back later or update your
-					subscription preferences for more tailored content.
+					We&apos;re still learning your preferences! Check back later or update
+					your subscription preferences for more tailored content.
 				</p>
 			</div>
 		);
@@ -106,7 +107,7 @@ export const PersonalizedRecommendations: React.FC = () => {
 						aria-label={`Read recommended article: ${item.title}`}
 					>
 						<div className="relative h-48 overflow-hidden">
-							<img
+							<Image
 								src={item.imageUrl}
 								alt={item.title}
 								className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

@@ -179,7 +179,8 @@ export const SubscriptionManagementCenter: React.FC = () => {
 					You have unsubscribed.
 				</h3>
 				<p className="text-ds-neutral-darkSlate">
-					We're sorry to see you go! You will no longer receive our newsletter.
+					We&apos;re sorry to see you go! You will no longer receive our
+					newsletter.
 				</p>
 				<button
 					onClick={() => setUnsubscribeSuccess(false)}
@@ -291,7 +292,7 @@ export const SubscriptionManagementCenter: React.FC = () => {
 
 				<div>
 					<label className="block text-sm font-medium text-ds-neutral-darkSlate mb-2">
-						I'm interested in: *
+						I&apos;m interested in: *
 					</label>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						{preferenceOptions.map((option) => (

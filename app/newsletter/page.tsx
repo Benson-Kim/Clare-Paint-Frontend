@@ -79,8 +79,8 @@ export default function NewsletterPage() {
 							Subscription Not Found
 						</h3>
 						<p className="text-sm">
-							We couldn't find an active subscription for {userEmail}. Please
-							try subscribing again.
+							We couldn&apos;t find an active subscription for {userEmail}.
+							Please try subscribing again.
 						</p>
 						<button
 							onClick={() => clearSubscription()} // Clear email to show signup form
