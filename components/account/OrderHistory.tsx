@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { mockFetchOrderHistory, mockReorderItems } from "@/lib/api";
 import { Order } from "@/types/account";
 import { formatCurrency } from "@/utils/cartUtils";
@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 /**
  * Renders the user's order history with filtering, search, and reorder functionality.
@@ -357,10 +358,12 @@ export const OrderHistory: React.FC = () => {
 							<div className="space-y-2 mb-4">
 								{order.items.map((item, itemIndex) => (
 									<div key={itemIndex} className="flex items-center space-x-4">
-										<img
-											src={item.image}
-											alt={item.name}
-											className="w-16 h-16 object-cover rounded-md border border-ds-neutral-lightGray"
+										<Image
+											src={item.image || "/placeholder.png"}
+											alt={item.name || "Item image"}
+											width={64}
+											height={64}
+											className="object-cover rounded-md border border-ds-neutral-lightGray"
 											loading="lazy"
 										/>
 										<div className="flex-1">
