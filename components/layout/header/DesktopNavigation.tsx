@@ -74,72 +74,72 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
 				},
 			],
 		},
-		{
-			label: "Colors",
-			hasDropdown: true,
-			dropdownId: "colors",
-			items: [
-				{
-					label: "Color Visualizer",
-					href: "/color-visualizer",
-					description: "See colors in your space with AR",
-					featured: true,
-				},
-				{
-					label: "Color Collections",
-					href: "/colors",
-					description: "Curated palettes by our experts",
-				},
-				{
-					label: "Trending Colors",
-					href: "/colors/trending",
-					description: "What's popular in 2024",
-				},
-				{
-					label: "Color Matching",
-					href: "/color-matching",
-					description: "Match any color perfectly",
-				},
-				{
-					label: "Room Inspiration",
-					href: "/inspiration/rooms",
-					description: "Color ideas organized by space",
-				},
-			],
-		},
-		{
-			label: "Inspiration",
-			hasDropdown: true,
-			dropdownId: "inspiration",
-			items: [
-				{
-					label: "Project Gallery",
-					href: "/gallery",
-					description: "Customer transformations and success stories",
-					featured: true,
-				},
-				{
-					label: "Room Ideas",
-					href: "/inspiration/rooms",
-					description: "Color schemes for every space",
-				},
-				{
-					label: "Style Guides",
-					href: "/inspiration/styles",
-					description: "Design styles and color palettes",
-				},
-				{
-					label: "Color Trends",
-					href: "/colors/trending",
-					description: "Latest color movements and forecasts",
-				},
-				{
-					label: "Before & After",
-					href: "/inspiration/transformations",
-					description: "Amazing makeover stories",
-				},
-			],
-		},
+		// {
+		// 	label: "Colors",
+		// 	hasDropdown: true,
+		// 	dropdownId: "colors",
+		// 	items: [
+		// 		{
+		// 			label: "Color Visualizer",
+		// 			href: "/color-visualizer",
+		// 			description: "See colors in your space with AR",
+		// 			featured: true,
+		// 		},
+		// 		{
+		// 			label: "Color Collections",
+		// 			href: "/colors",
+		// 			description: "Curated palettes by our experts",
+		// 		},
+		// 		{
+		// 			label: "Trending Colors",
+		// 			href: "/colors/trending",
+		// 			description: "What's popular in 2024",
+		// 		},
+		// 		{
+		// 			label: "Color Matching",
+		// 			href: "/color-matching",
+		// 			description: "Match any color perfectly",
+		// 		},
+		// 		{
+		// 			label: "Room Inspiration",
+		// 			href: "/inspiration/rooms",
+		// 			description: "Color ideas organized by space",
+		// 		},
+		// 	],
+		// },
+		// {
+		// 	label: "Inspiration",
+		// 	hasDropdown: true,
+		// 	dropdownId: "inspiration",
+		// 	items: [
+		// 		{
+		// 			label: "Project Gallery",
+		// 			href: "/gallery",
+		// 			description: "Customer transformations and success stories",
+		// 			featured: true,
+		// 		},
+		// 		{
+		// 			label: "Room Ideas",
+		// 			href: "/inspiration/rooms",
+		// 			description: "Color schemes for every space",
+		// 		},
+		// 		{
+		// 			label: "Style Guides",
+		// 			href: "/inspiration/styles",
+		// 			description: "Design styles and color palettes",
+		// 		},
+		// 		{
+		// 			label: "Color Trends",
+		// 			href: "/colors/trending",
+		// 			description: "Latest color movements and forecasts",
+		// 		},
+		// 		{
+		// 			label: "Before & After",
+		// 			href: "/inspiration/transformations",
+		// 			description: "Amazing makeover stories",
+		// 		},
+		// 	],
+		// },
 		{
 			label: "How-To",
 			hasDropdown: true,
@@ -234,28 +234,28 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
 			items: [
 				{
 					label: "FAQ",
-					href: "/faq",
+					href: "/support/faq",
 					description: "Quick answers to common questions",
 				},
 				{
 					label: "Contact Us",
-					href: "/contact",
+					href: "/support/contact",
 					description: "Get in touch with our team",
 				},
 				{
 					label: "Color Consultation",
-					href: "/consultation",
+					href: "/support/consultation",
 					description: "Expert color advice",
 					featured: true,
 				},
 				{
 					label: "Shipping Info",
-					href: "/shipping",
+					href: "/support/shipping",
 					description: "Delivery details and options",
 				},
 				{
 					label: "Returns",
-					href: "/returns",
+					href: "/support/returns",
 					description: "Easy return policy",
 				},
 			],

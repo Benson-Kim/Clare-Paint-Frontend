@@ -124,12 +124,12 @@ export const Footer: React.FC<FooterProps> = ({
 				},
 				{
 					label: "Shipping Information",
-					href: "/shipping",
+					href: "/support/shipping",
 					description: "Delivery details and options",
 				},
 				{
 					label: "Return Policy",
-					href: "/returns",
+					href: "/support/returns",
 					description: "Easy returns and exchanges",
 				},
 				{

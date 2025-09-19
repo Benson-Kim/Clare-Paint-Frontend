@@ -206,28 +206,28 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
 			items: [
 				{
 					label: "FAQ",
-					href: "/faq",
+					href: "/support/faq",
 					description: "Quick answers",
 				},
 				{
 					label: "Contact Us",
-					href: "/contact",
+					href: "/support/contact",
 					description: "Get in touch",
 				},
 				{
 					label: "Color Consultation",
-					href: "/consultation",
+					href: "/support/consultation",
 					description: "Expert color advice",
 					featured: true,
 				},
 				{
 					label: "Shipping Info",
-					href: "/shipping",
+					href: "/support/shipping",
 					description: "Delivery details",
 				},
 				{
 					label: "Returns",
-					href: "/returns",
+					href: "/support/returns",
 					description: "Return policy",
 				},
 			],

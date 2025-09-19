@@ -21,6 +21,7 @@ import { SearchOverlay } from "./header/SearchOverlay";
 import { AccountDropdown } from "./header/AccountDropdown";
 import { CartDropdown } from "./header/CartDropdown";
 import { WishlistDropdown } from "./header/WishlistDropdown";
+import Image from "next/image";
 
 interface HeaderProps {
 	className?: string;
@@ -95,9 +96,16 @@ export const Header: React.FC<HeaderProps> = ({
 			className="flex items-center space-x-3 group"
 			aria-label="Clare Paint - Home"
 		>
-			<div className="w-10 h-10 bg-ds-primary-sage rounded-lg flex items-center justify-center group-hover:bg-ds-primary-sage/90 transition-colors duration-200">
-				<span className="text-ds-neutral-white font-bold text-lg">C</span>
+			<div className="w-16 h-16 relative">
+				<Image
+					src="/logo.png"
+					alt="Clare Paint Logo"
+					fill
+					className="object-contain rounded-lg group-hover:opacity-90 transition-opacity duration-200"
+					priority
+				/>
 			</div>
+
 			<div className="hidden sm:block">
 				<span className="text-2xl font-bold text-ds-primary-charcoal group-hover:text-ds-primary-sage transition-colors duration-200">
 					Clare Paint

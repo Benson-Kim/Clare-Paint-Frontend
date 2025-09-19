@@ -36,6 +36,8 @@ import {
 } from "@/types/newsletter";
 import { FAQItem, FAQCategory } from "@/types/faq"; // New import
 import { format } from "date-fns";
+import { ReturnFormValues } from "@/types/returns";
+import { SupportTicket } from "@/types/contact";
 
 /**
  * Mocks an API call to validate a shipping address.
@@ -343,6 +345,114 @@ export const mockFetchOrderHistory = async (): Promise<Order[]> => {
 			]);
 		}, 1000); // Simulate network delay
 	});
+};
+
+export const mockSubmitTicket = async (
+	ticket: SupportTicket
+): Promise<{ success: boolean; message: string }> => {
+	console.log("Submitting support ticket:", ticket);
+	await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
+
+	if (ticket.subject.toLowerCase().includes("spam")) {
+		return Promise.reject(
+			new Error("Your ticket was flagged as spam. Please revise and resubmit.")
+		);
+	}
+
+	return {
+		success: true,
+		message: `Ticket received! Your reference number is ${(
+			Math.random() * 100000
+		).toFixed(0)}. We'll respond within 24-48 hours.`,
+	};
+};
+
+/**
+ * Mocks submitting a return request.
+ * @param returnData The data for the return request.
+ * @returns A promise that resolves with return details or rejects with an error.
+ */
+
+export const mockSubmitReturnRequest = async (returnData: {
+	orderId: string;
+	items: Array<{
+		productId: string;
+		quantity: number;
+		reason: string;
+	}>;
+	customerInfo: {
+		name: string;
+		email: string;
+		phone?: string;
+	};
+	returnReason: string;
+	additionalComments?: string;
+}): Promise<{
+	returnId: string;
+	returnLabel: string;
+	estimatedRefund: number;
+}> => {
+	console.log("Submitting return request:", returnData);
+	await new Promise((resolve) => setTimeout(resolve, 1200));
+
+	// Simulate occasional failure
+	if (Math.random() < 0.05) {
+		throw new Error("Failed to process return request. Please try again.");
+	}
+
+	const returnId = `RET-${Date.now()}`;
+	const estimatedRefund = returnData.items.reduce(
+		(sum, item) => sum + 89.99 * item.quantity,
+		0
+	);
+
+	return {
+		returnId,
+		returnLabel: `https://example.com/return-label/${returnId}`,
+		estimatedRefund,
+	};
+};
+
+export const mockTrackReturn = async (
+	returnId: string
+): Promise<{
+	status:
+		| "initiated"
+		| "label_printed"
+		| "in_transit"
+		| "received"
+		| "processed"
+		| "refunded";
+	estimatedCompletion: string;
+	updates: Array<{
+		date: string;
+		status: string;
+		description: string;
+	}>;
+}> => {
+	await new Promise((resolve) => setTimeout(resolve, 800));
+
+	return {
+		status: "in_transit",
+		estimatedCompletion: "2024-02-05",
+		updates: [
+			{
+				date: "2024-01-25",
+				status: "Return Initiated",
+				description: "Return request submitted and approved",
+			},
+			{
+				date: "2024-01-26",
+				status: "Return Label Generated",
+				description: "Prepaid return label sent to your email",
+			},
+			{
+				date: "2024-01-27",
+				status: "Package Shipped",
+				description: "Package picked up by carrier",
+			},
+		],
+	};
 };
 
 /**
