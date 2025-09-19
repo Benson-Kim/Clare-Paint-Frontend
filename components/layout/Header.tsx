@@ -1,17 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import {
-	Search,
-	User,
-	Heart,
-	ShoppingCart,
-	Menu,
-	X,
-	ChevronDown,
-} from "lucide-react";
+import { Search, User, Heart, ShoppingCart, Menu } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
 import { cn } from "@/lib/utils";
 import { useHeaderState } from "@/hooks/useHeaderState";
