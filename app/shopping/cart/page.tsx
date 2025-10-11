@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import {
 	ShoppingCart,
@@ -25,7 +25,7 @@ import { mockProducts } from "@/data/mock-products";
 import { CartItem } from "@/types/product";
 import Image from "next/image";
 
-interface CartPageProps {}
+// interface CartPageProps {}
 
 interface ShippingOption {
 	id: string;
@@ -43,7 +43,8 @@ interface PromoCode {
 	description: string;
 }
 
-const CartPage: React.FC<CartPageProps> = () => {
+// const CartPage: React.FC<CartPageProps> = () => {
+const CartPage: React.FC = () => {
 	const {
 		items,
 		updateQuantity,
@@ -59,7 +60,7 @@ const CartPage: React.FC<CartPageProps> = () => {
 	const [zipCode, setZipCode] = useState("");
 	const [showCoverageCalc, setShowCoverageCalc] = useState(false);
 	const [savedItems, setSavedItems] = useState<CartItem[]>([]);
-	const [loading, setLoading] = useState(false);
+	// const [loading, setLoading] = useState(false);
 
 	// Mock promo codes
 	const promoCodes: PromoCode[] = [
@@ -109,6 +110,12 @@ const CartPage: React.FC<CartPageProps> = () => {
 			icon: <Truck className="w-4 h-4" />,
 		},
 	];
+
+	const [cartItemCount, setCartItemCount] = useState(0);
+
+	useEffect(() => {
+		setCartItemCount(getTotalItems());
+	}, [getTotalItems]);
 
 	// Get product details for cart items
 	const cartItemsWithDetails = useMemo(() => {
@@ -264,7 +271,7 @@ const CartPage: React.FC<CartPageProps> = () => {
 								Shopping Cart
 							</h1>
 							<span className="bg-ds-primary-sage text-white px-3 py-1 rounded-full text-sm font-medium">
-								{getTotalItems()} items
+								{cartItemCount} items
 							</span>
 						</div>
 
@@ -675,7 +682,7 @@ const CartPage: React.FC<CartPageProps> = () => {
 							<div className="space-y-3">
 								<div className="flex justify-between">
 									<span className="text-gray-600">
-										Subtotal ({getTotalItems()} items)
+										Subtotal ({cartItemCount} items)
 									</span>
 									<span className="font-medium text-ds-primary-charcoal">
 										${subtotal.toFixed(2)}

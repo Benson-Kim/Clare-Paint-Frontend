@@ -321,19 +321,19 @@ html {
 	}
 }
 
-/* @theme { */
-/* Spacing */
-/* --spacing-element: 1rem;
+@theme {
+	/* Spacing */
+	--spacing-element: 1rem;
 	--spacing-element-half: 0.5rem;
 	--spacing-component: 2rem;
 	--spacing-section: 5rem;
 
-	/* Border Radius 
+	/* Border Radius */
 	--radius-lg: var(--radius);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-sm: calc(var(--radius) - 4px);
 
-	/* Colors - Reference the variables defined in :root 
+	/* Colors - Reference the variables defined in :root */
 	--color-background: hsl(var(--background));
 	--color-foreground: hsl(var(--foreground));
 	--color-card: hsl(var(--card));
@@ -354,14 +354,14 @@ html {
 	--color-input: hsl(var(--input));
 	--color-ring: hsl(var(--ring));
 
-	/* Chart Colors 
+	/* Chart Colors */
 	--color-chart-1: hsl(var(--chart-1));
 	--color-chart-2: hsl(var(--chart-2));
 	--color-chart-3: hsl(var(--chart-3));
 	--color-chart-4: hsl(var(--chart-4));
 	--color-chart-5: hsl(var(--chart-5));
 
-	/* Custom Design System Colors 
+	/* Custom Design System Colors */
 	--color-ds-primary-sage: var(--ds-primary-sage);
 	--color-ds-primary-charcoal: var(--ds-primary-charcoal);
 	--color-ds-primary-cream: var(--ds-primary-cream);
@@ -373,7 +373,7 @@ html {
 	--color-ds-neutral-mediumGray: var(--ds-neutral-mediumGray);
 	--color-ds-neutral-darkSlate: var(--ds-neutral-darkSlate);
 
-	/* Animations 
+	/* Animations */
 	--animation-accordion-down: accordion-down 0.2s ease-out;
 	--animation-accordion-up: accordion-up 0.2s ease-out;
 	--animation-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
@@ -381,13 +381,13 @@ html {
 	--animation-slide-in-from-top: slide-in-from-top 0.3s ease-out;
 	--animation-slide-out-to-top: slide-out-to-top 0.3s ease-in;
 
-	/* Background Images 
+	/* Background Images */
 	--background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
 	--background-image-gradient-conic: conic-gradient(
 		from 180deg at 50% 50%,
 		var(--tw-gradient-stops)
-	); */
-/* } */
+	);
+}
 
 .layout-container {
 	max-width: 1200px;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Search, User, Heart, ShoppingCart, Menu } from "lucide-react";
@@ -47,7 +47,11 @@ export const Header: React.FC<HeaderProps> = ({
 	const [wishlistCount] = useState(3); // Mock wishlist count
 	const headerRef = useRef<HTMLElement>(null);
 
-	const cartItemCount = getTotalItems();
+	const [cartItemCount, setCartItemCount] = useState(0);
+
+	useEffect(() => {
+		setCartItemCount(getTotalItems());
+	}, [getTotalItems]);
 
 	// Handle dropdown toggle
 	const handleDropdownToggle = (dropdownName: string) => {

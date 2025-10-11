@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import React, { useCallback, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { mockFetchOrderHistory, mockReorderItems } from "@/lib/api";
 import { Order } from "@/types/account";
 import { formatCurrency } from "@/utils/cartUtils";
-import { useCartStore } from "@/store/cart-store";
+import { CartError, useCartStore } from "@/store/cart-store";
 import {
 	Package,
 	Truck,
@@ -19,15 +19,20 @@ import {
 	Search,
 	Calendar,
 	Download,
+	Dot,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { isPaintProduct } from "@/types/product";
+import { mockProducts } from "@/data/mock-products";
+import { toast } from "@/lib/toast";
 
 /**
  * Renders the user's order history with filtering, search, and reorder functionality.
  */
 export const OrderHistory: React.FC = () => {
+	const queryClient = useQueryClient();
 	const [searchQuery, setSearchQuery] = useState("");
 	const [statusFilter, setStatusFilter] = useState<string>("all");
 	const [sortBy, setSortBy] = useState<"date" | "amount">("date");
@@ -44,34 +49,145 @@ export const OrderHistory: React.FC = () => {
 	} = useQuery<Order[], Error>({
 		queryKey: ["orderHistory"],
 		queryFn: mockFetchOrderHistory,
+		staleTime: 5 * 60 * 1000, // 5 minutes
+		gcTime: 10 * 60 * 1000, // 10 minutes
 	});
 
 	const reorderMutation = useMutation({
 		mutationFn: mockReorderItems,
-		onSuccess: (_, orderId) => {
+
+		onMutate: async (orderId) => {
+			await queryClient.cancelQueries({ queryKey: ["orderHistory"] });
+
+			const previousOrders = queryClient.getQueryData<Order[]>([
+				"orderHistory",
+			]);
+
+			queryClient.setQueryData<Order[]>(["orderHistory"], (old) => {
+				if (!old) return old;
+				return old.map((order) =>
+					order.id === orderId
+						? { ...order, status: "Processing" as const }
+						: order
+				);
+			});
+
+			toast.info("Adding items to cart...");
+
+			return { previousOrders };
+		},
+
+		onSuccess: (data, orderId) => {
 			// Find the order and add its items to cart
 			const order = orders?.find((o) => o.id === orderId);
-			if (order) {
-				order.items.forEach((item) => {
-					if (
-						item.productId !== "brush-set-001" &&
-						item.productId !== "roller-kit-001" &&
-						item.productId !== "primer-001"
-					) {
-						// Only add paint products to cart, skip tools
-						addItem({
-							productId: item.productId,
-							colorId: "sage-green", // Default color ID
-							finishId: "matte", // Default finish ID
-							quantity: item.quantity,
-							price: item.price,
-						});
+
+			if (!order) return;
+
+			let addedCount = 0;
+			let skippedCount = 0;
+			const errors: string[] = [];
+
+			order.items.forEach((item) => {
+				try {
+					const product = mockProducts.find((p) => p.id === item.productId);
+
+					if (!product) {
+						console.warn(`Product not found: ${item.productId}`);
+						skippedCount++;
+						return;
 					}
-				});
+
+					if (!product.reorderable || !isPaintProduct(product.category)) {
+						console.info(`Skipping non-reorderable item: ${product.name}`);
+						skippedCount++;
+						return;
+					}
+
+					if (!product.inStock) {
+						errors.push(`${product.name} is out of stock`);
+						skippedCount++;
+						return;
+					}
+
+					// Find matching color
+					const color = product.colors.find((c) => c.name === item.color);
+					if (!color || !color.inStock) {
+						errors.push(
+							`${item.color} color is no longer available for ${product.name}`
+						);
+						skippedCount++;
+						return;
+					}
+
+					// Find matching finish
+					const finish = product.finishes.find((f) => f.name === item.finish);
+					if (!finish || !finish.inStock) {
+						errors.push(
+							`${item.finish} finish is no longer available for ${product.name}`
+						);
+						skippedCount++;
+						return;
+					}
+
+					addItem({
+						productId: item.productId,
+						colorId: color.id,
+						finishId: finish.id,
+						quantity: item.quantity,
+						price: item.price,
+					});
+					addedCount++;
+				} catch (error) {
+					if (error instanceof CartError) {
+						errors.push(error.message);
+					} else {
+						errors.push(`Failed to add ${item.name} to cart`);
+					}
+					skippedCount++;
+				}
+			});
+
+			if (addedCount > 0 && skippedCount === 0) {
+				toast.success(
+					`Successfully added ${addedCount} item${
+						addedCount > 1 ? "s" : ""
+					} to cart`
+				);
+			} else if (addedCount > 0 && skippedCount > 0) {
+				toast.info(
+					`Added ${addedCount} item${
+						addedCount > 1 ? "s" : ""
+					} to cart. ${skippedCount} item${
+						skippedCount > 1 ? "s were" : " was"
+					} skipped.`
+				);
+			} else {
+				toast.error("No items could be added to cart");
+			}
+			if (errors.length > 0) {
+				errors.slice(0, 3).forEach((error) => toast.error(error));
+				if (errors.length > 3) {
+					toast.info(
+						`And ${errors.length - 3} more issue${
+							errors.length - 3 > 1 ? "s" : ""
+						}`
+					);
+				}
 			}
 		},
-		onError: (error) => {
+		onError: (error, orderId, context) => {
+			// Rollback optimistic update
+			if (context?.previousOrders) {
+				queryClient.setQueryData(["orderHistory"], context.previousOrders);
+			}
+
+			const errorMessage =
+				error instanceof Error ? error.message : "Failed to reorder items";
+			toast.error(errorMessage);
 			console.error("Reorder failed:", error);
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ["orderHistory"] });
 		},
 	});
 
@@ -79,17 +195,19 @@ export const OrderHistory: React.FC = () => {
 	const filteredOrders = React.useMemo(() => {
 		if (!orders) return [];
 
-		let filtered = orders;
+		let filtered = [...orders];
 
 		// Apply search filter
-		if (searchQuery) {
+		if (searchQuery.trim()) {
+			const query = searchQuery.toLowerCase();
 			filtered = filtered.filter(
 				(order) =>
-					order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+					order.id.toLowerCase().includes(query) ||
 					order.items.some(
 						(item) =>
-							item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-							item.color.toLowerCase().includes(searchQuery.toLowerCase())
+							item.name.toLowerCase().includes(query) ||
+							item.color.toLowerCase().includes(query) ||
+							item.finish.toLowerCase().includes(query)
 					)
 			);
 		}
@@ -97,7 +215,7 @@ export const OrderHistory: React.FC = () => {
 		// Apply status filter
 		if (statusFilter !== "all") {
 			filtered = filtered.filter(
-				(order) => order.status.toLowerCase() === statusFilter
+				(order) => order.status.toLowerCase() === statusFilter.toLowerCase()
 			);
 		}
 
@@ -115,11 +233,18 @@ export const OrderHistory: React.FC = () => {
 		return filtered;
 	}, [orders, searchQuery, statusFilter, sortBy, sortOrder]);
 
-	const handleReorder = (orderId: string) => {
-		reorderMutation.mutate(orderId);
-	};
+	const handleReorder = useCallback(
+		(orderId: string) => {
+			if (reorderMutation.isPending) {
+				toast.info("Please wait for the current reorder to finish.");
+				return;
+			}
+			reorderMutation.mutate(orderId);
+		},
+		[reorderMutation]
+	);
 
-	const getStatusIcon = (status: Order["status"]) => {
+	const getStatusIcon = useCallback((status: Order["status"]) => {
 		switch (status) {
 			case "Delivered":
 				return <CheckCircle className="w-4 h-4 text-green-600" />;
@@ -132,9 +257,9 @@ export const OrderHistory: React.FC = () => {
 			default:
 				return <Package className="w-4 h-4 text-gray-600" />;
 		}
-	};
+	}, []);
 
-	const getStatusColor = (status: Order["status"]) => {
+	const getStatusColor = useCallback((status: Order["status"]) => {
 		switch (status) {
 			case "Delivered":
 				return "bg-green-100 text-green-800 border-green-200";
@@ -147,7 +272,19 @@ export const OrderHistory: React.FC = () => {
 			default:
 				return "bg-gray-100 text-gray-800 border-gray-200";
 		}
-	};
+	}, []);
+
+	const canReoder = useCallback((order: Order): boolean => {
+		if (order.status === "Cancelled") return false;
+		return order.items.some((item) => {
+			const product = mockProducts.find((p) => p.id === item.productId);
+			return (
+				product?.reorderable &&
+				isPaintProduct(product.category) &&
+				product.inStock
+			);
+		});
+	}, []);
 
 	if (isLoading) {
 		return (
@@ -157,9 +294,9 @@ export const OrderHistory: React.FC = () => {
 				</h2>
 				<div className="animate-pulse space-y-4">
 					<div className="h-10 bg-gray-200 rounded w-full" />
-					<div className="h-20 bg-gray-200 rounded w-full" />
-					<div className="h-20 bg-gray-200 rounded w-full" />
-					<div className="h-20 bg-gray-200 rounded w-full" />
+					{[...Array(3)].map((_, i) => (
+						<div key={i} className="h-32 bg-gray-200 rounded w-full" />
+					))}
 				</div>
 			</div>
 		);
@@ -176,7 +313,9 @@ export const OrderHistory: React.FC = () => {
 					<p className="text-lg text-red-700 mb-4">
 						Failed to load order history
 					</p>
-					<p className="text-sm text-red-600 mb-4">{error?.message}</p>
+					<p className="text-sm text-red-600 mb-4">
+						{error?.message || "An unexpected error occurred"}
+					</p>
 					<button
 						onClick={() => refetch()}
 						className="inline-flex items-center space-x-2 px-4 py-2 bg-red-600 text-ds-neutral-white rounded-lg hover:bg-red-700 transition-colors duration-200"
@@ -325,14 +464,18 @@ export const OrderHistory: React.FC = () => {
 										<span>
 											Placed on {new Date(order.date).toLocaleDateString()}
 										</span>
-										<span>•</span>
+										<span>
+											<Dot className="h-0.5 w-0.5" />{" "}
+										</span>
 										<span>
 											{order.items.length} item
 											{order.items.length !== 1 ? "s" : ""}
 										</span>
 										{order.trackingNumber && (
 											<>
-												<span>•</span>
+												<span>
+													<Dot className="h-0.5 w-0.5" />
+												</span>
 												<button className="text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200 flex items-center space-x-1">
 													<span>Track: {order.trackingNumber}</span>
 													<ExternalLink className="w-3 h-3" />
@@ -356,40 +499,62 @@ export const OrderHistory: React.FC = () => {
 
 							{/* Order Items */}
 							<div className="space-y-2 mb-4">
-								{order.items.map((item, itemIndex) => (
-									<div key={itemIndex} className="flex items-center space-x-4">
-										<Image
-											src={item.image || "/placeholder.png"}
-											alt={item.name || "Item image"}
-											width={64}
-											height={64}
-											className="object-cover rounded-md border border-ds-neutral-lightGray"
-											loading="lazy"
-										/>
-										<div className="flex-1">
-											<p className="font-medium text-ds-primary-charcoal text-sm">
-												{item.name}
-											</p>
-											{item.color !== "N/A" && (
-												<p className="text-xs text-ds-neutral-darkSlate">
-													{item.color}{" "}
-													{item.finish !== "N/A" && `/ ${item.finish}`}
+								{order.items.map((item, itemIndex) => {
+									const product = mockProducts.find(
+										(p) => p.id === item.productId
+									);
+									if (!product) return null; // Skip if product not found
+									console.log("product", product);
+									const isReorderable =
+										product.reorderable &&
+										isPaintProduct(product.category) &&
+										product.inStock;
+									if (!isReorderable) return null; // Skip non-reorderable items
+									return (
+										<div
+											key={itemIndex}
+											className="flex items-center space-x-4"
+										>
+											<Image
+												src={item.image || "/placeholder.png"}
+												alt={item.name || "Item image"}
+												width={64}
+												height={64}
+												className="object-cover rounded-md border border-ds-neutral-lightGray"
+												loading="lazy"
+											/>
+											<div className="flex-1">
+												<div className="flex items-center space-x-2">
+													<p className="font-medium text-ds-primary-charcoal text-sm">
+														{item.name}
+													</p>
+													{!isReorderable && (
+														<span className="text-xs text-ds-neutral-mediumGray bg-ds-neutral-lightGray px-2 py-0.5 rounded">
+															Non-reorderable
+														</span>
+													)}
+												</div>
+												{item.color !== "N/A" && (
+													<p className="text-xs text-ds-neutral-darkSlate">
+														{item.color}{" "}
+														{item.finish !== "N/A" && `/ ${item.finish}`}
+													</p>
+												)}
+												<p className="text-xs text-ds-neutral-mediumGray">
+													Quantity: {item.quantity}
 												</p>
-											)}
-											<p className="text-xs text-ds-neutral-mediumGray">
-												Quantity: {item.quantity}
-											</p>
+											</div>
+											<div className="text-right">
+												<span className="font-semibold text-ds-primary-charcoal text-sm">
+													{formatCurrency(item.price * item.quantity)}
+												</span>
+												<p className="text-xs text-ds-neutral-mediumGray">
+													{formatCurrency(item.price)} each
+												</p>
+											</div>
 										</div>
-										<div className="text-right">
-											<span className="font-semibold text-ds-primary-charcoal text-sm">
-												{formatCurrency(item.price * item.quantity)}
-											</span>
-											<p className="text-xs text-ds-neutral-mediumGray">
-												{formatCurrency(item.price)} each
-											</p>
-										</div>
-									</div>
-								))}
+									);
+								})}
 							</div>
 
 							{/* Shipping Address */}
@@ -426,18 +591,29 @@ export const OrderHistory: React.FC = () => {
 										<Eye className="w-4 h-4" />
 										<span>View Details</span>
 									</Link>
-									<button
-										onClick={() => handleReorder(order.id)}
-										disabled={reorderMutation.isPending}
-										className="flex items-center space-x-1 px-4 py-2 bg-ds-primary-sage text-ds-neutral-white rounded-lg hover:bg-ds-primary-sage/90 disabled:bg-ds-neutral-lightGray disabled:cursor-not-allowed transition-colors duration-200 text-sm font-medium"
-									>
-										{reorderMutation.isPending ? (
-											<div className="w-4 h-4 border-2 border-ds-neutral-white/30 border-t-ds-neutral-white rounded-full animate-spin" />
-										) : (
+									{canReoder(order) ? (
+										<button
+											onClick={() => handleReorder(order.id)}
+											disabled={reorderMutation.isPending}
+											className="flex items-center space-x-1 px-4 py-2 bg-ds-primary-sage text-ds-neutral-white rounded-lg hover:bg-ds-primary-sage/90 disabled:bg-ds-neutral-lightGray disabled:cursor-not-allowed transition-colors duration-200 text-sm font-medium"
+										>
+											{reorderMutation.isPending ? (
+												<div className="w-4 h-4 border-2 border-ds-neutral-white/30 border-t-ds-neutral-white rounded-full animate-spin" />
+											) : (
+												<RotateCcw className="w-4 h-4" />
+											)}
+											<span>Reorder</span>
+										</button>
+									) : (
+										<button
+											disabled
+											className="flex items-center space-x-1 px-4 py-2 bg-ds-neutral-lightGray text-ds-neutral-mediumGray rounded-lg cursor-not-allowed text-sm"
+											title="This order cannot be reordered"
+										>
 											<RotateCcw className="w-4 h-4" />
-										)}
-										<span>Reorder</span>
-									</button>
+											<span>Reorder</span>
+										</button>
+									)}
 								</div>
 							</div>
 						</div>
