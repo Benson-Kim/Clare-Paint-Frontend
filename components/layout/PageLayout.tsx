@@ -8,7 +8,7 @@ import { Footer } from "./Footer";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { ProgressIndicator } from "./ProgressIndicator";
 import { ScrollToTop } from "./ScrollToTop";
-import { ErrorBoundary } from "./ErrorBoundary";
+import { ErrorBoundary } from "../ui/ErrorBoundary";
 import { LoadingOverlay } from "./LoadingOverlay";
 
 import { cn } from "@/lib/utils";

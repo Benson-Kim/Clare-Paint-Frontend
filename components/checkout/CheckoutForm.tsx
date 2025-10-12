@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useCartStore } from "@/store/cart-store";
 import { useCheckoutStore } from "@/store/checkout-store";
 import { cn } from "@/lib/utils";
@@ -22,16 +22,22 @@ import { mockFetchPromoCodes, mockFetchShippingOptions } from "@/lib/api";
 import { PromoCode, ShippingOption } from "@/types/checkout";
 import { useRouter } from "next/navigation";
 
+const CHECKOUT_STEPS = [
+	{ id: 1, name: "Shipping", icon: Truck },
+	{ id: 2, name: "Payment", icon: CreditCard },
+	{ id: 3, name: "Review", icon: ShoppingCart },
+	{ id: 4, name: "Confirmation", icon: CheckCircle },
+] as const;
+
 export const CheckoutForm: React.FC = () => {
 	const router = useRouter();
-	const { items, getTotalItems, getTotalPrice, clearCart } = useCartStore();
+	const { items, getTotalItems, getTotalPrice } = useCartStore();
 	const {
 		formData,
 		currentStep,
 		nextStep,
 		prevStep,
-		goToStep,
-		clearCheckoutData,
+		orderData,
 		setShippingOption,
 		setPromoCode,
 	} = useCheckoutStore();
@@ -41,62 +47,103 @@ export const CheckoutForm: React.FC = () => {
 	const [appliedPromo, setAppliedPromo] = useState<PromoCode | null>(null);
 	const [loadingOptions, setLoadingOptions] = useState(true);
 	const [error, setError] = useState<string | null>(null);
+	const [isMounted, setIsMounted] = useState(true);
 
 	useEffect(() => {
-		if (items.length === 0 && currentStep < 4) {
+		if (items.length === 0 && currentStep < 4 && !orderData) {
 			router.push("/shopping/cart");
 		}
-	}, [items, router, currentStep]);
+	}, [items.length, router, currentStep, orderData]);
 
 	useEffect(() => {
+		let isSubscribed = true;
 		const fetchOptions = async () => {
+			if (!isSubscribed) return;
+
 			setLoadingOptions(true);
+			setError(null);
 			try {
-				const fetchedShippingOptions = await mockFetchShippingOptions();
+				const [fetchedShippingOptions, fetchedPromoCodes] = await Promise.all([
+					mockFetchShippingOptions(),
+					mockFetchPromoCodes(),
+				]);
+				if (!isSubscribed) return;
+
 				setShippingOptions(fetchedShippingOptions);
+				setPromoCodes(fetchedPromoCodes);
+
 				if (!formData.shippingOption && fetchedShippingOptions.length > 0) {
 					setShippingOption(fetchedShippingOptions[0]);
 				}
-
-				const fetchedPromoCodes = await mockFetchPromoCodes();
-				setPromoCodes(fetchedPromoCodes);
 			} catch (err) {
-				setError("Failed to load shipping options or promo codes.");
-				console.error(err);
+				if (!isSubscribed) return;
+				const errorMessage =
+					err instanceof Error
+						? err.message
+						: "Failed to load checkout options";
+				setError(errorMessage);
+				console.error("Checkout initialization error:", err);
 			} finally {
-				setLoadingOptions(false);
+				if (!isSubscribed) {
+					setLoadingOptions(false);
+				}
 			}
 		};
 		fetchOptions();
-	}, [formData.shippingOption, setShippingOption]);
+
+		return () => {
+			isSubscribed = false;
+			setIsMounted(false);
+		};
+	});
+
+	const subtotal = useMemo(() => getTotalPrice(), [items]);
 
 	useEffect(() => {
-		if (formData.promoCode) {
-			const promo = validatePromoCode(formData.promoCode, subtotal, promoCodes);
-			setAppliedPromo(promo);
-		} else {
+		if (!formData.promoCode) {
 			setAppliedPromo(null);
+			return;
 		}
-	}, [formData.promoCode, promoCodes]);
+		const promo = validatePromoCode(formData.promoCode, subtotal, promoCodes);
+		if (isMounted) {
+			setAppliedPromo(promo);
+		}
+	}, [formData.promoCode, promoCodes, isMounted, subtotal]);
 
-	const subtotal = getTotalPrice();
-	const promoDiscount = calculateDiscount(subtotal, appliedPromo);
-	const shippingCost = formData.shippingOption
-		? calculateShipping(subtotal, formData.shippingOption, appliedPromo)
-		: 0;
-	const tax = calculateTax(subtotal - promoDiscount);
-	const total = calculateTotal(subtotal, shippingCost, tax, promoDiscount);
+	const orderSummary = useMemo(() => {
+		const promoDiscount = calculateDiscount(subtotal, appliedPromo);
+		const shippingCost = formData.shippingOption
+			? calculateShipping(subtotal, formData.shippingOption, appliedPromo)
+			: 0;
+		const tax = calculateTax(subtotal - promoDiscount);
+		const total = calculateTotal(subtotal, shippingCost, tax, promoDiscount);
 
-	const steps = [
-		{ id: 1, name: "Shipping", icon: Truck },
-		{ id: 2, name: "Payment", icon: CreditCard },
-		{ id: 3, name: "Review", icon: ShoppingCart },
-		{ id: 4, name: "Confirmation", icon: CheckCircle },
-	];
+		return {
+			subtotal,
+			shipping: shippingCost,
+			tax,
+			discount: promoDiscount,
+			total,
+			itemCount: getTotalItems(),
+			estimatedDelivery: formData.shippingOption?.estimatedDays || "N/A",
+		};
+	}, [subtotal, appliedPromo, formData.shippingOption, getTotalItems]);
 
-	const handlePromoCodeChange = (code: string) => {
-		setPromoCode(code);
-	};
+	const handlePromoCodeChange = useCallback(
+		(code: string) => {
+			if (isMounted) {
+				setPromoCode(code);
+			}
+		},
+		[setPromoCode, isMounted]
+	);
+
+	// const retryLoadOptions = useCallback(() => {
+	// 	setError(null);
+	// 	setLoadingOptions(true);
+	// 	// Trigger re-fetch by changing a dependency
+	// 	window.location.reload();
+	// }, []);
 
 	if (loadingOptions) {
 		return (
@@ -137,7 +184,7 @@ export const CheckoutForm: React.FC = () => {
 
 				{/* Progress Stepper */}
 				<div className="flex justify-between items-center mb-20 max-w-3xl mx-auto">
-					{steps.map((step, index) => (
+					{CHECKOUT_STEPS.map((step, index) => (
 						<div key={step.id} className="flex flex-col items-center relative">
 							<div
 								className={cn(
@@ -146,6 +193,7 @@ export const CheckoutForm: React.FC = () => {
 										? "bg-ds-primary-sage"
 										: "bg-ds-neutral-lightGray"
 								)}
+								aria-current={currentStep === step.id ? "step" : undefined}
 							>
 								<step.icon className="w-5 h-5" />
 							</div>
@@ -159,7 +207,7 @@ export const CheckoutForm: React.FC = () => {
 							>
 								{step.name}
 							</p>
-							{index < steps.length - 1 && (
+							{index < CHECKOUT_STEPS.length - 1 && (
 								<div
 									className={cn(
 										"absolute left-[calc(50%+20px)] top-5 h-0.5 w-[calc(100vw/4-40px)] -translate-y-1/2 transition-all duration-300",
@@ -167,6 +215,7 @@ export const CheckoutForm: React.FC = () => {
 											? "bg-ds-primary-sage"
 											: "bg-ds-neutral-lightGray"
 									)}
+									aria-hidden="true"
 								/>
 							)}
 						</div>
@@ -198,16 +247,7 @@ export const CheckoutForm: React.FC = () => {
 								onNext={nextStep}
 								onBack={prevStep}
 								cartItems={items}
-								orderSummary={{
-									subtotal,
-									shipping: shippingCost,
-									tax,
-									discount: promoDiscount,
-									total,
-									itemCount: getTotalItems(),
-									estimatedDelivery:
-										formData.shippingOption?.estimatedDays || "N/A",
-								}}
+								orderSummary={orderSummary}
 								promoCode={formData.promoCode || ""}
 								onPromoCodeChange={handlePromoCodeChange}
 								shippingOptions={shippingOptions}
@@ -219,39 +259,41 @@ export const CheckoutForm: React.FC = () => {
 
 					{/* Order Summary Sidebar */}
 					{currentStep < 4 && (
-						<div className="lg:col-span-1 bg-ds-neutral-white p-8 rounded-lg shadow-lg border border-ds-neutral-lightGray h-fit sticky top-8">
+						<aside className="lg:col-span-1 bg-ds-neutral-white p-8 rounded-lg shadow-lg border border-ds-neutral-lightGray h-fit sticky top-8">
 							<h2 className="text-2xl font-bold text-ds-primary-charcoal mb-8">
 								Order Summary
 							</h2>
 							<div className="space-y-4">
 								<div className="flex justify-between text-ds-neutral-darkSlate">
-									<span>Subtotal ({getTotalItems()} items)</span>
-									<span>{formatCurrency(subtotal)}</span>
+									<span>Subtotal ({orderSummary.itemCount} items)</span>
+									<span>{formatCurrency(orderSummary.subtotal)}</span>
 								</div>
 								<div className="flex justify-between text-ds-neutral-darkSlate">
 									<span>Shipping</span>
 									<span>
-										{shippingCost === 0 ? "Free" : formatCurrency(shippingCost)}
+										{orderSummary.shipping === 0
+											? "Free"
+											: formatCurrency(orderSummary.shipping)}
 									</span>
 								</div>
 								{appliedPromo && (
 									<div className="flex justify-between text-ds-primary-sage">
 										<span>Discount ({appliedPromo.code})</span>
-										<span>-{formatCurrency(promoDiscount)}</span>
+										<span>-{formatCurrency(orderSummary.discount)}</span>
 									</div>
 								)}
 								<div className="flex justify-between text-ds-neutral-darkSlate">
 									<span>Tax</span>
-									<span>{formatCurrency(tax)}</span>
+									<span>{formatCurrency(orderSummary.tax)}</span>
 								</div>
 								<div className="border-t border-ds-neutral-lightGray pt-4 mt-4">
 									<div className="flex justify-between text-xl font-bold text-ds-primary-charcoal">
 										<span>Total</span>
-										<span>{formatCurrency(total)}</span>
+										<span>{formatCurrency(orderSummary.total)}</span>
 									</div>
 								</div>
 							</div>
-						</div>
+						</aside>
 					)}
 				</div>
 			</div>

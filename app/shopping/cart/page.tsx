@@ -24,6 +24,7 @@ import { useCartStore } from "@/store/cart-store";
 import { mockProducts } from "@/data/mock-products";
 import { CartItem } from "@/types/product";
 import Image from "next/image";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
 // interface CartPageProps {}
 
@@ -254,528 +255,540 @@ const CartPage: React.FC = () => {
 
 	return (
 		<PageLayout className="bg-gray-50">
-			<div className="py-8">
-				{/* Cart Header */}
-				<div className="bg-white border-b border-gray-200 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-6 mb-8">
-					<div className="flex items-center justify-between">
-						<div className="flex items-center space-x-4">
-							<Link
-								href="/products"
-								className="flex items-center space-x-2 text-gray-600 hover:text-ds-primary-sage transition-colors duration-200"
-							>
-								<ArrowLeft className="w-4 h-4" />
-								<span>Continue Shopping</span>
-							</Link>
-							<div className="h-6 w-px bg-gray-300" />
-							<h1 className="text-2xl font-bold text-ds-primary-charcoal">
-								Shopping Cart
-							</h1>
-							<span className="bg-ds-primary-sage text-white px-3 py-1 rounded-full text-sm font-medium">
-								{cartItemCount} items
-							</span>
+			<ErrorBoundary isolate>
+				<div className="py-8">
+					{/* Cart Header */}
+					<div className="bg-white border-b border-gray-200 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-6 mb-8">
+						<div className="flex items-center justify-between">
+							<div className="flex items-center space-x-4">
+								<Link
+									href="/products"
+									className="flex items-center space-x-2 text-gray-600 hover:text-ds-primary-sage transition-colors duration-200"
+								>
+									<ArrowLeft className="w-4 h-4" />
+									<span>Continue Shopping</span>
+								</Link>
+								<div className="h-6 w-px bg-gray-300" />
+								<h1 className="text-2xl font-bold text-ds-primary-charcoal">
+									Shopping Cart
+								</h1>
+								<span className="bg-ds-primary-sage text-white px-3 py-1 rounded-full text-sm font-medium">
+									{cartItemCount} items
+								</span>
+							</div>
+
+							{items.length > 0 && (
+								<button
+									onClick={clearCart}
+									className="text-sm text-gray-500 hover:text-red-600 transition-colors duration-200"
+								>
+									Clear Cart
+								</button>
+							)}
 						</div>
-
-						{items.length > 0 && (
-							<button
-								onClick={clearCart}
-								className="text-sm text-gray-500 hover:text-red-600 transition-colors duration-200"
-							>
-								Clear Cart
-							</button>
-						)}
 					</div>
-				</div>
 
-				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-					{/* Cart Items */}
-					<div className="lg:col-span-2 space-y-6">
-						{/* Coverage Calculator */}
-						<div className="bg-ds-primary-sage/5 border border-ds-primary-sage/20 rounded-lg p-4">
-							<div className="flex items-center justify-between">
-								<div className="flex items-center space-x-3">
-									<Calculator className="w-5 h-5 text-ds-primary-sage" />
-									<div>
-										<h3 className="font-semibold text-ds-primary-charcoal">
-											Total Coverage
+					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+						{/* Cart Items */}
+						<div className="lg:col-span-2 space-y-6">
+							{/* Coverage Calculator */}
+							<div className="bg-ds-primary-sage/5 border border-ds-primary-sage/20 rounded-lg p-4">
+								<div className="flex items-center justify-between">
+									<div className="flex items-center space-x-3">
+										<Calculator className="w-5 h-5 text-ds-primary-sage" />
+										<div>
+											<h3 className="font-semibold text-ds-primary-charcoal">
+												Total Coverage
+											</h3>
+											<p className="text-sm text-gray-600">
+												Approximately {totalCoverage.toLocaleString()} sq ft
+											</p>
+										</div>
+									</div>
+									<button
+										onClick={() => setShowCoverageCalc(!showCoverageCalc)}
+										className="text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200 text-sm font-medium"
+									>
+										Calculate Rooms
+									</button>
+								</div>
+							</div>
+
+							{/* Cart Items by Project */}
+							{groupedItems.map(([projectName, projectItems]) => (
+								<div
+									key={projectName}
+									className="bg-white rounded-lg shadow-sm border border-gray-200"
+								>
+									<div className="p-4 border-b border-gray-200">
+										<h3 className="font-semibold text-ds-primary-charcoal flex items-center space-x-2">
+											<Package className="w-4 h-4 text-ds-primary-sage" />
+											<span>{projectName}</span>
+											<span className="text-sm text-gray-500">
+												({projectItems.length} items)
+											</span>
 										</h3>
-										<p className="text-sm text-gray-600">
-											Approximately {totalCoverage.toLocaleString()} sq ft
-										</p>
+									</div>
+
+									<div className="divide-y divide-gray-200">
+										{projectItems.map((item) => (
+											<div
+												key={`${item.productId}-${item.colorId}-${item.finishId}`}
+												className="p-6"
+											>
+												<div className="flex items-start space-x-4">
+													{/* Product Image */}
+													<div className="flex-shrink-0">
+														<Image
+															src={item.color?.image || "/placeholder.png"}
+															alt={`${item.product?.name} in ${item.color?.name}`}
+															width={80}
+															height={80}
+															className="object-cover rounded-lg border border-gray-200"
+															loading="lazy"
+														/>
+													</div>
+
+													{/* Product Details */}
+													<div className="flex-1 min-w-0">
+														<div className="flex items-start justify-between">
+															<div>
+																<h4 className="font-semibold text-ds-primary-charcoal mb-1">
+																	{item.product?.name}
+																</h4>
+																<p className="text-sm text-gray-600 mb-2">
+																	{item.product?.brand}
+																</p>
+
+																<div className="flex items-center space-x-4 text-sm">
+																	<div className="flex items-center space-x-2">
+																		<div
+																			className="w-4 h-4 rounded-full border border-gray-300"
+																			style={{
+																				backgroundColor: item.color?.hex,
+																			}}
+																		/>
+																		<span className="text-gray-700">
+																			{item.color?.name}
+																		</span>
+																	</div>
+																	<span className="text-gray-500">•</span>
+																	<span className="text-gray-700">
+																		{item.finish?.name}
+																	</span>
+																</div>
+
+																<div className="mt-2 text-sm text-gray-600">
+																	Coverage: ~
+																	{parseInt(
+																		item.product?.coverage?.match(
+																			/(\d+)/
+																		)?.[1] || "350"
+																	) * item.quantity}{" "}
+																	sq ft
+																</div>
+															</div>
+
+															<div className="text-right">
+																<p className="text-lg font-bold text-ds-primary-charcoal">
+																	${item.totalPrice.toFixed(2)}
+																</p>
+																<p className="text-sm text-gray-500">
+																	${item.price.toFixed(2)} each
+																</p>
+															</div>
+														</div>
+
+														{/* Quantity Controls */}
+														<div className="flex items-center justify-between mt-4">
+															<div className="flex items-center space-x-3">
+																<div className="flex items-center border border-gray-300 rounded-lg">
+																	<button
+																		onClick={() =>
+																			handleQuantityChange(
+																				item.productId,
+																				item.colorId,
+																				item.finishId,
+																				item.quantity - 1
+																			)
+																		}
+																		className="p-2 hover:bg-gray-50 transition-colors duration-200"
+																		aria-label="Decrease quantity"
+																	>
+																		<Minus className="w-4 h-4" />
+																	</button>
+																	<span className="px-4 py-2 font-medium text-ds-primary-charcoal min-w-[3rem] text-center">
+																		{item.quantity}
+																	</span>
+																	<button
+																		onClick={() =>
+																			handleQuantityChange(
+																				item.productId,
+																				item.colorId,
+																				item.finishId,
+																				item.quantity + 1
+																			)
+																		}
+																		className="p-2 hover:bg-gray-50 transition-colors duration-200"
+																		aria-label="Increase quantity"
+																	>
+																		<Plus className="w-4 h-4" />
+																	</button>
+																</div>
+
+																<span className="text-sm text-gray-500">
+																	{item.quantity} gallon
+																	{item.quantity !== 1 ? "s" : ""}
+																</span>
+															</div>
+
+															<div className="flex items-center space-x-3">
+																<button
+																	onClick={() => handleSaveForLater(item)}
+																	className="flex items-center space-x-1 text-sm text-gray-600 hover:text-ds-primary-sage transition-colors duration-200"
+																>
+																	<Heart className="w-4 h-4" />
+																	<span>Save for Later</span>
+																</button>
+																<button
+																	onClick={() =>
+																		removeItem(
+																			item.productId,
+																			item.colorId,
+																			item.finishId
+																		)
+																	}
+																	className="flex items-center space-x-1 text-sm text-gray-600 hover:text-red-600 transition-colors duration-200"
+																>
+																	<X className="w-4 h-4" />
+																	<span>Remove</span>
+																</button>
+															</div>
+														</div>
+
+														{/* Color Substitution Suggestions */}
+														{item.product && item.product.colors.length > 1 && (
+															<div className="mt-4 p-3 bg-gray-50 rounded-lg">
+																<p className="text-sm font-medium text-ds-primary-charcoal mb-2">
+																	Also available in:
+																</p>
+																<div className="flex space-x-2">
+																	{item.product.colors
+																		.filter(
+																			(color) => color.id !== item.colorId
+																		)
+																		.slice(0, 4)
+																		.map((color) => (
+																			<button
+																				key={color.id}
+																				className="group relative"
+																				title={color.name}
+																			>
+																				<div
+																					className="w-8 h-8 rounded-full border-2 border-gray-200 group-hover:border-ds-primary-sage transition-colors duration-200"
+																					style={{ backgroundColor: color.hex }}
+																				/>
+																			</button>
+																		))}
+																</div>
+															</div>
+														)}
+													</div>
+												</div>
+											</div>
+										))}
 									</div>
 								</div>
-								<button
-									onClick={() => setShowCoverageCalc(!showCoverageCalc)}
-									className="text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200 text-sm font-medium"
-								>
-									Calculate Rooms
-								</button>
-							</div>
-						</div>
+							))}
 
-						{/* Cart Items by Project */}
-						{groupedItems.map(([projectName, projectItems]) => (
-							<div
-								key={projectName}
-								className="bg-white rounded-lg shadow-sm border border-gray-200"
-							>
-								<div className="p-4 border-b border-gray-200">
-									<h3 className="font-semibold text-ds-primary-charcoal flex items-center space-x-2">
-										<Package className="w-4 h-4 text-ds-primary-sage" />
-										<span>{projectName}</span>
-										<span className="text-sm text-gray-500">
-											({projectItems.length} items)
-										</span>
-									</h3>
-								</div>
+							{/* Saved for Later */}
+							{savedItems.length > 0 && (
+								<div className="bg-white rounded-lg shadow-sm border border-gray-200">
+									<div className="p-4 border-b border-gray-200">
+										<h3 className="font-semibold text-ds-primary-charcoal flex items-center space-x-2">
+											<Heart className="w-4 h-4 text-ds-primary-sage" />
+											<span>Saved for Later ({savedItems.length})</span>
+										</h3>
+									</div>
 
-								<div className="divide-y divide-gray-200">
-									{projectItems.map((item) => (
-										<div
-											key={`${item.productId}-${item.colorId}-${item.finishId}`}
-											className="p-6"
-										>
-											<div className="flex items-start space-x-4">
-												{/* Product Image */}
-												<div className="flex-shrink-0">
+									<div className="p-4 space-y-4">
+										{savedItems.map((item) => {
+											const product = mockProducts.find(
+												(p) => p.id === item.productId
+											);
+											const color = product?.colors.find(
+												(c) => c.id === item.colorId
+											);
+
+											return (
+												<div
+													key={`saved-${item.productId}-${item.colorId}-${item.finishId}`}
+													className="flex items-center space-x-4"
+												>
 													<Image
-														src={item.color?.image || "/placeholder.png"}
-														alt={`${item.product?.name} in ${item.color?.name}`}
-														width={80}
-														height={80}
+														src={color?.image || "/placeholder.png"}
+														alt={product?.name || "Product Image"}
+														width={48}
+														height={48}
 														className="object-cover rounded-lg border border-gray-200"
 														loading="lazy"
 													/>
-												</div>
 
-												{/* Product Details */}
-												<div className="flex-1 min-w-0">
-													<div className="flex items-start justify-between">
-														<div>
-															<h4 className="font-semibold text-ds-primary-charcoal mb-1">
-																{item.product?.name}
-															</h4>
-															<p className="text-sm text-gray-600 mb-2">
-																{item.product?.brand}
-															</p>
-
-															<div className="flex items-center space-x-4 text-sm">
-																<div className="flex items-center space-x-2">
-																	<div
-																		className="w-4 h-4 rounded-full border border-gray-300"
-																		style={{ backgroundColor: item.color?.hex }}
-																	/>
-																	<span className="text-gray-700">
-																		{item.color?.name}
-																	</span>
-																</div>
-																<span className="text-gray-500">•</span>
-																<span className="text-gray-700">
-																	{item.finish?.name}
-																</span>
-															</div>
-
-															<div className="mt-2 text-sm text-gray-600">
-																Coverage: ~
-																{parseInt(
-																	item.product?.coverage?.match(/(\d+)/)?.[1] ||
-																		"350"
-																) * item.quantity}{" "}
-																sq ft
-															</div>
-														</div>
-
-														<div className="text-right">
-															<p className="text-lg font-bold text-ds-primary-charcoal">
-																${item.totalPrice.toFixed(2)}
-															</p>
-															<p className="text-sm text-gray-500">
-																${item.price.toFixed(2)} each
-															</p>
-														</div>
-													</div>
-
-													{/* Quantity Controls */}
-													<div className="flex items-center justify-between mt-4">
-														<div className="flex items-center space-x-3">
-															<div className="flex items-center border border-gray-300 rounded-lg">
-																<button
-																	onClick={() =>
-																		handleQuantityChange(
-																			item.productId,
-																			item.colorId,
-																			item.finishId,
-																			item.quantity - 1
-																		)
-																	}
-																	className="p-2 hover:bg-gray-50 transition-colors duration-200"
-																	aria-label="Decrease quantity"
-																>
-																	<Minus className="w-4 h-4" />
-																</button>
-																<span className="px-4 py-2 font-medium text-ds-primary-charcoal min-w-[3rem] text-center">
-																	{item.quantity}
-																</span>
-																<button
-																	onClick={() =>
-																		handleQuantityChange(
-																			item.productId,
-																			item.colorId,
-																			item.finishId,
-																			item.quantity + 1
-																		)
-																	}
-																	className="p-2 hover:bg-gray-50 transition-colors duration-200"
-																	aria-label="Increase quantity"
-																>
-																	<Plus className="w-4 h-4" />
-																</button>
-															</div>
-
-															<span className="text-sm text-gray-500">
-																{item.quantity} gallon
-																{item.quantity !== 1 ? "s" : ""}
-															</span>
-														</div>
-
-														<div className="flex items-center space-x-3">
-															<button
-																onClick={() => handleSaveForLater(item)}
-																className="flex items-center space-x-1 text-sm text-gray-600 hover:text-ds-primary-sage transition-colors duration-200"
-															>
-																<Heart className="w-4 h-4" />
-																<span>Save for Later</span>
-															</button>
-															<button
-																onClick={() =>
-																	removeItem(
-																		item.productId,
-																		item.colorId,
-																		item.finishId
-																	)
-																}
-																className="flex items-center space-x-1 text-sm text-gray-600 hover:text-red-600 transition-colors duration-200"
-															>
-																<X className="w-4 h-4" />
-																<span>Remove</span>
-															</button>
-														</div>
-													</div>
-
-													{/* Color Substitution Suggestions */}
-													{item.product && item.product.colors.length > 1 && (
-														<div className="mt-4 p-3 bg-gray-50 rounded-lg">
-															<p className="text-sm font-medium text-ds-primary-charcoal mb-2">
-																Also available in:
-															</p>
-															<div className="flex space-x-2">
-																{item.product.colors
-																	.filter((color) => color.id !== item.colorId)
-																	.slice(0, 4)
-																	.map((color) => (
-																		<button
-																			key={color.id}
-																			className="group relative"
-																			title={color.name}
-																		>
-																			<div
-																				className="w-8 h-8 rounded-full border-2 border-gray-200 group-hover:border-ds-primary-sage transition-colors duration-200"
-																				style={{ backgroundColor: color.hex }}
-																			/>
-																		</button>
-																	))}
-															</div>
-														</div>
-													)}
-												</div>
-											</div>
-										</div>
-									))}
-								</div>
-							</div>
-						))}
-
-						{/* Saved for Later */}
-						{savedItems.length > 0 && (
-							<div className="bg-white rounded-lg shadow-sm border border-gray-200">
-								<div className="p-4 border-b border-gray-200">
-									<h3 className="font-semibold text-ds-primary-charcoal flex items-center space-x-2">
-										<Heart className="w-4 h-4 text-ds-primary-sage" />
-										<span>Saved for Later ({savedItems.length})</span>
-									</h3>
-								</div>
-
-								<div className="p-4 space-y-4">
-									{savedItems.map((item) => {
-										const product = mockProducts.find(
-											(p) => p.id === item.productId
-										);
-										const color = product?.colors.find(
-											(c) => c.id === item.colorId
-										);
-
-										return (
-											<div
-												key={`saved-${item.productId}-${item.colorId}-${item.finishId}`}
-												className="flex items-center space-x-4"
-											>
-												<Image
-													src={color?.image || "/placeholder.png"}
-													alt={product?.name || "Product Image"}
-													width={48}
-													height={48}
-													className="object-cover rounded-lg border border-gray-200"
-													loading="lazy"
-												/>
-
-												<div className="flex-1">
-													<h4 className="font-medium text-ds-primary-charcoal">
-														{product?.name}
-													</h4>
-													<p className="text-sm text-gray-600">{color?.name}</p>
-												</div>
-												<div className="flex items-center space-x-2">
-													<button
-														onClick={() => handleMoveToCart(item)}
-														className="text-sm text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200"
-													>
-														Move to Cart
-													</button>
-													<button
-														onClick={() =>
-															setSavedItems(
-																savedItems.filter(
-																	(saved) =>
-																		!(
-																			saved.productId === item.productId &&
-																			saved.colorId === item.colorId &&
-																			saved.finishId === item.finishId
-																		)
-																)
-															)
-														}
-														className="text-sm text-gray-500 hover:text-red-600 transition-colors duration-200"
-													>
-														Remove
-													</button>
-												</div>
-											</div>
-										);
-									})}
-								</div>
-							</div>
-						)}
-					</div>
-
-					{/* Order Summary */}
-					<div className="space-y-6">
-						{/* Shipping Calculator */}
-						<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-							<h3 className="font-semibold text-ds-primary-charcoal mb-4 flex items-center space-x-2">
-								<MapPin className="w-4 h-4 text-ds-primary-sage" />
-								<span>Shipping</span>
-							</h3>
-
-							<div className="space-y-4">
-								<div>
-									<label className="block text-sm font-medium text-ds-primary-charcoal mb-2">
-										ZIP Code
-									</label>
-									<input
-										type="text"
-										value={zipCode}
-										onChange={(e) => setZipCode(e.target.value)}
-										placeholder="Enter ZIP code"
-										className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent"
-									/>
-								</div>
-
-								<div className="space-y-3">
-									{shippingOptions.map((option) => (
-										<label
-											key={option.id}
-											className="flex items-center space-x-3 cursor-pointer"
-										>
-											<input
-												type="radio"
-												name="shipping"
-												value={option.id}
-												checked={selectedShipping === option.id}
-												onChange={(e) => setSelectedShipping(e.target.value)}
-												className="w-4 h-4 text-ds-primary-sage border-gray-300 focus:ring-ds-primary-sage"
-											/>
-											<div className="flex-1 flex items-center justify-between">
-												<div className="flex items-center space-x-2">
-													{option.icon}
-													<div>
-														<p className="font-medium text-ds-primary-charcoal">
-															{option.name}
-														</p>
+													<div className="flex-1">
+														<h4 className="font-medium text-ds-primary-charcoal">
+															{product?.name}
+														</h4>
 														<p className="text-sm text-gray-600">
-															{option.description}
+															{color?.name}
 														</p>
 													</div>
+													<div className="flex items-center space-x-2">
+														<button
+															onClick={() => handleMoveToCart(item)}
+															className="text-sm text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200"
+														>
+															Move to Cart
+														</button>
+														<button
+															onClick={() =>
+																setSavedItems(
+																	savedItems.filter(
+																		(saved) =>
+																			!(
+																				saved.productId === item.productId &&
+																				saved.colorId === item.colorId &&
+																				saved.finishId === item.finishId
+																			)
+																	)
+																)
+															}
+															className="text-sm text-gray-500 hover:text-red-600 transition-colors duration-200"
+														>
+															Remove
+														</button>
+													</div>
 												</div>
-												<span className="font-medium text-ds-primary-charcoal">
-													{option.price === 0
-														? "Free"
-														: `$${option.price.toFixed(2)}`}
-												</span>
-											</div>
-										</label>
-									))}
-								</div>
-							</div>
-						</div>
-
-						{/* Promo Code */}
-						<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-							<h3 className="font-semibold text-ds-primary-charcoal mb-4 flex items-center space-x-2">
-								<Tag className="w-4 h-4 text-ds-primary-sage" />
-								<span>Promo Code</span>
-							</h3>
-
-							{appliedPromo ? (
-								<div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
-									<div className="flex items-center space-x-2">
-										<CheckCircle className="w-4 h-4 text-green-600" />
-										<span className="text-sm font-medium text-green-800">
-											{appliedPromo.code} applied
-										</span>
+											);
+										})}
 									</div>
-									<button
-										onClick={() => setAppliedPromo(null)}
-										className="text-green-600 hover:text-green-800 transition-colors duration-200"
-									>
-										<X className="w-4 h-4" />
-									</button>
-								</div>
-							) : (
-								<div className="flex space-x-2">
-									<input
-										type="text"
-										value={promoCode}
-										onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-										placeholder="Enter promo code"
-										className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent"
-									/>
-									<button
-										onClick={handleApplyPromo}
-										disabled={!promoCode.trim()}
-										className="px-4 py-2 bg-ds-primary-sage text-white rounded-lg hover:bg-ds-primary-sage/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200"
-									>
-										Apply
-									</button>
 								</div>
 							)}
-
-							<div className="mt-3 text-xs text-gray-500">
-								Try: SAVE10, FREESHIP, or PAINT25
-							</div>
 						</div>
 
 						{/* Order Summary */}
-						<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-							<h3 className="font-semibold text-ds-primary-charcoal mb-4">
-								Order Summary
-							</h3>
+						<div className="space-y-6">
+							{/* Shipping Calculator */}
+							<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+								<h3 className="font-semibold text-ds-primary-charcoal mb-4 flex items-center space-x-2">
+									<MapPin className="w-4 h-4 text-ds-primary-sage" />
+									<span>Shipping</span>
+								</h3>
 
-							<div className="space-y-3">
-								<div className="flex justify-between">
-									<span className="text-gray-600">
-										Subtotal ({cartItemCount} items)
-									</span>
-									<span className="font-medium text-ds-primary-charcoal">
-										${subtotal.toFixed(2)}
-									</span>
+								<div className="space-y-4">
+									<div>
+										<label className="block text-sm font-medium text-ds-primary-charcoal mb-2">
+											ZIP Code
+										</label>
+										<input
+											type="text"
+											value={zipCode}
+											onChange={(e) => setZipCode(e.target.value)}
+											placeholder="Enter ZIP code"
+											className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent"
+										/>
+									</div>
+
+									<div className="space-y-3">
+										{shippingOptions.map((option) => (
+											<label
+												key={option.id}
+												className="flex items-center space-x-3 cursor-pointer"
+											>
+												<input
+													type="radio"
+													name="shipping"
+													value={option.id}
+													checked={selectedShipping === option.id}
+													onChange={(e) => setSelectedShipping(e.target.value)}
+													className="w-4 h-4 text-ds-primary-sage border-gray-300 focus:ring-ds-primary-sage"
+												/>
+												<div className="flex-1 flex items-center justify-between">
+													<div className="flex items-center space-x-2">
+														{option.icon}
+														<div>
+															<p className="font-medium text-ds-primary-charcoal">
+																{option.name}
+															</p>
+															<p className="text-sm text-gray-600">
+																{option.description}
+															</p>
+														</div>
+													</div>
+													<span className="font-medium text-ds-primary-charcoal">
+														{option.price === 0
+															? "Free"
+															: `$${option.price.toFixed(2)}`}
+													</span>
+												</div>
+											</label>
+										))}
+									</div>
 								</div>
+							</div>
 
-								<div className="flex justify-between">
-									<span className="text-gray-600">Shipping</span>
-									<span className="font-medium text-ds-primary-charcoal">
-										{shippingCost === 0
-											? "Free"
-											: `$${shippingCost.toFixed(2)}`}
-									</span>
-								</div>
+							{/* Promo Code */}
+							<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+								<h3 className="font-semibold text-ds-primary-charcoal mb-4 flex items-center space-x-2">
+									<Tag className="w-4 h-4 text-ds-primary-sage" />
+									<span>Promo Code</span>
+								</h3>
 
-								{appliedPromo && (
-									<div className="flex justify-between text-green-600">
-										<span>Discount ({appliedPromo.code})</span>
-										<span>-${promoDiscount.toFixed(2)}</span>
+								{appliedPromo ? (
+									<div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+										<div className="flex items-center space-x-2">
+											<CheckCircle className="w-4 h-4 text-green-600" />
+											<span className="text-sm font-medium text-green-800">
+												{appliedPromo.code} applied
+											</span>
+										</div>
+										<button
+											onClick={() => setAppliedPromo(null)}
+											className="text-green-600 hover:text-green-800 transition-colors duration-200"
+										>
+											<X className="w-4 h-4" />
+										</button>
+									</div>
+								) : (
+									<div className="flex space-x-2">
+										<input
+											type="text"
+											value={promoCode}
+											onChange={(e) =>
+												setPromoCode(e.target.value.toUpperCase())
+											}
+											placeholder="Enter promo code"
+											className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent"
+										/>
+										<button
+											onClick={handleApplyPromo}
+											disabled={!promoCode.trim()}
+											className="px-4 py-2 bg-ds-primary-sage text-white rounded-lg hover:bg-ds-primary-sage/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200"
+										>
+											Apply
+										</button>
 									</div>
 								)}
 
-								<div className="flex justify-between">
-									<span className="text-gray-600">Tax</span>
-									<span className="font-medium text-ds-primary-charcoal">
-										${tax.toFixed(2)}
-									</span>
+								<div className="mt-3 text-xs text-gray-500">
+									Try: SAVE10, FREESHIP, or PAINT25
+								</div>
+							</div>
+
+							{/* Order Summary */}
+							<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+								<h3 className="font-semibold text-ds-primary-charcoal mb-4">
+									Order Summary
+								</h3>
+
+								<div className="space-y-3">
+									<div className="flex justify-between">
+										<span className="text-gray-600">
+											Subtotal ({cartItemCount} items)
+										</span>
+										<span className="font-medium text-ds-primary-charcoal">
+											${subtotal.toFixed(2)}
+										</span>
+									</div>
+
+									<div className="flex justify-between">
+										<span className="text-gray-600">Shipping</span>
+										<span className="font-medium text-ds-primary-charcoal">
+											{shippingCost === 0
+												? "Free"
+												: `$${shippingCost.toFixed(2)}`}
+										</span>
+									</div>
+
+									{appliedPromo && (
+										<div className="flex justify-between text-green-600">
+											<span>Discount ({appliedPromo.code})</span>
+											<span>-${promoDiscount.toFixed(2)}</span>
+										</div>
+									)}
+
+									<div className="flex justify-between">
+										<span className="text-gray-600">Tax</span>
+										<span className="font-medium text-ds-primary-charcoal">
+											${tax.toFixed(2)}
+										</span>
+									</div>
+
+									<div className="border-t border-gray-200 pt-3">
+										<div className="flex justify-between">
+											<span className="text-lg font-semibold text-ds-primary-charcoal">
+												Total
+											</span>
+											<span className="text-lg font-bold text-ds-primary-charcoal">
+												${total.toFixed(2)}
+											</span>
+										</div>
+									</div>
 								</div>
 
-								<div className="border-t border-gray-200 pt-3">
-									<div className="flex justify-between">
-										<span className="text-lg font-semibold text-ds-primary-charcoal">
-											Total
-										</span>
-										<span className="text-lg font-bold text-ds-primary-charcoal">
-											${total.toFixed(2)}
+								{/* Checkout Button */}
+								<Link
+									href="/shopping/checkout"
+									className="w-full mt-6 py-4 bg-ds-primary-sage text-white rounded-lg hover:bg-ds-primary-sage/90 transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2"
+									aria-label="Proceed to secure checkout"
+								>
+									<Shield className="w-5 h-5" />
+									<span>Secure Checkout</span>
+								</Link>
+
+								{/* Security Badges */}
+								<div className="mt-4 flex items-center justify-center space-x-4 text-xs text-gray-500">
+									<div className="flex items-center space-x-1">
+										<Shield className="w-3 h-3" />
+										<span>SSL Secure</span>
+									</div>
+									<div className="flex items-center space-x-1">
+										<CheckCircle className="w-3 h-3" />
+										<span>Money Back Guarantee</span>
+									</div>
+								</div>
+
+								{/* Estimated Delivery */}
+								<div className="mt-4 p-3 bg-ds-primary-sage/5 rounded-lg">
+									<div className="flex items-center space-x-2 text-sm">
+										<Truck className="w-4 h-4 text-ds-primary-sage" />
+										<span className="text-ds-primary-charcoal">
+											Estimated delivery:{" "}
+											{selectedShippingOption?.estimatedDays}
 										</span>
 									</div>
 								</div>
 							</div>
 
-							{/* Checkout Button */}
-							<Link
-								href="/shopping/checkout"
-								className="w-full mt-6 py-4 bg-ds-primary-sage text-white rounded-lg hover:bg-ds-primary-sage/90 transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2"
-								aria-label="Proceed to secure checkout"
-							>
-								<Shield className="w-5 h-5" />
-								<span>Secure Checkout</span>
-							</Link>
-
-							{/* Security Badges */}
-							<div className="mt-4 flex items-center justify-center space-x-4 text-xs text-gray-500">
-								<div className="flex items-center space-x-1">
-									<Shield className="w-3 h-3" />
-									<span>SSL Secure</span>
+							{/* Help Section */}
+							<div className="bg-ds-primary-cream/30 border border-ds-accent-warmBeige/20 rounded-lg p-6">
+								<h3 className="font-semibold text-ds-primary-charcoal mb-3 flex items-center space-x-2">
+									<Info className="w-4 h-4 text-ds-primary-sage" />
+									<span>Need Help?</span>
+								</h3>
+								<div className="space-y-2 text-sm text-gray-700">
+									<p>• Free color consultation available</p>
+									<p>• Paint calculator for accurate estimates</p>
+									<p>• 30-day return policy</p>
+									<p>• Expert application tips included</p>
 								</div>
-								<div className="flex items-center space-x-1">
-									<CheckCircle className="w-3 h-3" />
-									<span>Money Back Guarantee</span>
-								</div>
+								<button className="mt-3 text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200 text-sm font-medium">
+									Contact Support
+								</button>
 							</div>
-
-							{/* Estimated Delivery */}
-							<div className="mt-4 p-3 bg-ds-primary-sage/5 rounded-lg">
-								<div className="flex items-center space-x-2 text-sm">
-									<Truck className="w-4 h-4 text-ds-primary-sage" />
-									<span className="text-ds-primary-charcoal">
-										Estimated delivery: {selectedShippingOption?.estimatedDays}
-									</span>
-								</div>
-							</div>
-						</div>
-
-						{/* Help Section */}
-						<div className="bg-ds-primary-cream/30 border border-ds-accent-warmBeige/20 rounded-lg p-6">
-							<h3 className="font-semibold text-ds-primary-charcoal mb-3 flex items-center space-x-2">
-								<Info className="w-4 h-4 text-ds-primary-sage" />
-								<span>Need Help?</span>
-							</h3>
-							<div className="space-y-2 text-sm text-gray-700">
-								<p>• Free color consultation available</p>
-								<p>• Paint calculator for accurate estimates</p>
-								<p>• 30-day return policy</p>
-								<p>• Expert application tips included</p>
-							</div>
-							<button className="mt-3 text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200 text-sm font-medium">
-								Contact Support
-							</button>
 						</div>
 					</div>
 				</div>
-			</div>
+			</ErrorBoundary>
 		</PageLayout>
 	);
 };

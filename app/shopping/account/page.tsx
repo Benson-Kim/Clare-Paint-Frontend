@@ -1,6 +1,7 @@
 import { PageLayout } from "@/components/layout/PageLayout";
 import { UserAccountDashboard } from "@/components/account/UserAccountDashboard";
 import { Metadata } from "next";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 
 export const metadata: Metadata = {
 	title: "My Account - Paint Store",
@@ -34,7 +35,9 @@ export default function AccountPage() {
 			showBreadcrumbs={false}
 			className="bg-gray-50"
 		>
-			<UserAccountDashboard />
+			<ErrorBoundary isolate>
+				<UserAccountDashboard />
+			</ErrorBoundary>
 		</PageLayout>
 	);
 }

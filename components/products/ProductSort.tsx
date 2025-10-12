@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { SortOption } from "@/app/products/page";
 import { cn } from "@/lib/utils";
+import { SortOption } from "@/app/products/products/page";
 
 interface ProductSortProps {
 	currentSort: string;
