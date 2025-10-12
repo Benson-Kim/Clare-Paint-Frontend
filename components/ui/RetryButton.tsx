@@ -1,6 +1,6 @@
 // components/common/RetryButton.tsx - New Component
 import React from "react";
-import { RefreshCcw } from "lucide-react";
+import { AlertCircle, RefreshCcw } from "lucide-react";
 import { useRetry } from "@/lib/retry";
 
 interface RetryButtonProps {
@@ -20,7 +20,8 @@ export const RetryButton: React.FC<RetryButtonProps> = ({
 
 	return (
 		<div className="text-center">
-			{error && <h2 className="text-2xl font-bold text-red-700 mb-4">Error</h2>}
+			<AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+			{<h3 className="text-2xl font-bold text-red-700 mb-4">Error</h3>}
 			<button
 				onClick={execute}
 				disabled={isRetrying}
@@ -32,8 +33,28 @@ export const RetryButton: React.FC<RetryButtonProps> = ({
 				</span>
 			</button>
 			{error && (
-				<p className="text-sm text-red-600 mt-2 mb-6">{error.message}</p>
+				<p className="text-sm text-ds-neutral-mediumGray mt-2 mb-6">
+					{error.message}
+				</p>
 			)}
 		</div>
 	);
 };
+
+export function ErrorState({
+	title,
+	message,
+	onRetry,
+}: {
+	title: string;
+	message: string;
+	onRetry: () => Promise<void>;
+}) {
+	return (
+		<div className="text-center py-12">
+			<h2 className="text-2xl font-bold text-red-600 mb-4">{title}</h2>
+			<p className="text-ds-neutral-darkSlate mb-8">{message}</p>
+			<RetryButton onRetry={onRetry} />
+		</div>
+	);
+}
