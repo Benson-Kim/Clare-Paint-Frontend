@@ -1,0 +1,40 @@
+[
+	{
+		"id": "proj-res-001",
+		"name": "Modern Living Room Refresh",
+		"client": "Sarah & Tom D.",
+		"description": "Transformed a dull living space into a vibrant, modern sanctuary with a cohesive color palette.",
+		"imageUrls": [
+			"https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=800",
+			"https://images.pexels.com/photos/1866148/pexels-photo-1866148.jpeg?auto=compress&cs=tinysrgb&w=800",
+			"https://images.pexels.com/photos/1866147/pexels-photo-1866147.jpeg?auto=compress&cs=tinysrgb&w=800"
+		],
+		"type": "residential",
+		"colorPalette": ["#F5F5DC", "#5B7B7A", "#2C2C2C", "#C4A57B"]
+	},
+	{
+		"id": "proj-com-001",
+		"name": "Tech Office Revitalization",
+		"client": "Innovate Solutions",
+		"description": "Created an inspiring and productive environment for a tech startup, using colors that promote creativity and focus.",
+		"imageUrls": [
+			"https://images.pexels.com/photos/3862632/pexels-photo-3862632.jpeg?auto=compress&cs=tinysrgb&w=800",
+			"https://images.pexels.com/photos/3862633/pexels-photo-3862633.jpeg?auto=compress&cs=tinysrgb&w=800",
+			"https://images.pexels.com/photos/3862634/pexels-photo-3862634.jpeg?auto=compress&cs=tinysrgb&w=800"
+		],
+		"type": "commercial",
+		"colorPalette": ["#E0E0E0", "#006994", "#2C2C2C", "#F5F5F5"]
+	},
+	{
+		"id": "proj-res-002",
+		"name": "Cozy Bedroom Retreat",
+		"client": "Jane M.",
+		"description": "Designed a serene and cozy bedroom atmosphere with soft, muted tones for ultimate relaxation.",
+		"imageUrls": [
+			"https://images.pexels.com/photos/1743229/pexels-photo-1743229.jpeg?auto=compress&cs=tinysrgb&w=800",
+			"https://images.pexels.com/photos/1743230/pexels-photo-1743230.jpeg?auto=compress&cs=tinysrgb&w=800"
+		],
+		"type": "residential",
+		"colorPalette": ["#D3D3D3", "#E6E6FA", "#F5F5DC", "#FFFFFF"]
+	}
+]

@@ -1,0 +1,75 @@
+[
+	{
+		"id": "rev-001",
+		"productId": "premium-interior-paint-001",
+		"userName": "Sarah M.",
+		"userLocation": "New York, NY",
+		"rating": 5,
+		"comment": "Exceptional quality paint! The coverage is fantastic and the color stayed true to the sample. Easy to apply and looks professional.",
+		"date": "2024-07-25",
+		"verifiedPurchase": true,
+		"photos": [
+			"https://images.pexels.com/photos/1866148/pexels-photo-1866148.jpeg?auto=compress&cs=tinysrgb&w=800",
+			"https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=800"
+		],
+		"helpfulVotes": 15,
+		"unhelpfulVotes": 1,
+		"businessResponse": {
+			"responderName": "Paint Store Support",
+			"responseText": "Thank you, Sarah! We are thrilled to hear you love our Premium Interior Paint. Your beautiful living room transformation is truly inspiring!",
+			"responseDate": "2024-07-26"
+		}
+	},
+	{
+		"id": "rev-002",
+		"productId": "eco-friendly-paint-002",
+		"userName": "Mike R.",
+		"userLocation": "Austin, TX",
+		"rating": 4,
+		"comment": "Great eco-friendly option. No strong odors and safe for the kids. Took two coats on a dark wall, but overall very happy.",
+		"date": "2024-07-20",
+		"verifiedPurchase": true,
+		"photos": [],
+		"helpfulVotes": 8,
+		"unhelpfulVotes": 0
+	},
+	{
+		"id": "rev-003",
+		"productId": "luxury-paint-003",
+		"userName": "Jennifer L.",
+		"userLocation": "Los Angeles, CA",
+		"rating": 5,
+		"comment": "Absolutely stunning colors and finish. Worth every penny! My dining room looks like a masterpiece.",
+		"date": "2024-07-18",
+		"verifiedPurchase": true,
+		"photos": [
+			"https://images.pexels.com/photos/6782375/pexels-photo-6782375.jpeg?auto=compress&cs=tinysrgb&w=800"
+		],
+		"helpfulVotes": 22,
+		"unhelpfulVotes": 2
+	},
+	{
+		"id": "rev-004",
+		"productId": "bathroom-paint-006",
+		"userName": "David S.",
+		"userLocation": "Miami, FL",
+		"rating": 4,
+		"comment": "Perfect for our bathroom renovation. No mold issues after 6 months! The Spa Blue is very calming.",
+		"date": "2024-07-10",
+		"verifiedPurchase": true,
+		"photos": [],
+		"helpfulVotes": 10,
+		"unhelpfulVotes": 0
+	},
+	{
+		"id": "rev-005",
+		"userName": "Anonymous User",
+		"rating": 3,
+		" comment": "The paint color was a bit different than expected from the online swatch. Quality is decent though.",
+		"date": "2024-07-05",
+		"verifiedPurchase": false,
+		"photos": [],
+		"helpfulVotes": 3,
+		"unhelpfulVotes": 5
+	}
+]

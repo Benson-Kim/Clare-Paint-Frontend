@@ -1,0 +1,78 @@
+[
+	{
+		"id": "gal-001",
+		"userId": "user-1",
+		"userName": "PaintPro Sarah",
+		"title": "Vibrant Living Room Makeover",
+		"description": "Transformed my dull living room into a bright and inviting space using bold blues and a touch of sage green. The before and after is incredible!",
+		"beforeImageUrl": "https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"afterImageUrl": "https://images.pexels.com/photos/1866148/pexels-photo-1866148.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"colorPalette": ["#4A90E2", "#5B7B7A", "#F5F5DC"],
+		"paintProductsUsed": [
+			{ "productId": "premium-interior-paint-001", "colorId": "ocean-blue" }
+		],
+		"likes": 125,
+		"views": 1500,
+		"submissionDate": "2024-07-20",
+		"status": "approved",
+		"tags": ["living-room", "modern", "bold", "residential"],
+		"commentsCount": 15
+	},
+	{
+		"id": "gal-002",
+		"userId": "user-2",
+		"userName": "DIY_Dave",
+		"title": "Cozy Bedroom Retreat",
+		"description": "Used a soft, warm cream to create a serene and cozy atmosphere in our master bedroom. Perfect for relaxation!",
+		"beforeImageUrl": "https://images.pexels.com/photos/1743229/pexels-photo-1743229.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"afterImageUrl": "https://images.pexels.com/photos/1743230/pexels-photo-1743230.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"colorPalette": ["#F5F5DC", "#D3D3D3"],
+		"paintProductsUsed": [
+			{ "productId": "bedroom-sanctuary-003", "colorId": "warm-cream" }
+		],
+		"likes": 88,
+		"views": 950,
+		"submissionDate": "2024-07-18",
+		"status": "approved",
+		"tags": ["bedroom", "cozy", "neutral", "residential"],
+		"commentsCount": 8
+	},
+	{
+		"id": "gal-003",
+		"userId": "user-3",
+		"userName": "ProPainter_Mike",
+		"title": "Commercial Office Transformation",
+		"description": "Revitalized a corporate office space with a professional and inspiring color scheme. Improved employee morale and productivity!",
+		"beforeImageUrl": "https://images.pexels.com/photos/3862632/pexels-photo-3862632.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"afterImageUrl": "https://images.pexels.com/photos/3862633/pexels-photo-3862633.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"colorPalette": ["#2C2C2C", "#E0E0E0", "#006994"],
+		"paintProductsUsed": [
+			{ "productId": "commercial-pro", "colorId": "charcoal-gray" }
+		],
+		"likes": 210,
+		"views": 2300,
+		"submissionDate": "2024-07-10",
+		"status": "approved",
+		"tags": ["office", "commercial", "modern", "professional"],
+		"commentsCount": 22
+	},
+	{
+		"id": "gal-004",
+		"userId": "user-4",
+		"userName": "HomeRenovator",
+		"title": "Kitchen Cabinet Refresh",
+		"description": "Gave my kitchen a fresh new look by repainting the cabinets. It feels so much brighter now!",
+		"beforeImageUrl": "https://images.pexels.com/photos/3926542/pexels-photo-3926542.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"afterImageUrl": "https://images.pexels.com/photos/3926543/pexels-photo-3926543.jpeg?auto=compress&cs=tinysrgb&w=800",
+		"colorPalette": ["#FFFFFF", "#F5F5DC"],
+		"paintProductsUsed": [
+			{ "productId": "kitchen-bath-002", "colorId": "pure-white" }
+		],
+		"likes": 95,
+		"views": 1100,
+		"submissionDate": "2024-07-05",
+		"status": "approved",
+		"tags": ["kitchen", "cabinets", "refresh", "residential"],
+		"commentsCount": 10
+	}
+]

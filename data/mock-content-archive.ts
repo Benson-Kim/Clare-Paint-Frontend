@@ -1,0 +1,48 @@
+import { ContentArchiveItem } from "@/types/newsletter";
+
+export const mockContentArchive: ContentArchiveItem[] = [
+	{
+		id: "arc-001",
+		title: "Top 5 Interior Paint Trends for 2024",
+		description:
+			"Discover the colors and finishes dominating interior design this year.",
+		publishDate: "2024-07-15",
+		imageUrl:
+			"https://images.pexels.com/photos/6782372/pexels-photo-6782372.jpeg?auto=compress&cs=tinysrgb&w=800",
+		categories: ["color_trends", "interior_paint"],
+		contentUrl: "#",
+	},
+	{
+		id: "arc-002",
+		title: "DIY Guide: Painting Your Kitchen Cabinets Like a Pro",
+		description:
+			"Step-by-step instructions for a flawless cabinet transformation.",
+		publishDate: "2024-07-01",
+		imageUrl:
+			"https://images.pexels.com/photos/3926543/pexels-photo-3926543.jpeg?auto=compress&cs=tinysrgb&w=800",
+		categories: ["diy_tips", "interior_paint"],
+		contentUrl: "#",
+	},
+	{
+		id: "arc-003",
+		title: "Protecting Your Home: Best Exterior Paints for Harsh Climates",
+		description:
+			"Learn about durable exterior paint options that withstand extreme weather.",
+		publishDate: "2024-06-15",
+		imageUrl:
+			"https://images.pexels.com/photos/164005/pexels-photo-164005.jpeg?auto=compress&cs=tinysrgb&w=800",
+		categories: ["exterior_paint", "diy_tips"],
+		contentUrl: "#",
+	},
+	{
+		id: "arc-004",
+		title: "Color Spotlight: The Versatility of Sage Green",
+		description:
+			"Explore the calming and sophisticated appeal of sage green in various settings.",
+		publishDate: "2024-06-01",
+		imageUrl:
+			"https://images.pexels.com/photos/6782371/pexels-photo-6782371.jpeg?auto=compress&cs=tinysrgb&w=800",
+		categories: ["color_trends"],
+		contentUrl: "#",
+	},
+];

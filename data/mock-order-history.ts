@@ -1,0 +1,31 @@
+export const mockOrderHistory = [
+	{
+		id: "ORD-20240729-001",
+		date: "2024-07-29",
+		totalAmount: 189.98,
+		status: "Delivered",
+		items: [
+			{
+				productId: "premium-interior-001",
+				name: "Premium Interior Paint",
+				color: "Sage Whisper",
+				finish: "Matte",
+				quantity: 1,
+				price: 89.99,
+				image:
+					"https://images.pexels.com/photos/6782371/pexels-photo-6782371.jpeg?auto=compress&cs=tinysrgb&w=800",
+			},
+		],
+		shippingAddress: {
+			firstName: "John",
+			lastName: "Doe",
+			address1: "123 Main St",
+			city: "Anytown",
+			state: "CA",
+			zipCode: "90210",
+			country: "United States",
+		},
+		estimatedDelivery: "2024-08-05",
+		trackingNumber: "TRK123456789",
+	},
+];

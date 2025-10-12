@@ -5,9 +5,7 @@ import {
 	ShippingOption,
 	PromoCode,
 } from "@/types/checkout";
-import { CartItem, Product } from "@/types/product";
-import { mockProducts } from "@/data/mock-products";
-import { mockExteriorPaints } from "@/data/mock-exterior-paints";
+import { CartItem, Product, PRODUCT_CATEGORIES } from "@/types/product";
 import { Order, DashboardStats } from "@/types/account";
 import {
 	ConsultationPackage,
@@ -37,7 +35,22 @@ import {
 import { FAQItem, FAQCategory } from "@/types/faq"; // New import
 import { format } from "date-fns";
 import { ReturnFormValues } from "@/types/returns";
-import { SupportTicket } from "@/types/contact";
+import { TradeSupportTicket } from "@/types/trade";
+import { mockFAQData } from "@/data/mock-faq";
+import { mockContentArchive } from "@/data/mock-content-archive";
+import { mockProfessionalEndorsements } from "@/data/mock-professional-endorsements";
+import { mockCaseStudies } from "@/data/mock-casestudies";
+import { mockCustomerReviews } from "@/data/mock-customer-reviews";
+import { mockCustomerStories } from "@/data/mock-customer-stories";
+import { mockContests } from "@/data/mock-contests";
+import { mockSocialMediaPosts } from "@/data/mock-social-media-posts";
+import { mockGalleryProjects } from "@/data/mock-gallery-projects";
+import { mockShippingOptions } from "@/data/mock-shipping-options";
+import { mockPromoCodes } from "@/data/mock-promo-codes";
+import { mockPortfolioProjects } from "@/data/mock-portfolio-projects";
+import { mockConsultationPackages } from "@/data/mock-consulatation-packages";
+import { mockProducts } from "@/data/mock-products";
+// import { SupportTicket } from "@/types/contact";
 
 /**
  * Mocks an API call to validate a shipping address.
@@ -134,29 +147,7 @@ export const mockProcessOrder = async (
 export const mockFetchShippingOptions = async (): Promise<ShippingOption[]> => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			resolve([
-				{
-					id: "standard",
-					name: "Standard Shipping",
-					description: "5-7 business days",
-					price: 0,
-					estimatedDays: "5-7 days",
-				},
-				{
-					id: "expedited",
-					name: "Expedited Shipping",
-					description: "2-3 business days",
-					price: 15.99,
-					estimatedDays: "2-3 days",
-				},
-				{
-					id: "overnight",
-					name: "Overnight Shipping",
-					description: "Next business day",
-					price: 29.99,
-					estimatedDays: "1 day",
-				},
-			]);
+			resolve(mockShippingOptions);
 		}, 300);
 	});
 };
@@ -168,27 +159,7 @@ export const mockFetchShippingOptions = async (): Promise<ShippingOption[]> => {
 export const mockFetchPromoCodes = async (): Promise<PromoCode[]> => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			resolve([
-				{
-					code: "SAVE10",
-					discount: 10,
-					type: "percentage",
-					description: "10% off your order",
-				},
-				{
-					code: "FREESHIP",
-					discount: 0,
-					type: "fixed",
-					description: "Free standard shipping",
-				},
-				{
-					code: "PAINT25",
-					discount: 25,
-					type: "fixed",
-					description: "$25 off orders over $200",
-					minOrderAmount: 200,
-				},
-			]);
+			resolve(mockPromoCodes);
 		}, 200);
 	});
 };
@@ -348,7 +319,7 @@ export const mockFetchOrderHistory = async (): Promise<Order[]> => {
 };
 
 export const mockSubmitTicket = async (
-	ticket: SupportTicket
+	ticket: TradeSupportTicket
 ): Promise<{ success: boolean; message: string }> => {
 	console.log("Submitting support ticket:", ticket);
 	await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
@@ -503,7 +474,11 @@ export const mockReorderItems = async (orderId: string): Promise<void> => {
 export const mockFetchExteriorPaints = async (): Promise<Product[]> => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			resolve(mockExteriorPaints);
+			resolve(
+				mockProducts.filter(
+					(p) => p.category === PRODUCT_CATEGORIES.EXTERIOR_PAINT
+				)
+			);
 		}, 1000); // Simulate network delay
 	});
 };
@@ -558,61 +533,7 @@ export const mockFetchConsultationPackages = async (): Promise<
 > => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			resolve([
-				{
-					id: "virtual-basic",
-					name: "Virtual Color Kickstart",
-					type: "virtual",
-					price: 75.0,
-					description:
-						"A quick virtual session to get your color journey started. Perfect for small projects or initial ideas.",
-					features: [
-						"30-minute video call",
-						"Personalized color palette (3-5 colors)",
-						"Digital mood board",
-						"Follow-up email with recommendations",
-					],
-					duration: "30 minutes",
-					image:
-						"https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=800",
-				},
-				{
-					id: "in-home-standard",
-					name: "In-Home Color Harmony",
-					type: "in-home",
-					price: 250.0,
-					description:
-						"Comprehensive in-home consultation for a cohesive color scheme throughout your space.",
-					features: [
-						"90-minute in-home visit",
-						"Detailed color scheme for up to 3 rooms",
-						"Paint sample recommendations",
-						"Lighting analysis",
-						"Post-consultation summary report",
-					],
-					duration: "90 minutes",
-					image:
-						"https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800",
-				},
-				{
-					id: "commercial-pro",
-					name: "Commercial Space Transformation",
-					type: "commercial",
-					price: 500.0,
-					description:
-						"Expert color strategy for commercial properties, focusing on brand identity and functionality.",
-					features: [
-						"2-hour on-site consultation",
-						"Brand-aligned color palette",
-						"Durability and maintenance recommendations",
-						"Project timeline guidance",
-						"Priority support",
-					],
-					duration: "120 minutes",
-					image:
-						"https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg?auto=compress&cs=tinysrgb&w=800",
-				},
-			]);
+			resolve(mockConsultationPackages);
 		}, 500);
 	});
 };
@@ -692,145 +613,12 @@ export const mockFetchPortfolioProjects = async (): Promise<
 > => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			resolve([
-				{
-					id: "proj-res-001",
-					name: "Modern Living Room Refresh",
-					client: "Sarah & Tom D.",
-					description:
-						"Transformed a dull living space into a vibrant, modern sanctuary with a cohesive color palette.",
-					imageUrls: [
-						"https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=800",
-						"https://images.pexels.com/photos/1866148/pexels-photo-1866148.jpeg?auto=compress&cs=tinysrgb&w=800",
-						"https://images.pexels.com/photos/1866147/pexels-photo-1866147.jpeg?auto=compress&cs=tinysrgb&w=800",
-					],
-					type: "residential",
-					colorPalette: ["#F5F5DC", "#5B7B7A", "#2C2C2C", "#C4A57B"],
-				},
-				{
-					id: "proj-com-001",
-					name: "Tech Office Revitalization",
-					client: "Innovate Solutions",
-					description:
-						"Created an inspiring and productive environment for a tech startup, using colors that promote creativity and focus.",
-					imageUrls: [
-						"https://images.pexels.com/photos/3862632/pexels-photo-3862632.jpeg?auto=compress&cs=tinysrgb&w=800",
-						"https://images.pexels.com/photos/3862633/pexels-photo-3862633.jpeg?auto=compress&cs=tinysrgb&w=800",
-						"https://images.pexels.com/photos/3862634/pexels-photo-3862634.jpeg?auto=compress&cs=tinysrgb&w=800",
-					],
-					type: "commercial",
-					colorPalette: ["#E0E0E0", "#006994", "#2C2C2C", "#F5F5F5"],
-				},
-				{
-					id: "proj-res-002",
-					name: "Cozy Bedroom Retreat",
-					client: "Jane M.",
-					description:
-						"Designed a serene and cozy bedroom atmosphere with soft, muted tones for ultimate relaxation.",
-					imageUrls: [
-						"https://images.pexels.com/photos/1743229/pexels-photo-1743229.jpeg?auto=compress&cs=tinysrgb&w=800",
-						"https://images.pexels.com/photos/1743230/pexels-photo-1743230.jpeg?auto=compress&cs=tinysrgb&w=800",
-					],
-					type: "residential",
-					colorPalette: ["#D3D3D3", "#E6E6FA", "#F5F5DC", "#FFFFFF"],
-				},
-			]);
+			resolve(mockPortfolioProjects);
 		}, 700);
 	});
 };
 
 // --- New Gallery API Mocks ---
-
-const mockGalleryProjects: GalleryProject[] = [
-	{
-		id: "gal-001",
-		userId: "user-1",
-		userName: "PaintPro Sarah",
-		title: "Vibrant Living Room Makeover",
-		description:
-			"Transformed my dull living room into a bright and inviting space using bold blues and a touch of sage green. The before and after is incredible!",
-		beforeImageUrl:
-			"https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=800",
-		afterImageUrl:
-			"https://images.pexels.com/photos/1866148/pexels-photo-1866148.jpeg?auto=compress&cs=tinysrgb&w=800",
-		colorPalette: ["#4A90E2", "#5B7B7A", "#F5F5DC"],
-		paintProductsUsed: [
-			{ productId: "premium-interior-paint-001", colorId: "ocean-blue" },
-		],
-		likes: 125,
-		views: 1500,
-		submissionDate: "2024-07-20",
-		status: "approved",
-		tags: ["living-room", "modern", "bold", "residential"],
-		commentsCount: 15,
-	},
-	{
-		id: "gal-002",
-		userId: "user-2",
-		userName: "DIY_Dave",
-		title: "Cozy Bedroom Retreat",
-		description:
-			"Used a soft, warm cream to create a serene and cozy atmosphere in our master bedroom. Perfect for relaxation!",
-		beforeImageUrl:
-			"https://images.pexels.com/photos/1743229/pexels-photo-1743229.jpeg?auto=compress&cs=tinysrgb&w=800",
-		afterImageUrl:
-			"https://images.pexels.com/photos/1743230/pexels-photo-1743230.jpeg?auto=compress&cs=tinysrgb&w=800",
-		colorPalette: ["#F5F5DC", "#D3D3D3"],
-		paintProductsUsed: [
-			{ productId: "bedroom-sanctuary-003", colorId: "warm-cream" },
-		],
-		likes: 88,
-		views: 950,
-		submissionDate: "2024-07-18",
-		status: "approved",
-		tags: ["bedroom", "cozy", "neutral", "residential"],
-		commentsCount: 8,
-	},
-	{
-		id: "gal-003",
-		userId: "user-3",
-		userName: "ProPainter_Mike",
-		title: "Commercial Office Transformation",
-		description:
-			"Revitalized a corporate office space with a professional and inspiring color scheme. Improved employee morale and productivity!",
-		beforeImageUrl:
-			"https://images.pexels.com/photos/3862632/pexels-photo-3862632.jpeg?auto=compress&cs=tinysrgb&w=800",
-		afterImageUrl:
-			"https://images.pexels.com/photos/3862633/pexels-photo-3862633.jpeg?auto=compress&cs=tinysrgb&w=800",
-		colorPalette: ["#2C2C2C", "#E0E0E0", "#006994"],
-		paintProductsUsed: [
-			{ productId: "commercial-pro", colorId: "charcoal-gray" },
-		],
-		likes: 210,
-		views: 2300,
-		submissionDate: "2024-07-10",
-		status: "approved",
-		tags: ["office", "commercial", "modern", "professional"],
-		commentsCount: 22,
-	},
-	{
-		id: "gal-004",
-		userId: "user-4",
-		userName: "HomeRenovator",
-		title: "Kitchen Cabinet Refresh",
-		description:
-			"Gave my kitchen a fresh new look by repainting the cabinets. It feels so much brighter now!",
-		beforeImageUrl:
-			"https://images.pexels.com/photos/3926542/pexels-photo-3926542.jpeg?auto=compress&cs=tinysrgb&w=800",
-		afterImageUrl:
-			"https://images.pexels.com/photos/3926543/pexels-photo-3926543.jpeg?auto=compress&cs=tinysrgb&w=800",
-		colorPalette: ["#FFFFFF", "#F5F5DC"],
-		paintProductsUsed: [
-			{ productId: "kitchen-bath-002", colorId: "pure-white" },
-		],
-		likes: 95,
-		views: 1100,
-		submissionDate: "2024-07-05",
-		status: "approved",
-		tags: ["kitchen", "cabinets", "refresh", "residential"],
-		commentsCount: 10,
-	},
-];
 
 /**
  * Mocks fetching gallery projects.
@@ -898,54 +686,6 @@ export const mockVoteProject = async (projectId: string): Promise<number> => {
 	});
 };
 
-const mockSocialMediaPosts: SocialMediaPost[] = [
-	{
-		id: "sm-001",
-		platform: "instagram",
-		username: "paint_inspiration",
-		profileUrl: "https://instagram.com/paint_inspiration",
-		imageUrl:
-			"https://images.pexels.com/photos/6782371/pexels-photo-6782371.jpeg?auto=compress&cs=tinysrgb&w=800",
-		caption:
-			"Loving this sage green in a cozy reading nook! #paintideas #homedecor",
-		likes: 1230,
-		comments: 45,
-		postUrl: "https://instagram.com/p/12345",
-		timestamp: "2024-07-30T10:00:00Z",
-		hashtags: ["paintideas", "homedecor", "sagewhisper"],
-	},
-	{
-		id: "sm-002",
-		platform: "facebook",
-		username: "DreamHomesOfficial",
-		profileUrl: "https://facebook.com/dreamhomesofficial",
-		imageUrl:
-			"https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800",
-		caption:
-			"Our latest project: a modern living room with a stunning accent wall! What do you think?",
-		likes: 890,
-		comments: 70,
-		postUrl: "https://facebook.com/post/67890",
-		timestamp: "2024-07-29T14:30:00Z",
-		hashtags: ["livingroom", "accentwall", "interiordesign"],
-	},
-	{
-		id: "sm-003",
-		platform: "pinterest",
-		username: "ColorTrendsDaily",
-		profileUrl: "https://pinterest.com/colortrendsdaily",
-		imageUrl:
-			"https://images.pexels.com/photos/6782375/pexels-photo-6782375.jpeg?auto=compress&cs=tinysrgb&w=800",
-		caption:
-			"Deep burgundy is making a comeback! Perfect for a dramatic dining room.",
-		likes: 2100,
-		comments: 120,
-		postUrl: "https://pinterest.com/pin/112233",
-		timestamp: "2024-07-28T09:15:00Z",
-		hashtags: ["burgundy", "diningroom", "colortrends"],
-	},
-];
-
 /**
  * Mocks fetching social media posts.
  * @returns A promise that resolves with an array of SocialMediaPost objects.
@@ -959,41 +699,6 @@ export const mockFetchSocialMediaFeed = async (): Promise<
 		}, 600);
 	});
 };
-
-const mockContests: Contest[] = [
-	{
-		id: "contest-001",
-		name: "Summer Refresh Challenge",
-		description:
-			"Show us your best summer home refresh project! Transform a room with a fresh coat of paint and win amazing prizes.",
-		startDate: "2024-08-01",
-		endDate: "2024-08-31",
-		theme: "Bright & Airy Spaces",
-		prizes: [
-			"Gift Card ($500)",
-			"Paint Supply Bundle",
-			"Featured on Social Media",
-		],
-		rulesUrl: "/contest-rules-summer-refresh.pdf",
-		imageUrl:
-			"https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=800",
-		status: "active",
-	},
-	{
-		id: "contest-002",
-		name: "Kids Room Creativity",
-		description:
-			"Unleash your creativity in your child's room! Submit your most imaginative and colorful kids' room paint projects.",
-		startDate: "2024-09-15",
-		endDate: "2024-10-15",
-		theme: "Playful & Imaginative",
-		prizes: ["Tablet", "Custom Mural Kit", "Paint Store Credit ($200)"],
-		rulesUrl: "/contest-rules-kids-room.pdf",
-		imageUrl:
-			"https://images.pexels.com/photos/1743229/pexels-photo-1743229.jpeg?auto=compress&cs=tinysrgb&w=800",
-		status: "upcoming",
-	},
-];
 
 /**
  * Mocks fetching contests.
@@ -1030,45 +735,6 @@ export const mockSubmitContestEntry = async (
 	});
 };
 
-const mockCustomerStories: CustomerStory[] = [
-	{
-		id: "story-001",
-		title: "From Drab to Fab: Our Living Room Journey",
-		customerName: "Emily & John D.",
-		location: "San Francisco, CA",
-		story:
-			"We always dreamed of a living room that felt both modern and cozy. With the help of your color consultation service, we chose a beautiful sage green that completely transformed our space. The paint quality was exceptional, and the process was much smoother than we anticipated. We spend so much more time in here now!",
-		imageUrl:
-			"https://images.pexels.com/photos/1866148/pexels-photo-1866148.jpeg?auto=compress&cs=tinysrgb&w=800",
-		projectType: "Residential Interior",
-		date: "2024-06-10",
-	},
-	{
-		id: "story-002",
-		title: "A Fresh Start for Our Small Business",
-		customerName: "Maria S. (Cafe Owner)",
-		location: "Austin, TX",
-		story:
-			"Our cafe needed a serious facelift to attract more customers. Your commercial paint recommendations were spot on! We went with a warm, inviting yellow and a clean white trim. The new look has significantly boosted our foot traffic and customer reviews. Thank you for helping us create such a welcoming atmosphere!",
-		imageUrl:
-			"https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg?auto=compress&cs=tinysrgb&w=800",
-		projectType: "Commercial Interior",
-		date: "2024-05-22",
-	},
-	{
-		id: "story-003",
-		title: "DIY Success: Our Nursery Project",
-		customerName: "Jessica L.",
-		location: "Seattle, WA",
-		story:
-			"As first-time parents, decorating the nursery felt daunting. Your eco-friendly, low-VOC paint made us feel safe, and the soft lavender color created the perfect calming environment. It was surprisingly easy to apply, and we're so proud of the result. Our little one loves their new room!",
-		imageUrl:
-			"https://images.pexels.com/photos/1743230/pexels-photo-1743230.jpeg?auto=compress&cs=tinysrgb&w=800",
-		projectType: "Residential Nursery",
-		date: "2024-04-15",
-	},
-];
-
 /**
  * Mocks fetching featured customer stories.
  * @returns A promise that resolves with an array of CustomerStory objects.
@@ -1082,88 +748,6 @@ export const mockFetchCustomerStories = async (): Promise<CustomerStory[]> => {
 };
 
 // --- New Reviews API Mocks ---
-
-const mockCustomerReviews: CustomerReview[] = [
-	{
-		id: "rev-001",
-		productId: "premium-interior-paint-001",
-		userName: "Sarah M.",
-		userLocation: "New York, NY",
-		rating: 5,
-		comment:
-			"Exceptional quality paint! The coverage is fantastic and the color stayed true to the sample. Easy to apply and looks professional.",
-		date: "2024-07-25",
-		verifiedPurchase: true,
-		photos: [
-			"https://images.pexels.com/photos/1866148/pexels-photo-1866148.jpeg?auto=compress&cs=tinysrgb&w=800",
-			"https://images.pexels.com/photos/1866149/pexels-photo-1866149.jpeg?auto=compress&cs=tinysrgb&w=800",
-		],
-		helpfulVotes: 15,
-		unhelpfulVotes: 1,
-		businessResponse: {
-			responderName: "Paint Store Support",
-			responseText:
-				"Thank you, Sarah! We are thrilled to hear you love our Premium Interior Paint. Your beautiful living room transformation is truly inspiring!",
-			responseDate: "2024-07-26",
-		},
-	},
-	{
-		id: "rev-002",
-		productId: "eco-friendly-paint-002",
-		userName: "Mike R.",
-		userLocation: "Austin, TX",
-		rating: 4,
-		comment:
-			"Great eco-friendly option. No strong odors and safe for the kids. Took two coats on a dark wall, but overall very happy.",
-		date: "2024-07-20",
-		verifiedPurchase: true,
-		photos: [],
-		helpfulVotes: 8,
-		unhelpfulVotes: 0,
-	},
-	{
-		id: "rev-003",
-		productId: "luxury-paint-003",
-		userName: "Jennifer L.",
-		userLocation: "Los Angeles, CA",
-		rating: 5,
-		comment:
-			"Absolutely stunning colors and finish. Worth every penny! My dining room looks like a masterpiece.",
-		date: "2024-07-18",
-		verifiedPurchase: true,
-		photos: [
-			"https://images.pexels.com/photos/6782375/pexels-photo-6782375.jpeg?auto=compress&cs=tinysrgb&w=800",
-		],
-		helpfulVotes: 22,
-		unhelpfulVotes: 2,
-	},
-	{
-		id: "rev-004",
-		productId: "bathroom-paint-006",
-		userName: "David S.",
-		userLocation: "Miami, FL",
-		rating: 4,
-		comment:
-			"Perfect for our bathroom renovation. No mold issues after 6 months! The Spa Blue is very calming.",
-		date: "2024-07-10",
-		verifiedPurchase: true,
-		photos: [],
-		helpfulVotes: 10,
-		unhelpfulVotes: 0,
-	},
-	{
-		id: "rev-005",
-		userName: "Anonymous User",
-		rating: 3,
-		comment:
-			"The paint color was a bit different than expected from the online swatch. Quality is decent though.",
-		date: "2024-07-05",
-		verifiedPurchase: false,
-		photos: [],
-		helpfulVotes: 3,
-		unhelpfulVotes: 5,
-	},
-];
 
 /**
  * Mocks fetching customer reviews.
@@ -1265,42 +849,6 @@ export const mockSubmitBusinessResponse = async (
 	});
 };
 
-const mockProfessionalEndorsements: ProfessionalEndorsement[] = [
-	{
-		id: "prof-001",
-		professionalName: "Eleanor Vance",
-		title: "Lead Interior Designer",
-		company: "Vance Design Studio",
-		quote:
-			"The depth of color and durability of these paints are unmatched. My clients consistently rave about the results. A truly professional-grade product.",
-		photoUrl:
-			"https://images.pexels.com/photos/3760303/pexels-photo-3760303.jpeg?auto=compress&cs=tinysrgb&w=400",
-		date: "2024-05-10",
-	},
-	{
-		id: "prof-002",
-		professionalName: "Marcus Thorne",
-		title: "Master Painter & Contractor",
-		company: "Thorne Painting Solutions",
-		quote:
-			"I've used countless brands over 30 years, and this paint consistently delivers superior coverage and a flawless finish. It saves me time and ensures client satisfaction.",
-		photoUrl:
-			"https://images.pexels.com/photos/3760304/pexels-photo-3760304.jpeg?auto=compress&cs=tinysrgb&w=400",
-		date: "2024-04-20",
-	},
-	{
-		id: "prof-003",
-		professionalName: "Sophia Chen",
-		title: "Architectural Color Consultant",
-		company: "Color Harmony Group",
-		quote:
-			"Their color palette is incredibly sophisticated, and the technical support is invaluable. I confidently recommend their products for both residential and commercial projects.",
-		photoUrl:
-			"https://images.pexels.com/photos/3760305/pexels-photo-3760305.jpeg?auto=compress&cs=tinysrgb&w=400",
-		date: "2024-06-01",
-	},
-];
-
 /**
  * Mocks fetching professional endorsements.
  * @returns A promise that resolves with an array of ProfessionalEndorsement objects.
@@ -1314,39 +862,6 @@ export const mockFetchProfessionalEndorsements = async (): Promise<
 		}, 600);
 	});
 };
-
-const mockCaseStudies: CaseStudy[] = [
-	{
-		id: "case-001",
-		title: "Historic Home Restoration: Bringing Victorian Charm to Life",
-		clientName: "The Evergreen Family",
-		industry: "Residential",
-		problem:
-			"Faded, peeling paint on a 100-year-old Victorian home, requiring historically accurate colors and durable exterior protection.",
-		solution:
-			"Utilized specialized exterior paints with advanced weather resistance, meticulously color-matched to original historical swatches, and applied with expert techniques.",
-		results:
-			"The home was restored to its original grandeur, with vibrant, long-lasting colors that enhanced its curb appeal and protected it from the elements. Client satisfaction was extremely high.",
-		imageUrl:
-			"https://images.pexels.com/photos/164009/pexels-photo-164009.jpeg?auto=compress&cs=tinysrgb&w=800",
-		fullStoryLink: "#",
-	},
-	{
-		id: "case-002",
-		title: "Corporate Office Transformation: Boosting Productivity with Color",
-		clientName: "Innovate Solutions Inc.",
-		industry: "Commercial",
-		problem:
-			"A drab, uninspiring office environment leading to low employee morale and perceived lack of creativity.",
-		solution:
-			"Conducted a comprehensive color consultation to select a palette that promotes focus, creativity, and collaboration, using low-VOC interior paints for a healthier workspace.",
-		results:
-			"Employees reported increased satisfaction and productivity. The vibrant new environment reflected the company's innovative spirit and impressed visiting clients.",
-		imageUrl:
-			"https://images.pexels.com/photos/3862633/pexels-photo-3862633.jpeg?auto=compress&cs=tinysrgb&w=800",
-		fullStoryLink: "#",
-	},
-];
 
 /**
  * Mocks fetching detailed case studies.
@@ -1469,53 +984,6 @@ export const mockUnsubscribe = async (email: string): Promise<void> => {
 	});
 };
 
-const mockContentArchive: ContentArchiveItem[] = [
-	{
-		id: "arc-001",
-		title: "Top 5 Interior Paint Trends for 2024",
-		description:
-			"Discover the colors and finishes dominating interior design this year.",
-		publishDate: "2024-07-15",
-		imageUrl:
-			"https://images.pexels.com/photos/6782372/pexels-photo-6782372.jpeg?auto=compress&cs=tinysrgb&w=800",
-		categories: ["color_trends", "interior_paint"],
-		contentUrl: "#",
-	},
-	{
-		id: "arc-002",
-		title: "DIY Guide: Painting Your Kitchen Cabinets Like a Pro",
-		description:
-			"Step-by-step instructions for a flawless cabinet transformation.",
-		publishDate: "2024-07-01",
-		imageUrl:
-			"https://images.pexels.com/photos/3926543/pexels-photo-3926543.jpeg?auto=compress&cs=tinysrgb&w=800",
-		categories: ["diy_tips", "interior_paint"],
-		contentUrl: "#",
-	},
-	{
-		id: "arc-003",
-		title: "Protecting Your Home: Best Exterior Paints for Harsh Climates",
-		description:
-			"Learn about durable exterior paint options that withstand extreme weather.",
-		publishDate: "2024-06-15",
-		imageUrl:
-			"https://images.pexels.com/photos/164005/pexels-photo-164005.jpeg?auto=compress&cs=tinysrgb&w=800",
-		categories: ["exterior_paint", "diy_tips"],
-		contentUrl: "#",
-	},
-	{
-		id: "arc-004",
-		title: "Color Spotlight: The Versatility of Sage Green",
-		description:
-			"Explore the calming and sophisticated appeal of sage green in various settings.",
-		publishDate: "2024-06-01",
-		imageUrl:
-			"https://images.pexels.com/photos/6782371/pexels-photo-6782371.jpeg?auto=compress&cs=tinysrgb&w=800",
-		categories: ["color_trends"],
-		contentUrl: "#",
-	},
-];
-
 /**
  * Mocks fetching content archive items.
  * @param filters Optional filters for categories or date range.
@@ -1577,128 +1045,6 @@ export const mockFetchRecommendations = async (
 };
 
 // --- New FAQ API Mocks ---
-
-const mockFAQData: FAQItem[] = [
-	{
-		id: "faq-001",
-		question: "What is the best paint for a living room?",
-		answer:
-			"For living rooms, we recommend our Premium Interior Latex Paint. It offers excellent durability, washability, and a smooth finish, perfect for high-traffic areas. Eggshell or satin finishes are popular choices for their subtle sheen and easy maintenance.",
-		category: "product_questions",
-		keywords: ["living room", "interior paint", "best paint", "finish"],
-		helpfulVotes: 45,
-		unhelpfulVotes: 2,
-		relatedQuestions: ["faq-002", "faq-003"],
-	},
-	{
-		id: "faq-002",
-		question: "How many gallons of paint do I need for a room?",
-		answer:
-			"A general rule of thumb is that one gallon of paint covers approximately 350-400 square feet with one coat. To calculate your needs, measure the length and height of each wall, multiply them to get the square footage, and add them together. Subtract the area of windows and doors. We recommend two coats for optimal coverage and durability. Our online paint calculator can help you get a precise estimate!",
-		category: "product_questions",
-		keywords: ["gallons", "coverage", "calculator", "quantity"],
-		helpfulVotes: 60,
-		unhelpfulVotes: 5,
-		relatedQuestions: ["faq-001", "faq-003"],
-	},
-	{
-		id: "faq-003",
-		question:
-			"What is the difference between matte, eggshell, and satin finishes?",
-		answer:
-			"These terms refer to the sheen level of the paint. Matte has the least shine, offering a smooth, non-reflective surface that hides imperfections well. Eggshell has a very subtle, low sheen, resembling an eggshell, and is more durable than matte. Satin has a soft, velvety sheen, is highly durable, and easy to clean, making it ideal for high-traffic areas like kitchens and bathrooms. Semi-gloss and gloss have progressively higher sheens and are best for trim, doors, and cabinets.",
-		category: "product_questions",
-		keywords: [
-			"finish",
-			"sheen",
-			"matte",
-			"eggshell",
-			"satin",
-			"semi-gloss",
-			"gloss",
-		],
-		helpfulVotes: 75,
-		unhelpfulVotes: 3,
-		relatedQuestions: ["faq-001"],
-	},
-	{
-		id: "faq-004",
-		question: "What is your return policy?",
-		answer:
-			"We offer a 30-day return policy for unopened, unused paint and supplies in their original condition. Custom-tinted paints are non-returnable. Please bring your original receipt for a full refund or exchange. For online orders, please contact customer service to arrange a return.",
-		category: "shipping_returns",
-		keywords: ["return", "policy", "refund", "exchange"],
-		helpfulVotes: 30,
-		unhelpfulVotes: 1,
-		relatedQuestions: ["faq-005"],
-	},
-	{
-		id: "faq-005",
-		question: "How long does shipping take?",
-		answer:
-			"Standard shipping typically takes 5-7 business days. Expedited shipping is available for 2-3 business days, and overnight shipping delivers on the next business day. Delivery times may vary based on your location and product availability.",
-		category: "shipping_returns",
-		keywords: ["shipping", "delivery", "time", "expedited", "overnight"],
-		helpfulVotes: 25,
-		unhelpfulVotes: 0,
-		relatedQuestions: ["faq-004"],
-	},
-	{
-		id: "faq-006",
-		question: "How can I get help with color matching?",
-		answer:
-			"We offer several resources for color matching! You can use our online color matching tool by uploading a photo, order free color samples to test at home, or book a virtual or in-home color consultation with our expert designers. For precise matches, visit one of our stores with a sample of the color you wish to match.",
-		category: "color_matching",
-		keywords: ["color match", "consultation", "samples", "tool"],
-		helpfulVotes: 55,
-		unhelpfulVotes: 1,
-		relatedQuestions: ["faq-007"],
-	},
-	{
-		id: "faq-007",
-		question: "Can I get a custom paint color mixed?",
-		answer:
-			"Yes, we offer custom paint color mixing services! Bring in a sample of the color you want to match (e.g., a fabric swatch, a piece of trim, or a photo), and our in-store experts will use our advanced color-matching technology to create your perfect custom shade. Please note that custom-mixed paints are non-returnable.",
-		category: "color_matching",
-		keywords: ["custom color", "mixed paint", "match", "shade"],
-		helpfulVotes: 40,
-		unhelpfulVotes: 0,
-		relatedQuestions: ["faq-006"],
-	},
-	{
-		id: "faq-008",
-		question: "My paint looks different on the wall than in the can. Why?",
-		answer:
-			"Several factors can influence how paint color appears. Lighting (natural vs. artificial, warm vs. cool), surrounding colors in the room, and the texture of the wall can all affect perception. Always test a sample on your wall and observe it throughout the day under different lighting conditions before committing to the entire room.",
-		category: "color_matching",
-		keywords: ["color difference", "lighting", "swatch", "sample"],
-		helpfulVotes: 38,
-		unhelpfulVotes: 1,
-		relatedQuestions: ["faq-006"],
-	},
-	{
-		id: "faq-009",
-		question: "I am having trouble applying the paint. What should I do?",
-		answer:
-			"Ensure your surface is properly prepared (clean, dry, smooth). Check the paint can for specific application instructions, including recommended tools (brush, roller, sprayer) and temperature/humidity conditions. If the paint is too thick, it might need thinning (check the label first, as not all paints can be thinned). Watch our application guide videos for step-by-step tutorials.",
-		category: "technical_support",
-		keywords: ["application", "trouble", "paint", "thick", "thinning", "guide"],
-		helpfulVotes: 28,
-		unhelpfulVotes: 0,
-		relatedQuestions: ["faq-010"],
-	},
-	{
-		id: "faq-010",
-		question: "How do I clean paint brushes and rollers?",
-		answer:
-			"For latex or water-based paints, rinse brushes and rollers thoroughly with warm, soapy water until the water runs clear. Squeeze out excess water and reshape brushes before drying. For oil-based paints, use mineral spirits or a paint thinner for cleaning, then wash with soap and water. Always clean tools immediately after use for best results.",
-		category: "technical_support",
-		keywords: ["clean", "brushes", "rollers", "latex", "oil-based"],
-		helpfulVotes: 35,
-		unhelpfulVotes: 1,
-		relatedQuestions: ["faq-009"],
-	},
-];
 
 /**
  * Mocks fetching FAQ items.

@@ -1,0 +1,29 @@
+[
+	{
+		"id": "prof-001",
+		"professionalName": "Eleanor Vance",
+		"title": "Lead Interior Designer",
+		"company": "Vance Design Studio",
+		"quote": "The depth of color and durability of these paints are unmatched. My clients consistently rave about the results. A truly professional-grade product.",
+		"photoUrl": "https://images.pexels.com/photos/3760303/pexels-photo-3760303.jpeg?auto=compress&cs=tinysrgb&w=400",
+		"date": "2024-05-10"
+	},
+	{
+		"id": "prof-002",
+		"professionalName": "Marcus Thorne",
+		"title": "Master Painter & Contractor",
+		"company": "Thorne Painting Solutions",
+		"quote": "I've used countless brands over 30 years, and this paint consistently delivers superior coverage and a flawless finish. It saves me time and ensures client satisfaction.",
+		"photoUrl": "https://images.pexels.com/photos/3760304/pexels-photo-3760304.jpeg?auto=compress&cs=tinysrgb&w=400",
+		"date": "2024-04-20"
+	},
+	{
+		"id": "prof-003",
+		"professionalName": "Sophia Chen",
+		"title": "Architectural Color Consultant",
+		"company": "Color Harmony Group",
+		"quote": "Their color palette is incredibly sophisticated, and the technical support is invaluable. I confidently recommend their products for both residential and commercial projects.",
+		"photoUrl": "https://images.pexels.com/photos/3760305/pexels-photo-3760305.jpeg?auto=compress&cs=tinysrgb&w=400",
+		"date": "2024-06-01"
+	}
+]
