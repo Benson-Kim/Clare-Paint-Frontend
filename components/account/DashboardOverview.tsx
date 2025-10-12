@@ -9,12 +9,12 @@ import {
 	ShoppingBag,
 	DollarSign,
 	Heart,
-	Image,
 	Droplets,
 	Palette,
 	TrendingUp,
 	Package,
 	ArrowRight,
+	ImageIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { useAccountStore } from "@/store/account-store";
@@ -233,7 +233,7 @@ export const DashboardOverview: React.FC = () => {
 						onClick={() => setActiveSection("project-gallery")}
 						className="flex items-center space-x-2 p-4 bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg hover:bg-ds-neutral-lightGray/50 transition-colors duration-200"
 					>
-						<Image className="w-5 h-5 text-blue-500" />
+						<ImageIcon className="w-5 h-5 text-blue-500" />
 						<span className="text-sm font-medium text-ds-primary-charcoal">
 							Projects
 						</span>

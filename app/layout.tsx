@@ -84,6 +84,24 @@ export default function RootLayout({
 		<html lang="en">
 			<head>
 				{/* Structured Data */}
+				{process.env.NEXT_PUBLIC_GA_ID && (
+					<>
+						<script
+							async
+							src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+						/>
+						<script
+							dangerouslySetInnerHTML={{
+								__html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                `,
+							}}
+						/>
+					</>
+				)}
 				<script
 					type="application/ld+json"
 					dangerouslySetInnerHTML={{

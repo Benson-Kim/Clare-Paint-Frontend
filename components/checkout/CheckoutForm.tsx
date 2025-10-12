@@ -21,6 +21,7 @@ import {
 import { mockFetchPromoCodes, mockFetchShippingOptions } from "@/lib/api";
 import { PromoCode, ShippingOption } from "@/types/checkout";
 import { useRouter } from "next/navigation";
+import { RetryButton } from "../ui/RetryButton";
 
 const CHECKOUT_STEPS = [
 	{ id: 1, name: "Shipping", icon: Truck },
@@ -162,14 +163,7 @@ export const CheckoutForm: React.FC = () => {
 		return (
 			<div className="min-h-screen bg-ds-neutral-white flex items-center justify-center">
 				<div className="text-center p-8 rounded-lg shadow-lg bg-red-50 border border-red-200">
-					<h2 className="text-2xl font-bold text-red-700 mb-4">Error</h2>
-					<p className="text-red-600 mb-6">{error}</p>
-					<button
-						onClick={() => window.location.reload()}
-						className="px-6 py-3 bg-red-600 text-ds-neutral-white rounded-lg hover:bg-red-700 transition-colors duration-200"
-					>
-						Retry
-					</button>
+					<RetryButton onRetry={async () => window.location.reload()} />
 				</div>
 			</div>
 		);

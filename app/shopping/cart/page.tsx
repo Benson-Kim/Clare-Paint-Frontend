@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
 	ShoppingCart,
@@ -20,11 +20,14 @@ import {
 	MapPin,
 } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { useCartStore } from "@/store/cart-store";
+import { CartError, useCartStore } from "@/store/cart-store";
 import { mockProducts } from "@/data/mock-products";
 import { CartItem } from "@/types/product";
 import Image from "next/image";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { useToast } from "@/components/ui/ToastContainer";
+import { formatCurrency } from "@/utils/cartUtils";
+import { analytics, useInteractionTracking } from "@/lib/analytics";
 
 // interface CartPageProps {}
 
@@ -55,6 +58,9 @@ const CartPage: React.FC = () => {
 		getTotalPrice,
 	} = useCartStore();
 
+	const toast = useToast();
+	const { trackClick } = useInteractionTracking();
+
 	const [promoCode, setPromoCode] = useState("");
 	const [appliedPromo, setAppliedPromo] = useState<PromoCode | null>(null);
 	const [selectedShipping, setSelectedShipping] = useState<string>("standard");
@@ -64,53 +70,66 @@ const CartPage: React.FC = () => {
 	// const [loading, setLoading] = useState(false);
 
 	// Mock promo codes
-	const promoCodes: PromoCode[] = [
-		{
-			code: "SAVE10",
-			discount: 10,
-			type: "percentage",
-			description: "10% off your order",
-		},
-		{
-			code: "FREESHIP",
-			discount: 0,
-			type: "fixed",
-			description: "Free standard shipping",
-		},
-		{
-			code: "PAINT25",
-			discount: 25,
-			type: "fixed",
-			description: "$25 off orders over $200",
-		},
-	];
+	const promoCodes: PromoCode[] = useMemo(
+		() => [
+			{
+				code: "SAVE10",
+				discount: 10,
+				type: "percentage",
+				description: "10% off your order",
+			},
+			{
+				code: "FREESHIP",
+				discount: 0,
+				type: "fixed",
+				description: "Free standard shipping",
+			},
+			{
+				code: "PAINT25",
+				discount: 25,
+				type: "fixed",
+				description: "$25 off orders over $200",
+			},
+		],
+		[]
+	);
 
-	const shippingOptions: ShippingOption[] = [
-		{
-			id: "standard",
-			name: "Standard Shipping",
-			description: "5-7 business days",
-			price: 0,
-			estimatedDays: "5-7 days",
-			icon: <Package className="w-4 h-4" />,
-		},
-		{
-			id: "expedited",
-			name: "Expedited Shipping",
-			description: "2-3 business days",
-			price: 15.99,
-			estimatedDays: "2-3 days",
-			icon: <Clock className="w-4 h-4" />,
-		},
-		{
-			id: "overnight",
-			name: "Overnight Shipping",
-			description: "Next business day",
-			price: 29.99,
-			estimatedDays: "1 day",
-			icon: <Truck className="w-4 h-4" />,
-		},
-	];
+	const shippingOptions: ShippingOption[] = useMemo(
+		() => [
+			{
+				id: "standard",
+				name: "Standard Shipping",
+				description: "5-7 business days",
+				price: 0,
+				estimatedDays: "5-7 days",
+				icon: <Package className="w-4 h-4" />,
+			},
+			{
+				id: "expedited",
+				name: "Expedited Shipping",
+				description: "2-3 business days",
+				price: 15.99,
+				estimatedDays: "2-3 days",
+				icon: <Clock className="w-4 h-4" />,
+			},
+			{
+				id: "overnight",
+				name: "Overnight Shipping",
+				description: "Next business day",
+				price: 29.99,
+				estimatedDays: "1 day",
+				icon: <Truck className="w-4 h-4" />,
+			},
+		],
+		[]
+	);
+
+	useEffect(() => {
+		analytics.track("cart_viewed", {
+			item_count: getTotalItems(),
+			cart_value: getTotalPrice(),
+		});
+	}, [getTotalItems, getTotalPrice]);
 
 	const [cartItemCount, setCartItemCount] = useState(0);
 
@@ -137,7 +156,7 @@ const CartPage: React.FC = () => {
 			.filter((item) => item.product && item.color && item.finish);
 	}, [items]);
 
-	// Group items by project (for now, we'll simulate projects)
+	// Group items by project (for now, simulate projects)
 	const groupedItems = useMemo(() => {
 		const groups = cartItemsWithDetails.reduce((acc, item) => {
 			const projectName = item.product?.category || "General Project";
@@ -163,58 +182,124 @@ const CartPage: React.FC = () => {
 			? subtotal * (appliedPromo.discount / 100)
 			: appliedPromo.discount
 		: 0;
-	const tax = (subtotal - promoDiscount) * 0.08; // 8% tax
+	const tax = (subtotal - promoDiscount) * 0.16; // 16% VAT
 	const total = subtotal + shippingCost + tax - promoDiscount;
 
 	// Calculate total coverage
-	const totalCoverage = cartItemsWithDetails.reduce((acc, item) => {
-		const coverage = parseInt(
-			item.product?.coverage?.match(/(\d+)/)?.[1] || "350"
-		);
-		return acc + coverage * item.quantity;
-	}, 0);
+	const totalCoverage = useMemo(() => {
+		return cartItemsWithDetails.reduce((acc, item) => {
+			const coverage = parseInt(
+				item.product?.coverage?.match(/(\d+)/)?.[1] || "350"
+			);
+			return acc + coverage * item.quantity;
+		}, 0);
+	}, [cartItemsWithDetails]);
 
-	const handleQuantityChange = (
-		productId: string,
-		colorId: string,
-		finishId: string,
-		newQuantity: number
-	) => {
-		if (newQuantity <= 0) {
-			removeItem(productId, colorId, finishId);
-		} else {
-			updateQuantity(productId, colorId, finishId, newQuantity);
-		}
-	};
+	const handleQuantityChange = useCallback(
+		(
+			productId: string,
+			colorId: string,
+			finishId: string,
+			newQuantity: number
+		) => {
+			try {
+				const oldItem = items.find(
+					(i) =>
+						i.productId === productId &&
+						i.colorId === colorId &&
+						i.finishId === finishId
+				);
 
-	const handleApplyPromo = () => {
+				trackClick("cart_quantity_change", {
+					productId,
+					oldQuantity: oldItem?.quantity,
+					newQuantity,
+				});
+
+				if (newQuantity <= 0) {
+					removeItem(productId, colorId, finishId);
+					toast.success("Item removed from cart");
+				} else {
+					updateQuantity(productId, colorId, finishId, newQuantity);
+					toast.success("Quantity updated");
+				}
+			} catch (error) {
+				if (error instanceof CartError) {
+					toast.error(error.message);
+				} else {
+					toast.error("Failed to update quantity");
+				}
+			}
+		},
+		[items, removeItem, updateQuantity, trackClick, toast]
+	);
+
+	const handleApplyPromo = useCallback(() => {
 		const promo = promoCodes.find(
 			(p) => p.code.toLowerCase() === promoCode.toLowerCase()
 		);
 		if (promo) {
+			trackClick("promo_code_applied", {
+				code: promo.code,
+				dicount: promo.discount,
+			});
 			setAppliedPromo(promo);
 			setPromoCode("");
+			toast.success(`Promo code ${promo?.code} applied!`);
+		} else {
+			trackClick("promo_code_failed", { code: promoCode });
+			toast.error("Invalid promo code");
 		}
-	};
+	}, [promoCode, promoCodes, trackClick, toast]);
 
-	const handleSaveForLater = (item: CartItem) => {
-		setSavedItems([...savedItems, item]);
-		removeItem(item.productId, item.colorId, item.finishId);
-	};
+	const handleSaveForLater = useCallback(
+		(item: CartItem) => {
+			trackClick("save_for_later", { productId: item.productId });
+			setSavedItems([...savedItems, item]);
+			removeItem(item.productId, item.colorId, item.finishId);
+			toast.success("Item saved for later");
+		},
+		[savedItems, removeItem, trackClick, toast]
+	);
 
-	const handleMoveToCart = (item: CartItem) => {
-		useCartStore.getState().addItem(item);
-		setSavedItems(
-			savedItems.filter(
-				(saved) =>
-					!(
-						saved.productId === item.productId &&
-						saved.colorId === item.colorId &&
-						saved.finishId === item.finishId
+	const handleMoveToCart = useCallback(
+		(item: CartItem) => {
+			try {
+				trackClick("move_to_cart", { productId: item.productId });
+				useCartStore.getState().addItem(item);
+				setSavedItems(
+					savedItems.filter(
+						(saved) =>
+							!(
+								saved.productId === item.productId &&
+								saved.colorId === item.colorId &&
+								saved.finishId === item.finishId
+							)
 					)
+				);
+				toast.success("Item moved to cart");
+			} catch (error) {
+				if (error instanceof CartError) {
+					toast.error(error.message);
+				} else {
+					toast.error("Failed to move item to cart");
+				}
+			}
+		},
+		[savedItems, trackClick, toast]
+	);
+
+	const handleClearCart = useCallback(() => {
+		if (
+			window.confirm(
+				"Are you sure you want to remove all items from your cart?"
 			)
-		);
-	};
+		) {
+			trackClick("cart_cleared", { itemCount: items.length });
+			clearCart();
+			toast.success("cart cleared");
+		}
+	}, [items.length, clearCart, trackClick, toast]);
 
 	if (items.length === 0 && savedItems.length === 0) {
 		return (
@@ -279,7 +364,7 @@ const CartPage: React.FC = () => {
 
 							{items.length > 0 && (
 								<button
-									onClick={clearCart}
+									onClick={handleClearCart}
 									className="text-sm text-gray-500 hover:text-red-600 transition-colors duration-200"
 								>
 									Clear Cart
@@ -391,10 +476,10 @@ const CartPage: React.FC = () => {
 
 															<div className="text-right">
 																<p className="text-lg font-bold text-ds-primary-charcoal">
-																	${item.totalPrice.toFixed(2)}
+																	{formatCurrency(item.totalPrice || 0)}
 																</p>
 																<p className="text-sm text-gray-500">
-																	${item.price.toFixed(2)} each
+																	{formatCurrency(item.price)} each
 																</p>
 															</div>
 														</div>
