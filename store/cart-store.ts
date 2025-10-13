@@ -26,6 +26,7 @@ interface CartStore {
 	setIsOpen: (isOpen: boolean) => void;
 
 	getTotalItems: () => number;
+	getUniqueItems: () => number;
 	getTotalPrice: () => number;
 	getItemCount: (
 		productId: string,
@@ -215,6 +216,10 @@ export const useCartStore = create<CartStore>()(
 				return get().items.reduce((total, item) => total + item.quantity, 0);
 			},
 
+			getUniqueItems: () => {
+				return get().items.length;
+			},
+
 			getTotalPrice: () => {
 				return get().items.reduce(
 					(total, item) => total + item.price * item.quantity,
@@ -332,5 +337,20 @@ export function useAddToCart() {
 				return { success: false, error: "An unexpected error occurred" };
 			}
 		},
+	};
+}
+
+export function useCartSummary() {
+	const items = useCartStore((state) => state.items);
+	const getTotalItems = useCartStore((state) => state.getTotalItems);
+	const getUniqueItemCount = useCartStore((state) => state.getUniqueItems);
+	const getTotalPrice = useCartStore((state) => state.getTotalPrice);
+
+	return {
+		items,
+		totalQuantity: getTotalItems(),
+		uniqueItems: getUniqueItemCount(),
+		totalPrice: getTotalPrice(),
+		isEmpty: items.length === 0,
 	};
 }

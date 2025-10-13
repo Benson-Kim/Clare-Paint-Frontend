@@ -6,6 +6,9 @@ import { Star, ShoppingCart, Eye, Heart, Plus, X } from "lucide-react";
 import { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { ProductCategoryFilters } from "@/hooks/useProductCategoryFilters";
+
+type FilterValue = string[] | string | boolean | number | null;
 
 interface ProductCategoryGridProps {
 	products: Product[];
@@ -13,9 +16,9 @@ interface ProductCategoryGridProps {
 	onQuickAdd: (product: Product) => void;
 	onAddToCompare: (product: Product) => void;
 	compareProducts: Product[];
-	loading?: boolean;
+	loading: boolean;
 	searchQuery: string;
-	appliedFilters: any;
+	appliedFilters: ProductCategoryFilters;
 	onClearFilters: () => void;
 }
 
@@ -71,8 +74,9 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 	}
 
 	if (products.length === 0) {
-		const hasFilters = Object.values(appliedFilters).some((filter: any) =>
-			Array.isArray(filter) ? filter.length > 0 : filter
+		const hasFilters = Object.values(appliedFilters).some(
+			(filter: FilterValue) =>
+				Array.isArray(filter) ? filter.length > 0 : filter
 		);
 
 		return (

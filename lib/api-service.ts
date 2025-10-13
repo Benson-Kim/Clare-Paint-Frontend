@@ -80,10 +80,39 @@ async function fetchOrMock<T>(
 /**
  * Fetch all products or filter by category
  */
-export async function fetchProducts(category?: string): Promise<Product[]> {
-	const endpoint = category ? `/products?category=${category}` : "/products";
 
-	return fetchOrMock<Product[]>(endpoint, mockProducts);
+export async function fetchProducts(category?: string): Promise<Product[]> {
+	const endpoint = category
+		? `/products?category=${encodeURIComponent(category)}`
+		: "/products";
+
+	console.log(`[fetchProducts] Endpoint: ${endpoint}`);
+
+	const data = await fetchOrMock<Product[]>(endpoint, mockProducts);
+
+	interface ProductsResponse {
+		products: Product[];
+	}
+
+	const productsArray = Array.isArray(data)
+		? data
+		: Array.isArray((data as ProductsResponse).products)
+		? (data as ProductsResponse).products
+		: [];
+
+	if (!USE_JSON_SERVER && category) {
+		const filtered = productsArray.filter((p) => {
+			const productCategory = p.category?.trim().toLowerCase();
+			return (
+				productCategory === category ||
+				productCategory.replace(/ /g, "_") === category
+			);
+		});
+
+		return filtered;
+	}
+
+	return productsArray;
 }
 
 /**

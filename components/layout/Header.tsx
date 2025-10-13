@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Search, User, Heart, ShoppingCart, Menu } from "lucide-react";
-import { useCartStore } from "@/store/cart-store";
+import { useCartSummary } from "@/store/cart-store";
 import { cn } from "@/lib/utils";
 import { useHeaderState } from "@/hooks/useHeaderState";
 import { DesktopNavigation } from "./header/DesktopNavigation";
@@ -30,7 +30,6 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
 	const router = useRouter();
 	const pathname = usePathname();
-	const { getTotalItems } = useCartStore();
 
 	const {
 		isScrolled,
@@ -47,11 +46,7 @@ export const Header: React.FC<HeaderProps> = ({
 	const [wishlistCount] = useState(3); // Mock wishlist count
 	const headerRef = useRef<HTMLElement>(null);
 
-	const [cartItemCount, setCartItemCount] = useState(0);
-
-	useEffect(() => {
-		setCartItemCount(getTotalItems());
-	}, [getTotalItems]);
+	const { uniqueItems } = useCartSummary();
 
 	// Handle dropdown toggle
 	const handleDropdownToggle = (dropdownName: string) => {
@@ -171,14 +166,14 @@ export const Header: React.FC<HeaderProps> = ({
 				<button
 					onClick={() => handleDropdownToggle("cart")}
 					className="relative p-2 text-ds-neutral-mediumGray hover:text-ds-primary-sage transition-colors duration-200 rounded-lg hover:bg-ds-primary-sage/5 min-w-[44px] min-h-[44px] flex items-center justify-center"
-					aria-label={`Shopping cart with ${cartItemCount} items`}
+					aria-label={`Shopping cart with ${uniqueItems} items`}
 					aria-expanded={activeDropdown === "cart"}
 					aria-haspopup="true"
 				>
 					<ShoppingCart className="w-6 h-6" />
-					{cartItemCount > 0 && (
+					{uniqueItems > 0 && (
 						<span className="absolute -top-1 -right-1 bg-ds-primary-sage text-ds-neutral-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center min-w-[20px] min-h-[20px]">
-							{cartItemCount > 99 ? "99+" : cartItemCount}
+							{uniqueItems > 99 ? "99+" : uniqueItems}
 						</span>
 					)}
 				</button>
@@ -215,13 +210,13 @@ export const Header: React.FC<HeaderProps> = ({
 							<Link
 								href="/cart"
 								className="text-ds-neutral-mediumGray hover:text-ds-primary-sage transition-colors duration-200"
-								aria-label={`Cart with ${cartItemCount} items`}
+								aria-label={`Cart with ${uniqueItems} items`}
 							>
 								<div className="relative">
 									<ShoppingCart className="w-6 h-6" />
-									{cartItemCount > 0 && (
+									{uniqueItems > 0 && (
 										<span className="absolute -top-1 -right-1 bg-ds-primary-sage text-ds-neutral-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-											{cartItemCount}
+											{uniqueItems}
 										</span>
 									)}
 								</div>

@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ArrowLeft, Star, Truck, RotateCcw, Shield } from "lucide-react";
+import { ArrowLeft, Star, Truck, RotateCcw, Shield, Eye } from "lucide-react";
 import Link from "next/link";
 import { Product, ProductColor, ProductFinish } from "@/types/product";
-import { mockProduct } from "@/data/mock-product";
 import { ProductImageGallery } from "@/components/product/ProductImageGallery";
 import { ColorSelector } from "@/components/product/ColorSelector";
 import { FinishSelector } from "@/components/product/FinishSelector";
@@ -14,33 +13,45 @@ import { ProductReviews } from "@/components/product/ProductReviews";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { ColorMatchingTools } from "@/components/product/ColorMatchingTools";
 import { ApplicationGuide } from "@/components/product/ApplicationGuide";
+import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { fetchProductById } from "@/lib/api-service";
+import { ErrorState } from "@/components/ui/RetryButton";
 
 export default function ProductDetailPage() {
-	const [product, setProduct] = useState<Product | null>(null);
+	const { id } = useParams();
+	const [activeTab, setActiveTab] = useState<
+		"specs" | "reviews" | "tools" | "guide"
+	>("specs");
+
+	const {
+		data: product,
+		isLoading,
+		isError,
+		error,
+		refetch,
+	} = useQuery<Product>({
+		queryKey: ["product", id],
+		queryFn: () => fetchProductById(id as string),
+		retry: 2,
+		staleTime: 1000 * 60 * 10, // 10 minutes
+	});
+
+	// Fallbacks for selected color/finish
 	const [selectedColor, setSelectedColor] = useState<ProductColor | null>(null);
 	const [selectedFinish, setSelectedFinish] = useState<ProductFinish | null>(
 		null
 	);
-	const [activeTab, setActiveTab] = useState<
-		"specs" | "reviews" | "tools" | "guide"
-	>("specs");
-	const [loading, setLoading] = useState(true);
 
+	// Initialize defaults once product loads
 	useEffect(() => {
-		// Simulate API call
-		const fetchProduct = async () => {
-			setLoading(true);
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-			setProduct(mockProduct);
-			setSelectedColor(mockProduct.colors[0]);
-			setSelectedFinish(mockProduct.finishes[0]);
-			setLoading(false);
-		};
+		if (product) {
+			setSelectedColor(product.colors[0]);
+			setSelectedFinish(product.finishes[0]);
+		}
+	}, [product]);
 
-		fetchProduct();
-	}, []);
-
-	if (loading) {
+	if (isLoading) {
 		return (
 			<div className="min-h-screen bg-white">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -68,9 +79,41 @@ export default function ProductDetailPage() {
 		);
 	}
 
-	if (!product || !selectedColor || !selectedFinish) {
-		return <div>Product not found</div>;
+	if (isError) {
+		return (
+			<div className="min-h-screen bg-ds-neutral-white">
+				<div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-20 py-8">
+					<ErrorState
+						title="Error loading exterior paints"
+						message={error?.message || "An unexpected error occurred."}
+						onRetry={async () => {
+							await refetch();
+						}}
+					/>
+				</div>
+			</div>
+		);
 	}
+
+	if (!product || !selectedColor || !selectedFinish) {
+	
+			return (
+				<div className="text-center py-16">
+					<div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+						<Eye className="w-8 h-8 text-gray-400" />
+					</div>
+					<h3 className="text-lg font-semibold text-ds-primary-charcoal mb-2">
+						No products found
+					</h3>
+					<p className="text-gray-600 mb-6">
+						Try adjusting your filters or search terms
+					</p>
+					<button className="text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200">
+						Clear all filters
+					</button>
+				</div>
+			);
+		}
 
 	return (
 		<div className="min-h-screen bg-white">

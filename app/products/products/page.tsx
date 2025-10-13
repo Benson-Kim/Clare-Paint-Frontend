@@ -12,8 +12,8 @@ import { ColorComparison } from "@/components/products/ColorComparison";
 import { useProductFilters } from "@/hooks/useProductFilters";
 import { useProductSearch } from "@/hooks/useProductSearch";
 import { Product } from "@/types/product";
-import { mockProducts } from "@/data/mock-products";
 import { cn } from "@/lib/utils";
+import { fetchProducts } from "@/lib/api-service";
 
 export interface FilterState {
 	colorFamilies: string[];
@@ -53,16 +53,20 @@ export default function ProductsPage() {
 	const { searchQuery, updateSearchQuery, searchResults } =
 		useProductSearch(products);
 
-	// Simulate API call
 	useEffect(() => {
-		const fetchProducts = async () => {
+		async function loadProducts() {
 			setLoading(true);
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-			setProducts(mockProducts);
-			setLoading(false);
-		};
+			try {
+				const data = await fetchProducts();
+				setProducts(data);
+			} catch (err) {
+				console.error("Error loading products:", err);
+			} finally {
+				setLoading(false);
+			}
+		}
 
-		fetchProducts();
+		loadProducts();
 	}, []);
 
 	// Filter and sort products
@@ -73,7 +77,7 @@ export default function ProductsPage() {
 		if (filters.colorFamilies.length > 0) {
 			result = result.filter((product) =>
 				product.colors.some((color) =>
-					filters.colorFamilies.some((family) =>
+					filters.colorFamilies.some((family: string) =>
 						color.name.toLowerCase().includes(family.toLowerCase())
 					)
 				)

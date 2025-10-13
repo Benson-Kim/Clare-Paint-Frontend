@@ -3,15 +3,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
-	Filter,
 	Grid,
 	List,
 	SlidersHorizontal,
-	X,
 	Search,
 	Calculator,
-	Image,
 	CalendarCheck,
+	ImageIcon,
 } from "lucide-react";
 import { ProductGrid } from "@/components/products/ProductGrid";
 import { ProductSort } from "@/components/products/ProductSort";
@@ -28,8 +26,10 @@ import {
 	BeforeAfterImage,
 	MaintenanceSchedule,
 } from "@/types/product";
-import { mockFetchExteriorPaints } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { fetchProducts } from "@/lib/api-service";
+import { ErrorState } from "@/components/ui/RetryButton";
+import { PageLayout } from "@/components/layout/PageLayout";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -57,16 +57,16 @@ export default function ExteriorPaintsPage() {
 	const { searchQuery, updateSearchQuery, searchResults } =
 		useProductSearch(products);
 
-	// Fetch exterior paints using React Query
-	const { data, isLoading, isError, error } = useQuery<Product[], Error>({
-		queryKey: ["exteriorPaints"],
-		queryFn: mockFetchExteriorPaints,
+	const { data, isLoading, isError, error, refetch } = useQuery<
+		Product[],
+		Error
+	>({
+		queryKey: ["products", "exterior_paint"],
+		queryFn: () => fetchProducts("exterior_paint"),
 	});
 
 	useEffect(() => {
-		if (data) {
-			setProducts(data);
-		}
+		if (data) setProducts(data);
 	}, [data]);
 
 	// Filter and sort products
@@ -213,214 +213,213 @@ export default function ExteriorPaintsPage() {
 		return (
 			<div className="min-h-screen bg-ds-neutral-white">
 				<ExteriorPaintHero />
-				<div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-20 py-8 text-center">
-					<h2 className="text-2xl font-bold text-red-600 mb-4">
-						Error loading exterior paints
-					</h2>
-					<p className="text-ds-neutral-darkSlate mb-8">
-						{error?.message || "An unexpected error occurred."}
-					</p>
-					<button
-						onClick={() => window.location.reload()}
-						className="px-8 py-2 bg-ds-primary-sage text-ds-neutral-white rounded-lg hover:bg-ds-primary-sage/90 transition-colors duration-200"
-					>
-						Try Again
-					</button>
+				<div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-20 py-8">
+					<ErrorState
+						title="Error loading exterior paints"
+						message={error?.message || "An unexpected error occurred."}
+						onRetry={async () => {
+							await refetch();
+						}}
+					/>
 				</div>
 			</div>
 		);
 	}
 
 	return (
-		<div className="min-h-screen bg-ds-neutral-white">
-			{/* Hero Section */}
-			<ExteriorPaintHero />
+		<PageLayout headerVariant="default" showBreadcrumbs={true}>
+			<div className="min-h-screen bg-ds-neutral-white">
+				{/* Hero Section */}
+				<ExteriorPaintHero />
 
-			{/* Main Content */}
-			<div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-20 py-8">
-				{/* Search and Tools Bar */}
-				<div className="mb-8 space-y-4">
-					<div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-						{/* Search Bar */}
-						<div className="relative max-w-md flex-1">
-							<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ds-neutral-mediumGray" />
-							<input
-								type="text"
-								placeholder="Search exterior paints..."
-								value={searchQuery}
-								onChange={(e) => updateSearchQuery(e.target.value)}
-								className="w-full pl-10 pr-8 py-2 border border-ds-neutral-lightGray rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent transition-all duration-200"
-								aria-label="Search exterior paints"
-							/>
-						</div>
-
-						{/* Tool Buttons */}
-						<div className="flex flex-wrap gap-2">
-							<button
-								onClick={() => setShowCalculator(true)}
-								className="flex items-center space-x-2 px-8 py-2 bg-ds-primary-sage text-ds-neutral-white rounded-lg hover:bg-ds-primary-sage/90 transition-colors duration-200"
-								aria-label="Open coverage calculator"
-							>
-								<Calculator className="w-4 h-4" />
-								<span className="hidden sm:inline">Coverage Calculator</span>
-							</button>
-							<button
-								onClick={() =>
-									handleViewProjectGallery(
-										products.flatMap((p) => p.beforeAfterImages || [])
-									)
-								}
-								className="flex items-center space-x-2 px-8 py-2 border border-ds-primary-sage text-ds-primary-sage rounded-lg hover:bg-ds-primary-sage/5 transition-colors duration-200"
-								aria-label="View project gallery"
-							>
-								<Image className="w-4 h-4" />
-								<span className="hidden sm:inline">Project Gallery</span>
-							</button>
-							<button
-								onClick={() =>
-									handleViewMaintenanceSchedule(
-										products[0]?.maintenanceSchedule || {
-											interval: "N/A",
-											tasks: ["No schedule available"],
-										}
-									)
-								}
-								className="flex items-center space-x-2 px-8 py-2 border border-ds-primary-sage text-ds-primary-sage rounded-lg hover:bg-ds-primary-sage/5 transition-colors duration-200"
-								aria-label="View maintenance schedule"
-							>
-								<CalendarCheck className="w-4 h-4" />
-								<span className="hidden sm:inline">Maintenance Guide</span>
-							</button>
-						</div>
-					</div>
-				</div>
-
-				{/* Filters and Sort Bar */}
-				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-					<div className="flex items-center space-x-4">
-						{/* Mobile Filter Toggle */}
-						<button
-							onClick={() => setShowFilters(!showFilters)}
-							className="lg:hidden flex items-center space-x-2 px-8 py-2 border border-ds-neutral-lightGray rounded-lg hover:bg-ds-neutral-lightGray/50 transition-colors duration-200"
-							aria-label="Toggle filters"
-						>
-							<SlidersHorizontal className="w-4 h-4" />
-							<span>Filters</span>
-							{activeFilterCount > 0 && (
-								<span className="bg-ds-primary-sage text-ds-neutral-white text-xs px-2 py-2 rounded-full">
-									{activeFilterCount}
-								</span>
-							)}
-						</button>
-
-						{/* View Mode Toggle */}
-						<div className="flex border border-ds-neutral-lightGray rounded-lg overflow-hidden">
-							<button
-								onClick={() => setViewMode("grid")}
-								className={cn(
-									"p-2 transition-colors duration-200",
-									viewMode === "grid"
-										? "bg-ds-primary-sage text-ds-neutral-white"
-										: "bg-ds-neutral-white text-ds-neutral-mediumGray hover:bg-ds-neutral-lightGray/50"
-								)}
-								aria-label="Grid view"
-							>
-								<Grid className="w-4 h-4" />
-							</button>
-							<button
-								onClick={() => setViewMode("list")}
-								className={cn(
-									"p-2 transition-colors duration-200",
-									viewMode === "list"
-										? "bg-ds-primary-sage text-ds-neutral-white"
-										: "bg-ds-neutral-white text-ds-neutral-mediumGray hover:bg-ds-neutral-lightGray/50"
-								)}
-								aria-label="List view"
-							>
-								<List className="w-4 h-4" />
-							</button>
-						</div>
-
-						{/* Results Count */}
-						<span className="text-sm text-ds-neutral-mediumGray">
-							{filteredProducts.length} exterior paints found
-						</span>
-					</div>
-
-					<div className="flex items-center space-x-4">
-						{/* Clear Filters */}
-						{activeFilterCount > 0 && (
-							<button
-								onClick={clearFilters}
-								className="text-sm text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200"
-								aria-label="Clear all filters"
-							>
-								Clear all filters
-							</button>
-						)}
-
-						{/* Sort Dropdown */}
-						<ProductSort currentSort={sortBy} onSortChange={updateSort} />
-					</div>
-				</div>
-
-				{/* Main Layout */}
-				<div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-					{/* Filters Sidebar */}
-					<div className={cn("lg:block", showFilters ? "block" : "hidden")}>
-						<div className="sticky top-8">
-							<ExteriorPaintFilters
-								filters={filters}
-								onFilterChange={updateFilter}
-								products={products}
-							/>
-						</div>
-					</div>
-
-					{/* Products Grid */}
-					<div className="lg:col-span-3">
-						<ProductGrid
-							products={paginatedProducts}
-							viewMode={viewMode}
-							onAddToCompare={() => {}}
-							compareProducts={[]}
-							loading={isLoading}
-						/>
-
-						{/* Pagination */}
-						{totalPages > 1 && (
-							<div className="mt-8">
-								<ProductPagination
-									currentPage={currentPage}
-									totalPages={totalPages}
-									onPageChange={setCurrentPage}
+				{/* Main Content */}
+				<div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-20 py-8">
+					{/* Search and Tools Bar */}
+					<div className="mb-8 space-y-4">
+						<div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+							{/* Search Bar */}
+							<div className="relative max-w-md flex-1">
+								<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ds-neutral-mediumGray" />
+								<input
+									type="text"
+									placeholder="Search exterior paints..."
+									value={searchQuery}
+									onChange={(e) => updateSearchQuery(e.target.value)}
+									className="w-full pl-10 pr-8 py-2 border border-ds-neutral-lightGray rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent transition-all duration-200"
+									aria-label="Search exterior paints"
 								/>
 							</div>
-						)}
+
+							{/* Tool Buttons */}
+							<div className="flex flex-wrap gap-2">
+								<button
+									onClick={() => setShowCalculator(true)}
+									className="flex items-center space-x-2 px-8 py-2 bg-ds-primary-sage text-ds-neutral-white rounded-lg hover:bg-ds-primary-sage/90 transition-colors duration-200"
+									aria-label="Open coverage calculator"
+								>
+									<Calculator className="w-4 h-4" />
+									<span className="hidden sm:inline">Coverage Calculator</span>
+								</button>
+								<button
+									onClick={() =>
+										handleViewProjectGallery(
+											products.flatMap((p) => p.beforeAfterImages || [])
+										)
+									}
+									className="flex items-center space-x-2 px-8 py-2 border border-ds-primary-sage text-ds-primary-sage rounded-lg hover:bg-ds-primary-sage/5 transition-colors duration-200"
+									aria-label="View project gallery"
+								>
+									<ImageIcon className="w-4 h-4" />
+									<span className="hidden sm:inline">Project Gallery</span>
+								</button>
+								<button
+									onClick={() =>
+										handleViewMaintenanceSchedule(
+											products[0]?.maintenanceSchedule || {
+												interval: "N/A",
+												tasks: ["No schedule available"],
+											}
+										)
+									}
+									className="flex items-center space-x-2 px-8 py-2 border border-ds-primary-sage text-ds-primary-sage rounded-lg hover:bg-ds-primary-sage/5 transition-colors duration-200"
+									aria-label="View maintenance schedule"
+								>
+									<CalendarCheck className="w-4 h-4" />
+									<span className="hidden sm:inline">Maintenance Guide</span>
+								</button>
+							</div>
+						</div>
+					</div>
+
+					{/* Filters and Sort Bar */}
+					<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+						<div className="flex items-center space-x-4">
+							{/* Mobile Filter Toggle */}
+							<button
+								onClick={() => setShowFilters(!showFilters)}
+								className="lg:hidden flex items-center space-x-2 px-8 py-2 border border-ds-neutral-lightGray rounded-lg hover:bg-ds-neutral-lightGray/50 transition-colors duration-200"
+								aria-label="Toggle filters"
+							>
+								<SlidersHorizontal className="w-4 h-4" />
+								<span>Filters</span>
+								{activeFilterCount > 0 && (
+									<span className="bg-ds-primary-sage text-ds-neutral-white text-xs px-2 py-2 rounded-full">
+										{activeFilterCount}
+									</span>
+								)}
+							</button>
+
+							{/* View Mode Toggle */}
+							<div className="flex border border-ds-neutral-lightGray rounded-lg overflow-hidden">
+								<button
+									onClick={() => setViewMode("grid")}
+									className={cn(
+										"p-2 transition-colors duration-200",
+										viewMode === "grid"
+											? "bg-ds-primary-sage text-ds-neutral-white"
+											: "bg-ds-neutral-white text-ds-neutral-mediumGray hover:bg-ds-neutral-lightGray/50"
+									)}
+									aria-label="Grid view"
+								>
+									<Grid className="w-4 h-4" />
+								</button>
+								<button
+									onClick={() => setViewMode("list")}
+									className={cn(
+										"p-2 transition-colors duration-200",
+										viewMode === "list"
+											? "bg-ds-primary-sage text-ds-neutral-white"
+											: "bg-ds-neutral-white text-ds-neutral-mediumGray hover:bg-ds-neutral-lightGray/50"
+									)}
+									aria-label="List view"
+								>
+									<List className="w-4 h-4" />
+								</button>
+							</div>
+
+							{/* Results Count */}
+							<span className="text-sm text-ds-neutral-mediumGray">
+								{filteredProducts.length} exterior paints found
+							</span>
+						</div>
+
+						<div className="flex items-center space-x-4">
+							{/* Clear Filters */}
+							{activeFilterCount > 0 && (
+								<button
+									onClick={clearFilters}
+									className="text-sm text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200"
+									aria-label="Clear all filters"
+								>
+									Clear all filters
+								</button>
+							)}
+
+							{/* Sort Dropdown */}
+							<ProductSort currentSort={sortBy} onSortChange={updateSort} />
+						</div>
+					</div>
+
+					{/* Main Layout */}
+					<div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+						{/* Filters Sidebar */}
+						<div className={cn("lg:block", showFilters ? "block" : "hidden")}>
+							<div className="sticky top-8">
+								<ExteriorPaintFilters
+									filters={filters}
+									onFilterChange={updateFilter}
+									products={products}
+								/>
+							</div>
+						</div>
+
+						{/* Products Grid */}
+						<div className="lg:col-span-3">
+							<ProductGrid
+								products={paginatedProducts}
+								viewMode={viewMode}
+								onAddToCompare={() => {}}
+								compareProducts={[]}
+								loading={isLoading}
+							/>
+
+							{/* Pagination */}
+							{totalPages > 1 && (
+								<div className="mt-8">
+									<ProductPagination
+										currentPage={currentPage}
+										totalPages={totalPages}
+										onPageChange={setCurrentPage}
+									/>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
+
+				{/* Coverage Calculator Modal */}
+				{showCalculator && (
+					<ExteriorCoverageCalculator
+						onClose={() => setShowCalculator(false)}
+					/>
+				)}
+
+				{/* Project Gallery Modal */}
+				{showProjectGallery && (
+					<ProjectGallery
+						images={galleryImages}
+						onClose={() => setShowProjectGallery(false)}
+					/>
+				)}
+
+				{/* Maintenance Schedule Modal */}
+				{showMaintenanceSchedule && selectedMaintenanceSchedule && (
+					<MaintenanceScheduleModal
+						schedule={selectedMaintenanceSchedule}
+						onClose={() => setShowMaintenanceSchedule(false)}
+					/>
+				)}
 			</div>
-
-			{/* Coverage Calculator Modal */}
-			{showCalculator && (
-				<ExteriorCoverageCalculator onClose={() => setShowCalculator(false)} />
-			)}
-
-			{/* Project Gallery Modal */}
-			{showProjectGallery && (
-				<ProjectGallery
-					images={galleryImages}
-					onClose={() => setShowProjectGallery(false)}
-				/>
-			)}
-
-			{/* Maintenance Schedule Modal */}
-			{showMaintenanceSchedule && selectedMaintenanceSchedule && (
-				<MaintenanceScheduleModal
-					schedule={selectedMaintenanceSchedule}
-					onClose={() => setShowMaintenanceSchedule(false)}
-				/>
-			)}
-		</div>
+		</PageLayout>
 	);
 }

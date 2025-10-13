@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { useCartStore } from "@/store/cart-store";
+import { useCartStore, useCartSummary } from "@/store/cart-store";
 import { useCheckoutStore } from "@/store/checkout-store";
 import { cn } from "@/lib/utils";
 import { ShoppingCart, Truck, CreditCard, CheckCircle } from "lucide-react";
@@ -12,7 +12,6 @@ import { OrderConfirmation } from "./OrderConfirmation";
 import {
 	calculateDiscount,
 	calculateShipping,
-	calculateSubtotal,
 	calculateTax,
 	calculateTotal,
 	formatCurrency,
@@ -22,6 +21,7 @@ import { mockFetchPromoCodes, mockFetchShippingOptions } from "@/lib/api";
 import { PromoCode, ShippingOption } from "@/types/checkout";
 import { useRouter } from "next/navigation";
 import { RetryButton } from "../ui/RetryButton";
+import Link from "next/link";
 
 const CHECKOUT_STEPS = [
 	{ id: 1, name: "Shipping", icon: Truck },
@@ -32,7 +32,8 @@ const CHECKOUT_STEPS = [
 
 export const CheckoutForm: React.FC = () => {
 	const router = useRouter();
-	const { items, getTotalItems, getTotalPrice } = useCartStore();
+	const { items, isEmpty, totalQuantity, uniqueItems } = useCartSummary();
+	const getTotalPrice = useCartStore((state) => state.getTotalPrice);
 	const {
 		formData,
 		currentStep,
@@ -51,10 +52,11 @@ export const CheckoutForm: React.FC = () => {
 	const [isMounted, setIsMounted] = useState(true);
 
 	useEffect(() => {
-		if (items.length === 0 && currentStep < 4 && !orderData) {
+		if (isEmpty && currentStep < 4 && !orderData) {
+			console.warn("[Checkout] Cart is empty, redirecting to cart page");
 			router.push("/shopping/cart");
 		}
-	}, [items.length, router, currentStep, orderData]);
+	}, [isEmpty, router, currentStep, orderData]);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -98,7 +100,7 @@ export const CheckoutForm: React.FC = () => {
 		};
 	});
 
-	const subtotal = useMemo(() => getTotalPrice(), [items]);
+	const subtotal = useMemo(() => getTotalPrice(), []);
 
 	useEffect(() => {
 		if (!formData.promoCode) {
@@ -125,10 +127,17 @@ export const CheckoutForm: React.FC = () => {
 			tax,
 			discount: promoDiscount,
 			total,
-			itemCount: getTotalItems(),
+			itemCount: totalQuantity,
+			uniqueItems: uniqueItems,
 			estimatedDelivery: formData.shippingOption?.estimatedDays || "N/A",
 		};
-	}, [subtotal, appliedPromo, formData.shippingOption, getTotalItems]);
+	}, [
+		subtotal,
+		appliedPromo,
+		formData.shippingOption,
+		totalQuantity,
+		uniqueItems,
+	]);
 
 	const handlePromoCodeChange = useCallback(
 		(code: string) => {
@@ -139,12 +148,42 @@ export const CheckoutForm: React.FC = () => {
 		[setPromoCode, isMounted]
 	);
 
-	// const retryLoadOptions = useCallback(() => {
-	// 	setError(null);
-	// 	setLoadingOptions(true);
-	// 	// Trigger re-fetch by changing a dependency
-	// 	window.location.reload();
-	// }, []);
+	const retryLoadOptions = useCallback(() => {
+		setError(null);
+		setLoadingOptions(true);
+		// Trigger re-fetch by changing a dependency
+		window.location.reload();
+	}, []);
+
+	if (isEmpty && currentStep < 4 && !orderData) {
+		return (
+			<div className="min-h-screen bg-ds-neutral-white flex items-center justify-center p-4">
+				<div className="text-center max-w-md">
+					<ShoppingCart className="w-16 h-16 text-ds-neutral-mediumGray mx-auto mb-4" />
+					<h2 className="text-2xl font-bold text-ds-primary-charcoal mb-2">
+						Your Cart is Empty
+					</h2>
+					<p className="text-ds-neutral-mediumGray mb-6">
+						Add some items to your cart before proceeding to checkout.
+					</p>
+					<div className="flex flex-col sm:flex-row gap-3 justify-center">
+						<Link
+							href="/products"
+							className="px-6 py-3 bg-ds-primary-sage text-white rounded-lg hover:bg-ds-primary-sage/90 transition-colors duration-200 font-medium"
+						>
+							Browse Products
+						</Link>
+						<Link
+							href="/shopping/cart"
+							className="px-6 py-3 border border-ds-neutral-lightGray text-ds-primary-charcoal rounded-lg hover:bg-ds-neutral-lightGray/50 transition-colors duration-200 font-medium"
+						>
+							View Cart
+						</Link>
+					</div>
+				</div>
+			</div>
+		);
+	}
 
 	if (loadingOptions) {
 		return (
@@ -163,7 +202,7 @@ export const CheckoutForm: React.FC = () => {
 		return (
 			<div className="min-h-screen bg-ds-neutral-white flex items-center justify-center">
 				<div className="text-center p-8 rounded-lg shadow-lg bg-red-50 border border-red-200">
-					<RetryButton onRetry={async () => window.location.reload()} />
+					<RetryButton onRetry={async () => retryLoadOptions()} />
 				</div>
 			</div>
 		);
@@ -259,7 +298,12 @@ export const CheckoutForm: React.FC = () => {
 							</h2>
 							<div className="space-y-4">
 								<div className="flex justify-between text-ds-neutral-darkSlate">
-									<span>Subtotal ({orderSummary.itemCount} items)</span>
+									<span>
+										Subtotal ({orderSummary.uniqueItems}{" "}
+										{orderSummary.uniqueItems === 1 ? " product" : " products"},{" "}
+										{orderSummary.itemCount}{" "}
+										{orderSummary.itemCount === 1 ? " unit" : " units"})
+									</span>
 									<span>{formatCurrency(orderSummary.subtotal)}</span>
 								</div>
 								<div className="flex justify-between text-ds-neutral-darkSlate">

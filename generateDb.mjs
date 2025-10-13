@@ -10,12 +10,25 @@ fs.readdirSync(dataDir)
 	.filter((f) => f.endsWith(".json"))
 	.forEach((file) => {
 		const name = file
-			.replace(/^mock/i, "") // remove “mock” prefix
-			.replace(/\.json$/, "") // remove extension
+			.replace(/^mock[-_]?/i, "")
+			.replace(/\.json$/, "")
 			.toLowerCase();
+
 		const filePath = path.join(dataDir, file);
-		db[name] = JSON.parse(fs.readFileSync(filePath, "utf8"));
+		const parsed = JSON.parse(fs.readFileSync(filePath, "utf8"));
+
+		// 🧠 Flatten nested object if needed (e.g. { products: [...] } → [...])
+		if (
+			typeof parsed === "object" &&
+			!Array.isArray(parsed) &&
+			parsed[name] &&
+			Array.isArray(parsed[name])
+		) {
+			db[name] = parsed[name];
+		} else {
+			db[name] = parsed;
+		}
 	});
 
 fs.writeFileSync(outputFile, JSON.stringify(db, null, 2));
-console.log("✅ Combined all JSON files into db.json");
+console.log("Combined all JSON files into db.json");

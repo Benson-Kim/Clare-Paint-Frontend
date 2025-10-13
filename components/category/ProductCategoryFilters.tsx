@@ -17,9 +17,25 @@ import {
 import { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
 
+interface ProductFilters {
+	colorFamilies?: string[];
+	finishTypes?: string[];
+	roomTypes?: string[];
+	priceRange?: [number, number];
+	minRating?: number;
+	brands?: string[];
+	features?: string[];
+	inStockOnly?: boolean;
+	weatherResistance?: string[];
+	applicationType?: string[];
+}
+
 interface ProductCategoryFiltersProps {
-	filters: any;
-	onFilterChange: (key: string, value: any) => void;
+	filters: ProductFilters;
+	onFilterChange: (
+		key: keyof ProductFilters,
+		value: string[] | [number, number] | number | boolean
+	) => void;
 	products: Product[];
 	categorySlug: string;
 	activeFilterCount: number;
@@ -130,11 +146,20 @@ export const ProductCategoryFilters: React.FC<ProductCategoryFiltersProps> = ({
 	];
 
 	const handleCheckboxChange = (
-		filterKey: string,
+		filterKey: keyof Pick<
+			ProductFilters,
+			| "colorFamilies"
+			| "finishTypes"
+			| "roomTypes"
+			| "brands"
+			| "features"
+			| "weatherResistance"
+			| "applicationType"
+		>,
 		value: string,
 		checked: boolean
 	) => {
-		const currentValues = filters[filterKey] || [];
+		const currentValues = (filters[filterKey] as string[]) || [];
 		const newValues = checked
 			? [...currentValues, value]
 			: currentValues.filter((v: string) => v !== value);
