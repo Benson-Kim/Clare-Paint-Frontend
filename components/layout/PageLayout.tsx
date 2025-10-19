@@ -63,6 +63,8 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
 	// Determine layout configuration based on route
 	const layoutConfig = getLayoutConfig(pathname, headerVariant);
 
+	const effectiveFullWidth = fullWidth || layoutConfig.forceFullWidth;
+
 	// Calculate main content styles
 	const mainContentStyles = {
 		minHeight: `calc(100vh - ${headerHeight}px - ${
@@ -137,8 +139,8 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
 					id="main-content"
 					className={cn(
 						"relative",
-						!fullWidth && "mx-auto px-4 sm:px-6 lg:px-8",
-						!fullWidth && containerMaxWidth[maxWidth],
+						!effectiveFullWidth && "mx-auto px-4 sm:px-6 lg:px-8",
+						!effectiveFullWidth && containerMaxWidth[maxWidth],
 						className
 					)}
 					style={mainContentStyles}
@@ -194,12 +196,14 @@ function getLayoutConfig(pathname: string, headerVariant: string) {
 		showBreadcrumbs: true,
 		showProgress: false,
 		footerSticky: false,
+		forceFullWidth: false,
 	};
 
 	// Homepage
 	if (pathname === "/") {
 		config.headerOverlay = headerVariant === "overlay";
 		config.showBreadcrumbs = false;
+		config.forceFullWidth = true;
 	}
 
 	// Checkout pages
@@ -222,6 +226,7 @@ function getLayoutConfig(pathname: string, headerVariant: string) {
 	// Category pages
 	if (pathname.includes("/products") || pathname.includes("/search")) {
 		config.showBreadcrumbs = true;
+		config.forceFullWidth = true;
 	}
 
 	return config;
