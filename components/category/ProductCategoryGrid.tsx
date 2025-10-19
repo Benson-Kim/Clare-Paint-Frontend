@@ -122,7 +122,7 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 				{hasFilters && (
 					<button
 						onClick={onClearFilters}
-						className="inline-flex items-center space-x-2 px-6 py-3 bg-ds-primary-sage text-ds-neutral-white rounded-lg hover:bg-ds-primary-sage/90 transition-colors duration-200"
+						className="inline-flex items-center space-x-2 px-6 py-3 cursor-pointer bg-ds-primary-sage text-ds-neutral-white rounded-lg hover:bg-ds-primary-sage/90 transition-colors duration-200"
 					>
 						<X className="w-4 h-4" />
 						<span>Clear All Filters</span>
@@ -234,7 +234,7 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 										onClick={(e) => handleQuickAdd(product, e)}
 										disabled={!product.inStock}
 										className={cn(
-											"flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2",
+											"flex-1 py-2 px-4 rounded-lg cursor-pointer font-medium transition-all duration-200 flex items-center justify-center space-x-2",
 											product.inStock
 												? "bg-ds-primary-sage text-ds-neutral-white hover:bg-ds-primary-sage/90"
 												: "bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -249,7 +249,7 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 											isInComparison(product.id) || compareProducts.length >= 3
 										}
 										className={cn(
-											"p-2 rounded-lg border-2 transition-all duration-200",
+											"p-2 rounded-lg border-2 transition-all duration-200 cursor-pointer",
 											isInComparison(product.id)
 												? "border-ds-primary-sage bg-ds-primary-sage/10 text-ds-primary-sage"
 												: "border-gray-300 text-gray-600 hover:border-ds-primary-sage hover:text-ds-primary-sage"
@@ -262,13 +262,10 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 									>
 										<Plus className="w-4 h-4" />
 									</button>
-									{/* <button className="p-2 rounded-lg border-2 border-gray-300 text-gray-600 hover:border-red-500 hover:text-red-500 transition-all duration-200">
-										<Heart className="w-4 h-4" />
-									</button> */}
 									<button
 										onClick={(e) => handleWishlistToggle(product, e)}
 										className={cn(
-											"p-2 rounded-lg border-2 transition-all duration-200",
+											"p-2 rounded-lg border-2 transition-all duration-200 cursor-pointer",
 											isInWishlist(product.id)
 												? "border-red-500 bg-red-50 text-red-500"
 												: "border-gray-300 text-gray-600 hover:border-red-500 hover:text-red-500"
@@ -315,14 +312,14 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 
 						{/* Overlay Actions */}
 						<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200">
-							<div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+							<div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 cursor-pointer group-hover:opacity-100 transition-opacity duration-200">
 								<button
 									onClick={(e) => handleAddToCompare(product, e)}
 									disabled={
 										isInComparison(product.id) || compareProducts.length >= 3
 									}
 									className={cn(
-										"p-2 rounded-full shadow-lg transition-all duration-200",
+										"p-2 rounded-full shadow-lg transition-all duration-200 cursor-pointer",
 										isInComparison(product.id)
 											? "bg-ds-primary-sage text-ds-neutral-white"
 											: "bg-ds-neutral-white text-gray-600 hover:bg-ds-primary-sage hover:text-ds-neutral-white"
@@ -335,13 +332,10 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 								>
 									<Plus className="w-4 h-4" />
 								</button>
-								{/* <button className="p-2 bg-ds-neutral-white text-gray-600 rounded-full shadow-lg hover:bg-red-50 hover:text-red-500 transition-all duration-200">
-									<Heart className="w-4 h-4" />
-								</button> */}
 								<button
 									onClick={(e) => handleWishlistToggle(product, e)}
 									className={cn(
-										"p-2 rounded-full shadow-lg transition-all duration-200",
+										"p-2 rounded-full shadow-lg transition-all duration-200 cursor-pointer",
 										isInWishlist(product.id)
 											? "bg-red-500 text-white"
 											: "bg-ds-neutral-white text-gray-600 hover:bg-red-50 hover:text-red-500"
@@ -366,7 +360,7 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 									onClick={(e) => handleQuickAdd(product, e)}
 									disabled={!product.inStock}
 									className={cn(
-										"w-full py-2 px-4 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2",
+										"w-full py-2 px-4 rounded-lg font-medium cursor-pointer transition-all duration-200 flex items-center justify-center space-x-2",
 										product.inStock
 											? "bg-ds-neutral-white text-ds-primary-sage hover:bg-ds-primary-sage hover:text-ds-neutral-white"
 											: "bg-gray-300 text-gray-500 cursor-not-allowed"

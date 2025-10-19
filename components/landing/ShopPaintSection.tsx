@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/cartUtils";
 import { Product } from "@/types/product";
+import { useWishlistStore } from "@/store/wishlist-store";
 
 export const ShopPaintSection: React.FC = () => {
 	const { addItem } = useCartStore();
@@ -47,6 +48,31 @@ export const ShopPaintSection: React.FC = () => {
 			quantity: 1,
 			price: product.basePrice + product.finishes[0].price,
 		});
+	};
+
+	const { items, removeItem, addToWishlist } = useWishlistStore();
+
+	const isInWishlist = (productId: string) =>
+		items.some((item) => item.id === productId);
+
+	const handleWishlistToggle = (product: Product, e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if (isInWishlist(product.id)) {
+			removeItem(product.id);
+		} else {
+			addToWishlist({
+				id: product.id,
+				name: product.name,
+				price: product.basePrice,
+				image: product.colors?.[0]?.image ?? "",
+				brand: product.brand,
+				color: product.colors?.[0]?.name ?? "Default",
+				inStock: product.inStock,
+				rating: product.rating,
+			});
+		}
 	};
 
 	const nextSlide = () => {
@@ -122,10 +148,31 @@ export const ShopPaintSection: React.FC = () => {
 														{/* Overlay Actions */}
 														<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300">
 															<div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
-																<button className="p-2 bg-ds-neutral-white rounded-full shadow-lg hover:bg-red-50 hover:text-red-500 transition-colors duration-200">
-																	<Heart className="w-4 h-4" />
+																<button
+																	onClick={(e) =>
+																		handleWishlistToggle(product, e)
+																	}
+																	className={cn(
+																		"p-2 bg-ds-neutral-white rounded-full shadow-lg cursor-pointer",
+																		isInWishlist(product.id)
+																			? "bg-red-100 text-red-500 transition-colors duration-200"
+																			: "hover:bg-red-50 hover:text-red-500 transition-colors duration-200"
+																	)}
+																	title={
+																		isInWishlist(product.id)
+																			? "Remove from wishlist"
+																			: "Add to wishlist"
+																	}
+																>
+																	<Heart
+																		className={cn(
+																			"w-4 h-4",
+																			isInWishlist(product.id) && "fill-current"
+																		)}
+																	/>
 																</button>
-																<button className="p-2 bg-ds-neutral-white rounded-full shadow-lg hover:bg-ds-primary-sage hover:text-ds-neutral-white transition-colors duration-200">
+
+																<button className="p-2 bg-ds-neutral-white rounded-full shadow-lg cursor-pointer hover:bg-ds-primary-sage hover:text-ds-neutral-white transition-colors duration-200">
 																	<Eye className="w-4 h-4" />
 																</button>
 															</div>
