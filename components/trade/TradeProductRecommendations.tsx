@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface TradeProduct {
 	id: string;
@@ -420,15 +421,15 @@ export const TradeProductRecommendations: React.FC = () => {
 							<div className="mb-4">
 								<div className="flex items-baseline space-x-4">
 									<span className="text-xl font-bold text-ds-primary-charcoal">
-										${product.tradePrice.toFixed(2)}
+										{formatCurrency(product.tradePrice)}
 									</span>
 									<span className="text-sm text-ds-neutral-mediumGray line-through">
-										${product.unitPrice.toFixed(2)}
+										{formatCurrency(product.unitPrice)}
 									</span>
 								</div>
 								<p className="text-sm text-green-600 font-medium">
-									Trade savings: $
-									{(product.unitPrice - product.tradePrice).toFixed(2)} (
+									Trade savings:
+									{formatCurrency(product.unitPrice - product.tradePrice)} (
 									{product.discount}%)
 								</p>
 								<p className="text-xs text-ds-neutral-mediumGray">

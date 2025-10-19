@@ -50,6 +50,8 @@ export interface Product {
 	brand: string;
 	description: string;
 	basePrice: number;
+	bulkPrice?: number;
+	leadTime?: string;
 	category: ProductCategory;
 	colors: ProductColor[];
 	finishes: ProductFinish[];
@@ -87,6 +89,19 @@ export interface CartItemWithDetails extends CartItem {
 	color: ProductColor;
 	finish: ProductFinish;
 	totalPrice: number;
+}
+
+export interface WishlistItem {
+	id: string;
+	name: string;
+	brand: string;
+	color: string;
+	price: number;
+	originalPrice?: number;
+	image: string;
+	inStock: boolean;
+	rating: number;
+	onSale?: boolean;
 }
 
 export const PRODUCT_CATEGORIES = {

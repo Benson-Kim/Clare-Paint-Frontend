@@ -5,6 +5,7 @@ import { X, Star, ArrowRight, Palette, Shield, Droplets } from "lucide-react";
 import { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface RoomRecommendationsProps {
 	roomType: string;
@@ -285,7 +286,7 @@ export const RoomRecommendations: React.FC<RoomRecommendationsProps> = ({
 
 											<div className="flex items-center justify-between">
 												<span className="font-bold text-ds-primary-charcoal">
-													${product.basePrice.toFixed(2)}
+													{formatCurrency(product.basePrice)}
 												</span>
 												<button className="text-ds-primary-sage hover:text-ds-primary-sage/80 transition-colors duration-200">
 													<ArrowRight className="w-4 h-4" />

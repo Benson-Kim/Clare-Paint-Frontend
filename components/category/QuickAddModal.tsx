@@ -5,6 +5,7 @@ import { X, ShoppingCart, Plus, Minus, Check, Star } from "lucide-react";
 import { Product, ProductColor, ProductFinish } from "@/types/product";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface QuickAddModalProps {
 	product: Product;
@@ -291,12 +292,12 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
 										Total:
 									</span>
 									<span className="text-2xl font-bold text-ds-primary-sage">
-										${totalPrice.toFixed(2)}
+										{formatCurrency(totalPrice)}
 									</span>
 								</div>
 								{quantity > 1 && (
 									<p className="text-sm text-gray-600 text-right">
-										${(product.basePrice + selectedFinish.price).toFixed(2)}{" "}
+										{formatCurrency(product.basePrice + selectedFinish.price)}{" "}
 										each
 									</p>
 								)}

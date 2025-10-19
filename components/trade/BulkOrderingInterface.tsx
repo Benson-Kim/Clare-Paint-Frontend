@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface BulkOrderItem {
 	id: string;
@@ -62,7 +63,7 @@ export const BulkOrderingInterface: React.FC = () => {
 		"quick" | "templates" | "upload" | "history"
 	>("quick");
 	const [orderItems, setOrderItems] = useState<BulkOrderItem[]>([]);
-	const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+	// const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
 	const [showQuoteRequest, setShowQuoteRequest] = useState(false);
 	const [showTemplateForm, setShowTemplateForm] = useState(false);
 	const [showEditTemplate, setShowEditTemplate] = useState<string | null>(null);
@@ -464,14 +465,14 @@ export const BulkOrderingInterface: React.FC = () => {
 										</div>
 										<div className="text-right">
 											<p className="text-lg font-bold text-ds-primary-charcoal">
-												${product.bulkPrice.toFixed(2)}
+												{formatCurrency(product.bulkPrice)}
 											</p>
 											<p className="text-sm text-ds-neutral-mediumGray line-through">
-												${product.unitPrice.toFixed(2)}
+												{formatCurrency(product.unitPrice)}
 											</p>
 											<p className="text-sm text-green-600 font-medium">
-												Save $
-												{(product.unitPrice - product.bulkPrice).toFixed(2)}
+												Save
+												{formatCurrency(product.unitPrice - product.bulkPrice)}
 											</p>
 										</div>
 									</div>
@@ -589,7 +590,7 @@ export const BulkOrderingInterface: React.FC = () => {
 											</div>
 											<div className="text-right">
 												<p className="font-bold text-ds-primary-charcoal text-sm">
-													${item.totalPrice.toFixed(2)}
+													{formatCurrency(item.totalPrice)}
 												</p>
 												<button
 													onClick={() => removeItem(item.id)}
@@ -607,7 +608,7 @@ export const BulkOrderingInterface: React.FC = () => {
 												Subtotal:
 											</span>
 											<span className="font-medium text-ds-primary-charcoal">
-												${(totalOrderValue + totalSavings).toFixed(2)}
+												{formatCurrency(totalOrderValue + totalSavings)}
 											</span>
 										</div>
 										<div className="flex justify-between text-sm">
@@ -615,13 +616,13 @@ export const BulkOrderingInterface: React.FC = () => {
 												Trade Discount:
 											</span>
 											<span className="font-medium text-green-600">
-												-${totalSavings.toFixed(2)}
+												-{formatCurrency(totalSavings)}
 											</span>
 										</div>
 										<div className="flex justify-between text-lg font-bold">
 											<span className="text-ds-primary-charcoal">Total:</span>
 											<span className="text-ds-primary-charcoal">
-												${totalOrderValue.toFixed(2)}
+												{formatCurrency(totalOrderValue)}
 											</span>
 										</div>
 									</div>

@@ -12,6 +12,7 @@ import { SearchOverlay } from "./SearchOverlay";
 import { AccountDropdown } from "./AccountDropdown";
 import { CartDropdown } from "./CartDropdown";
 import { WishlistDropdown } from "./WishlistDropdown";
+import { useWishlistStore } from "@/store/wishlist-store";
 
 interface HeaderProps {
 	className?: string;
@@ -28,11 +29,11 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
 	const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 	const [searchQuery, setSearchQuery] = useState("");
-	const [wishlistCount, setWishlistCount] = useState(3); // Mock wishlist count
+	const { items, fetchItems } = useWishlistStore(); // Mock wishlist count
 
 	// Refs for click outside detection
 	const headerRef = useRef<HTMLElement>(null);
-	const searchRef = useRef<HTMLDivElement>(null);
+	// const searchRef = useRef<HTMLDivElement>(null);
 
 	// Scroll behavior for sticky header
 	useEffect(() => {
@@ -128,6 +129,11 @@ export const Header: React.FC<HeaderProps> = ({ className }) => {
 		}
 	};
 
+	useEffect(() => {
+		fetchItems();
+	}, [fetchItems]);
+
+	const wishlistCount = items.length;
 	const cartItemCount = getTotalItems();
 
 	return (

@@ -21,6 +21,7 @@ import {
 	AlertCircle,
 	Info,
 } from "lucide-react";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface ShippingInformationProps {
 	onNext: () => void;
@@ -352,7 +353,7 @@ export const ShippingInformation: React.FC<ShippingInformationProps> = ({
 							</div>
 						</div>
 						<span className="font-semibold text-ds-primary-charcoal">
-							{option.price === 0 ? "Free" : `$${option.price.toFixed(2)}`}
+							{option.price === 0 ? "Free" : `${formatCurrency(option.price)}`}
 						</span>
 					</label>
 				))}

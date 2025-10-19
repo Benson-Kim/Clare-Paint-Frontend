@@ -4,7 +4,6 @@ import React, { useState, useRef } from "react";
 import Link from "next/link";
 import {
 	ArrowRight,
-	ArrowLeft,
 	ShoppingCart,
 	Star,
 	Heart,
@@ -16,6 +15,8 @@ import { useCartStore } from "@/store/cart-store";
 import { mockProducts } from "@/data/mock-products";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/cartUtils";
+import { Product } from "@/types/product";
 
 export const ShopPaintSection: React.FC = () => {
 	const { addItem } = useCartStore();
@@ -38,7 +39,7 @@ export const ShopPaintSection: React.FC = () => {
 		return () => clearInterval(interval);
 	}, [isAutoPlaying, totalSlides]);
 
-	const handleQuickAdd = (product: any) => {
+	const handleQuickAdd = (product: Product) => {
 		addItem({
 			productId: product.id,
 			colorId: product.colors[0].id,
@@ -206,7 +207,7 @@ export const ShopPaintSection: React.FC = () => {
 														<div className="flex items-center justify-between">
 															<div>
 																<span className="text-xl font-bold text-ds-primary-charcoal">
-																	${product.basePrice.toFixed(2)}
+																	{formatCurrency(product.basePrice)}
 																</span>
 																<p className="text-xs text-ds-neutral-mediumGray">
 																	Starting price

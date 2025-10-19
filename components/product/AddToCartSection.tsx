@@ -6,6 +6,7 @@ import { useCartStore } from "@/store/cart-store";
 import { Product, ProductColor, ProductFinish } from "@/types/product";
 import { QuantitySelector } from "./QuantitySelector";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface AddToCartSectionProps {
 	product: Product;
@@ -68,19 +69,19 @@ export const AddToCartSection: React.FC<AddToCartSectionProps> = ({
 			<div className="border-b border-gray-200 pb-6">
 				<div className="flex items-baseline space-x-2 mb-2">
 					<span className="text-3xl font-bold text-ds-primary-charcoal">
-						${totalPrice.toFixed(2)}
+						{formatCurrency(totalPrice)}
 					</span>
 					{quantity > 1 && (
 						<span className="text-lg text-gray-500">
-							(${(product.basePrice + selectedFinish.price).toFixed(2)} each)
+							{formatCurrency(product.basePrice + selectedFinish.price)}
 						</span>
 					)}
 				</div>
 
 				{selectedFinish.price > 0 && (
 					<p className="text-sm text-gray-600">
-						Base price: ${product.basePrice.toFixed(2)} + $
-						{selectedFinish.price.toFixed(2)} {selectedFinish.name} finish
+						Base price: {formatCurrency(product.basePrice)} +
+						{formatCurrency(selectedFinish.price)} {selectedFinish.name} finish
 					</p>
 				)}
 

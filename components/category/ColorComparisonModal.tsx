@@ -6,6 +6,7 @@ import { Product } from "@/types/product";
 import { useCartStore } from "@/store/cart-store";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface ColorComparisonModalProps {
 	products: Product[];
@@ -235,7 +236,8 @@ export const ColorComparisonModal: React.FC<ColorComparisonModalProps> = ({
 											>
 												{product.finishes.map((finish) => (
 													<option key={finish.id} value={finish.id}>
-														{finish.name} (+${finish.price.toFixed(2)})
+														{finish.name} (+$
+														{formatCurrency(finish.price)})
 													</option>
 												))}
 											</select>
@@ -244,10 +246,9 @@ export const ColorComparisonModal: React.FC<ColorComparisonModalProps> = ({
 										{/* Price */}
 										<div className="mb-4">
 											<p className="text-lg font-bold text-ds-primary-charcoal">
-												$
-												{(
+												{formatCurrency(
 													product.basePrice + (selectedFinish?.price || 0)
-												).toFixed(2)}
+												)}
 											</p>
 											<p className="text-xs text-gray-600">Per gallon</p>
 										</div>

@@ -7,6 +7,8 @@ import { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ProductCategoryFilters } from "@/hooks/useProductCategoryFilters";
+import { formatCurrency } from "@/utils/cartUtils";
+import { useWishlistStore } from "@/store/wishlist-store";
 
 type FilterValue = string[] | string | boolean | number | null;
 
@@ -47,6 +49,31 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 		e.preventDefault();
 		e.stopPropagation();
 		onAddToCompare(product);
+	};
+
+	const { items, removeItem, addToWishlist } = useWishlistStore();
+
+	const isInWishlist = (productId: string) =>
+		items.some((item) => item.id === productId);
+
+	const handleWishlistToggle = (product: Product, e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if (isInWishlist(product.id)) {
+			removeItem(product.id);
+		} else {
+			addToWishlist({
+				id: product.id,
+				name: product.name,
+				price: product.basePrice,
+				image: product.colors?.[0]?.image ?? "",
+				brand: product.brand,
+				color: product.colors?.[0]?.name ?? "Default",
+				inStock: product.inStock,
+				rating: product.rating,
+			});
+		}
 	};
 
 	if (loading) {
@@ -169,7 +196,7 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 									</div>
 									<div className="text-right">
 										<p className="text-2xl font-bold text-ds-primary-charcoal">
-											${product.basePrice.toFixed(2)}
+											{formatCurrency(product.basePrice)}
 										</p>
 										<p className="text-sm text-gray-600">Starting price</p>
 									</div>
@@ -235,8 +262,29 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 									>
 										<Plus className="w-4 h-4" />
 									</button>
-									<button className="p-2 rounded-lg border-2 border-gray-300 text-gray-600 hover:border-red-500 hover:text-red-500 transition-all duration-200">
+									{/* <button className="p-2 rounded-lg border-2 border-gray-300 text-gray-600 hover:border-red-500 hover:text-red-500 transition-all duration-200">
 										<Heart className="w-4 h-4" />
+									</button> */}
+									<button
+										onClick={(e) => handleWishlistToggle(product, e)}
+										className={cn(
+											"p-2 rounded-lg border-2 transition-all duration-200",
+											isInWishlist(product.id)
+												? "border-red-500 bg-red-50 text-red-500"
+												: "border-gray-300 text-gray-600 hover:border-red-500 hover:text-red-500"
+										)}
+										title={
+											isInWishlist(product.id)
+												? "Remove from wishlist"
+												: "Add to wishlist"
+										}
+									>
+										<Heart
+											className={cn(
+												"w-4 h-4",
+												isInWishlist(product.id) && "fill-current"
+											)}
+										/>
 									</button>
 								</div>
 							</div>
@@ -287,8 +335,29 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 								>
 									<Plus className="w-4 h-4" />
 								</button>
-								<button className="p-2 bg-ds-neutral-white text-gray-600 rounded-full shadow-lg hover:bg-red-50 hover:text-red-500 transition-all duration-200">
+								{/* <button className="p-2 bg-ds-neutral-white text-gray-600 rounded-full shadow-lg hover:bg-red-50 hover:text-red-500 transition-all duration-200">
 									<Heart className="w-4 h-4" />
+								</button> */}
+								<button
+									onClick={(e) => handleWishlistToggle(product, e)}
+									className={cn(
+										"p-2 rounded-full shadow-lg transition-all duration-200",
+										isInWishlist(product.id)
+											? "bg-red-500 text-white"
+											: "bg-ds-neutral-white text-gray-600 hover:bg-red-50 hover:text-red-500"
+									)}
+									title={
+										isInWishlist(product.id)
+											? "Remove from wishlist"
+											: "Add to wishlist"
+									}
+								>
+									<Heart
+										className={cn(
+											"w-4 h-4",
+											isInWishlist(product.id) && "fill-current"
+										)}
+									/>
 								</button>
 							</div>
 
@@ -389,7 +458,7 @@ export const ProductCategoryGrid: React.FC<ProductCategoryGridProps> = ({
 						<div className="flex items-center justify-between">
 							<div>
 								<p className="text-lg font-bold text-ds-primary-charcoal">
-									${product.basePrice.toFixed(2)}
+									{formatCurrency(product.basePrice)}
 								</p>
 								<p className="text-xs text-gray-600">Starting price</p>
 							</div>

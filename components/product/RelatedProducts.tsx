@@ -3,6 +3,7 @@
 import React from "react";
 import { Product } from "@/types/product";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface RelatedProductsProps {
 	currentProductId: string;
@@ -83,7 +84,7 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
 
 								<div className="flex items-center justify-between">
 									<span className="text-lg font-bold text-ds-primary-charcoal">
-										${product.price.toFixed(2)}
+										{formatCurrency(product.price)}
 									</span>
 
 									<div className="flex items-center space-x-1">

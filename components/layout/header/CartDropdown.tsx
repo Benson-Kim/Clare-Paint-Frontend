@@ -97,7 +97,7 @@ export const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
 								Free shipping at $100
 							</span>
 							<span className="text-ds-primary-sage font-medium">
-								${remainingForFreeShipping.toFixed(2)} to go
+								{formatCurrency(remainingForFreeShipping)} to go
 							</span>
 						</div>
 						<div className="w-full bg-ds-neutral-lightGray rounded-full h-2">
@@ -229,7 +229,7 @@ export const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
 
 				<div className="space-y-2">
 					<Link
-						href="/cart"
+						href="/shopping/cart"
 						onClick={onClose}
 						className="block w-full py-3 bg-ds-primary-sage text-ds-neutral-white text-center rounded-lg hover:bg-ds-primary-sage/90 transition-colors duration-200 font-medium"
 					>
@@ -237,7 +237,7 @@ export const CartDropdown: React.FC<CartDropdownProps> = ({ onClose }) => {
 					</Link>
 
 					<Link
-						href="/checkout"
+						href="/shopping/checkout"
 						onClick={onClose}
 						className="w-full py-3 border border-ds-primary-sage text-ds-primary-sage text-center rounded-lg hover:bg-ds-primary-sage/5 transition-colors duration-200 font-medium flex items-center justify-center space-x-2"
 					>

@@ -300,7 +300,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 							<div className="flex items-center justify-between">
 								<div>
 									<p className="text-lg font-bold text-ds-primary-charcoal">
-										${product.basePrice.toFixed(2)}
+										{formatCurrency(product.basePrice)}
 									</p>
 									<p className="text-xs text-ds-neutral-mediumGray">
 										Starting price

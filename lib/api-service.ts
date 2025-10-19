@@ -6,7 +6,7 @@ import {
 	ShippingOption,
 	PromoCode,
 } from "@/types/checkout";
-import { CartItem, Product } from "@/types/product";
+import { CartItem, Product, WishlistItem } from "@/types/product";
 import { DashboardStats } from "@/types/account";
 import { mockProducts } from "@/data/mock-products";
 import { mockShippingOptions } from "@/data/mock-shipping-options";
@@ -14,6 +14,9 @@ import { mockPromoCodes } from "@/data/mock-promo-codes";
 import { mockOrderHistory } from "@/data/mock-order-history";
 import { CustomerReview, ReviewSubmissionFormData } from "@/types/reviews";
 import { mockCustomerReviews } from "@/data/mock-customer-reviews";
+import { mockWishlistItems } from "@/data/mock-wishlist";
+import { ColorPalette } from "@/types/colors";
+import { mockColorPalettes } from "@/data/mock-color-palette";
 
 // Configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
@@ -146,6 +149,15 @@ export async function searchProducts(query: string): Promise<Product[]> {
 }
 
 /**
+ * Fetch color palettes
+ */
+export async function fetchColorPalettes(): Promise<ColorPalette[]> {
+	const endpoint = "/colorpalettes";
+
+	return fetchOrMock<ColorPalette[]>(endpoint, mockColorPalettes, 300);
+}
+
+/**
  * Fetch shipping options
  */
 export async function fetchShippingOptions(): Promise<ShippingOption[]> {
@@ -161,6 +173,34 @@ export async function fetchPromoCodes(): Promise<PromoCode[]> {
 	const endpoint = "/promoCodes?active=true";
 
 	return fetchOrMock<PromoCode[]>(endpoint, mockPromoCodes, 200);
+}
+
+/**
+ * Fetch promo codes
+ */
+export async function fetchWishlistProducts(): Promise<WishlistItem[]> {
+	const endpoint = "/wishlist";
+
+	return fetchOrMock<WishlistItem[]>(endpoint, mockWishlistItems, 200);
+}
+
+/**
+ * Remove from wishlist
+ * @param productId
+ * @returns
+ */
+
+export async function removeFromWishlist(productId: string): Promise<void> {
+	const endpoint = `/wishlist/${productId}`;
+
+	if (USE_JSON_SERVER) {
+		await apiFetch(endpoint, { method: "DELETE" });
+		return;
+	}
+
+	// Mock behavior
+	await delay(300);
+	return;
 }
 
 /**

@@ -5,6 +5,7 @@ import { X, Download, Share2 } from "lucide-react";
 import { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface ColorComparisonProps {
 	products: Product[];
@@ -99,7 +100,7 @@ export const ColorComparison: React.FC<ColorComparisonProps> = ({
 										{product.name}
 									</h3>
 									<p className="text-2xl font-bold text-ds-primary-charcoal mb-4">
-										${product.basePrice.toFixed(2)}
+										{formatCurrency(product.basePrice)}
 									</p>
 
 									{/* Color Swatches */}

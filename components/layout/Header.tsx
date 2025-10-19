@@ -14,6 +14,7 @@ import { AccountDropdown } from "./header/AccountDropdown";
 import { CartDropdown } from "./header/CartDropdown";
 import { WishlistDropdown } from "./header/WishlistDropdown";
 import Image from "next/image";
+import { useWishlistStore } from "@/store/wishlist-store";
 
 interface HeaderProps {
 	className?: string;
@@ -43,7 +44,6 @@ export const Header: React.FC<HeaderProps> = ({
 	} = useHeaderState();
 
 	const [searchQuery, setSearchQuery] = useState("");
-	const [wishlistCount] = useState(3); // Mock wishlist count
 	const headerRef = useRef<HTMLElement>(null);
 
 	const { uniqueItems } = useCartSummary();
@@ -61,6 +61,10 @@ export const Header: React.FC<HeaderProps> = ({
 			setSearchQuery("");
 		}
 	};
+
+	const { items } = useWishlistStore();
+
+	const wishlistCount = items.length;
 
 	// Skip links for accessibility
 	const SkipLinks = () => (
@@ -208,7 +212,7 @@ export const Header: React.FC<HeaderProps> = ({
 						<Logo />
 						<div className="flex items-center space-x-4">
 							<Link
-								href="/cart"
+								href="/shopping/cart"
 								className="text-ds-neutral-mediumGray hover:text-ds-primary-sage transition-colors duration-200"
 								aria-label={`Cart with ${uniqueItems} items`}
 							>

@@ -2,70 +2,36 @@
 
 import React from "react";
 import Link from "next/link";
-import { Heart, X, ArrowRight, ShoppingCart, Star } from "lucide-react";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/utils/cartUtils";
+import { Heart, X, ArrowRight, ShoppingCart, Star } from "lucide-react";
+import { useWishlistStore } from "@/store/wishlist-store";
 
 interface WishlistDropdownProps {
 	itemCount: number;
 	onClose: () => void;
 }
 
-interface WishlistItem {
-	id: string;
-	name: string;
-	brand: string;
-	color: string;
-	price: number;
-	originalPrice?: number;
-	image: string;
-	inStock: boolean;
-	rating: number;
-	onSale?: boolean;
-}
-
 export const WishlistDropdown: React.FC<WishlistDropdownProps> = ({
-	itemCount,
 	onClose,
 }) => {
-	// Mock wishlist items - in production, this would come from wishlist store
-	const wishlistItems: WishlistItem[] = [
-		{
-			id: "1",
-			name: "Premium Interior Paint",
-			brand: "Artisan Pro",
-			color: "Sage Whisper",
-			price: 89.99,
-			originalPrice: 99.99,
-			image:
-				"https://images.pexels.com/photos/6782371/pexels-photo-6782371.jpeg?auto=compress&cs=tinysrgb&w=400",
-			inStock: true,
-			rating: 4.8,
-			onSale: true,
-		},
-		{
-			id: "2",
-			name: "Exterior Acrylic Paint",
-			brand: "WeatherGuard Pro",
-			color: "Classic White",
-			price: 99.99,
-			image:
-				"https://images.pexels.com/photos/164005/pexels-photo-164005.jpeg?auto=compress&cs=tinysrgb&w=400",
-			inStock: true,
-			rating: 4.9,
-		},
-		{
-			id: "3",
-			name: "Specialty Primer",
-			brand: "PrimeShield",
-			color: "Universal Gray",
-			price: 34.99,
-			image:
-				"https://images.pexels.com/photos/6585760/pexels-photo-6585760.jpeg?auto=compress&cs=tinysrgb&w=400",
-			inStock: false,
-			rating: 4.7,
-		},
-	];
+	const { items, loading, addToCart, removeItem } = useWishlistStore();
+
+	const itemCount = items.length;
+
+	if (loading) {
+		return (
+			<div className="absolute top-full right-0 mt-2 w-96 bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg shadow-xl z-50 overflow-hidden">
+				<div className="p-6 text-center">
+					<div className="w-6 h-6 border-4 border-ds-primary-sage border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+					<p className="text-sm text-ds-neutral-mediumGray">
+						Loading your wishlist...
+					</p>
+				</div>
+			</div>
+		);
+	}
 
 	if (itemCount === 0) {
 		return (
@@ -113,22 +79,22 @@ export const WishlistDropdown: React.FC<WishlistDropdownProps> = ({
 			{/* Wishlist Items */}
 			<div className="max-h-80 overflow-y-auto">
 				<div className="p-4 space-y-4">
-					{wishlistItems.map((item) => (
-						<div key={item.id} className="flex items-start space-x-3 group">
+					{items.map((product) => (
+						<div key={product.id} className="flex items-start space-x-3 group">
 							<Link
-								href={`/product/${item.id}`}
+								href={`/product/${product.id}`}
 								onClick={onClose}
 								className="flex-shrink-0 relative"
 							>
 								<Image
-									src={item.image}
-									alt={`${item.name} in ${item.color}`}
+									src={product.image}
+									alt={`${product.name} in ${product.color}`}
 									width={64}
 									height={64}
 									className="object-cover rounded-lg border border-ds-neutral-lightGray hover:border-ds-primary-sage transition-colors duration-200"
 									loading="lazy"
 								/>
-								{item.onSale && (
+								{product.onSale && (
 									<span className="absolute -top-1 -right-1 bg-red-500 text-ds-neutral-white text-xs font-bold px-1 py-0.5 rounded">
 										Sale
 									</span>
@@ -137,17 +103,17 @@ export const WishlistDropdown: React.FC<WishlistDropdownProps> = ({
 
 							<div className="flex-1 min-w-0">
 								<Link
-									href={`/product/${item.id}`}
+									href={`/product/${product.id}`}
 									onClick={onClose}
 									className="block"
 								>
 									<h4 className="font-medium text-ds-primary-charcoal text-sm line-clamp-2 hover:text-ds-primary-sage transition-colors duration-200">
-										{item.name}
+										{product.name}
 									</h4>
 								</Link>
 
 								<p className="text-xs text-ds-neutral-mediumGray mt-1">
-									{item.brand} • {item.color}
+									{product.brand} • {product.color}
 								</p>
 
 								{/* Rating */}
@@ -158,7 +124,7 @@ export const WishlistDropdown: React.FC<WishlistDropdownProps> = ({
 												key={star}
 												className={cn(
 													"w-3 h-3",
-													star <= item.rating
+													star <= product.rating
 														? "text-yellow-400 fill-current"
 														: "text-ds-neutral-lightGray"
 												)}
@@ -166,18 +132,18 @@ export const WishlistDropdown: React.FC<WishlistDropdownProps> = ({
 										))}
 									</div>
 									<span className="text-xs text-ds-neutral-mediumGray">
-										{item.rating}
+										{product.rating}
 									</span>
 								</div>
 
 								<div className="flex items-center justify-between mt-2">
 									<div className="flex items-center space-x-2">
 										<span className="font-medium text-ds-primary-charcoal text-sm">
-											${item.price.toFixed(2)}
+											{formatCurrency(product.price)}
 										</span>
-										{item.originalPrice && (
+										{product.originalPrice && (
 											<span className="text-xs text-ds-neutral-mediumGray line-through">
-												${item.originalPrice.toFixed(2)}
+												{formatCurrency(product.originalPrice)}
 											</span>
 										)}
 									</div>
@@ -186,27 +152,29 @@ export const WishlistDropdown: React.FC<WishlistDropdownProps> = ({
 										<button
 											className={cn(
 												"p-1.5 rounded text-xs font-medium transition-colors duration-200 min-w-[32px] min-h-[32px] flex items-center justify-center",
-												item.inStock
+												product.inStock
 													? "bg-ds-primary-sage text-ds-neutral-white hover:bg-ds-primary-sage/90"
 													: "bg-ds-neutral-lightGray text-ds-neutral-mediumGray cursor-not-allowed"
 											)}
-											disabled={!item.inStock}
-											aria-label={`Add ${item.name} to cart`}
-											title={item.inStock ? "Add to cart" : "Out of stock"}
+											onClick={() => addToCart(product)}
+											disabled={!product.inStock}
+											aria-label={`Add ${product.name} to cart`}
+											title={product.inStock ? "Add to cart" : "Out of stock"}
 										>
 											<ShoppingCart className="w-3 h-3" />
 										</button>
 
 										<button
 											className="p-1.5 text-ds-neutral-mediumGray hover:text-red-500 transition-colors duration-200 opacity-0 group-hover:opacity-100 min-w-[32px] min-h-[32px] flex items-center justify-center"
-											aria-label={`Remove ${item.name} from wishlist`}
+											aria-label={`Remove ${product.name} from wishlist`}
+											onClick={() => removeItem(product.id)}
 										>
 											<X className="w-3 h-3" />
 										</button>
 									</div>
 								</div>
 
-								{!item.inStock && (
+								{!product.inStock && (
 									<p className="text-xs text-red-600 mt-1">
 										Out of stock - We&apos;ll notify you when available
 									</p>

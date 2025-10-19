@@ -10,6 +10,7 @@ import {
 	ChevronUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface PrimerInfo {
 	id: string;
@@ -308,7 +309,7 @@ export const PrimerCompatibility: React.FC = () => {
 												{primer.name}
 											</h4>
 											<span className="text-lg font-bold text-ds-primary-sage">
-												${primer.price.toFixed(2)}
+												{formatCurrency(primer.price)}
 											</span>
 										</div>
 

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { X, Calculator, Home, Ruler, Info, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface ExteriorCoverageCalculatorProps {
 	onClose: () => void;
@@ -458,7 +459,7 @@ export const ExteriorCoverageCalculator: React.FC<
 										Budget Paint
 									</div>
 									<div className="text-2xl font-bold text-ds-primary-sage">
-										${estimatedCost.budget.toFixed(2)}
+										{formatCurrency(estimatedCost.budget)}
 									</div>
 									<div className="text-xs text-ds-neutral-mediumGray">
 										~$60/gallon
@@ -469,7 +470,7 @@ export const ExteriorCoverageCalculator: React.FC<
 										Standard Paint
 									</div>
 									<div className="text-2xl font-bold text-ds-primary-sage">
-										${estimatedCost.standard.toFixed(2)}
+										{formatCurrency(estimatedCost.standard)}
 									</div>
 									<div className="text-xs text-ds-neutral-mediumGray">
 										~$80/gallon
@@ -480,7 +481,7 @@ export const ExteriorCoverageCalculator: React.FC<
 										Premium Paint
 									</div>
 									<div className="text-2xl font-bold text-ds-primary-sage">
-										${estimatedCost.premium.toFixed(2)}
+										{formatCurrency(estimatedCost.premium)}
 									</div>
 									<div className="text-xs text-ds-neutral-mediumGray">
 										~$100/gallon

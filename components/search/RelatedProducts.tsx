@@ -258,7 +258,7 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
 							{/* Price and Action */}
 							<div className="flex items-center justify-between">
 								<span className="text-lg font-bold text-ds-primary-charcoal">
-									${product.basePrice.toFixed(2)}
+									{formatCurrency(product.basePrice)}
 								</span>
 								<Link
 									href={`/product/${product.id}`}

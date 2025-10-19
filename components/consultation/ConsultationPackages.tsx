@@ -15,6 +15,7 @@ import {
 import { useConsultationStore } from "@/store/consultation-store";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/cartUtils";
 
 export const ConsultationPackages: React.FC = () => {
 	const { openBookingModal } = useConsultationStore();
@@ -125,7 +126,7 @@ export const ConsultationPackages: React.FC = () => {
 								<div className="flex items-center space-x-4 mb-4">
 									<DollarSign className="w-5 h-5 text-ds-primary-sage" />
 									<span className="text-2xl font-bold text-ds-primary-charcoal">
-										${pkg.price.toFixed(2)}
+										{formatCurrency(pkg.price)}
 									</span>
 									<Clock className="w-5 h-5 text-ds-primary-sage ml-auto" />
 									<span className="text-ds-primary-charcoal font-medium">

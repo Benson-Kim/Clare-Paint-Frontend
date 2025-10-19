@@ -3,6 +3,7 @@
 import React from "react";
 import { ProductFinish } from "@/types/product";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface FinishSelectorProps {
 	finishes: ProductFinish[];
@@ -38,8 +39,8 @@ export const FinishSelector: React.FC<FinishSelectorProps> = ({
 									? "border-ds-primary-sage bg-ds-primary-sage/5"
 									: "border-gray-200 hover:border-gray-300"
 							)}
-							aria-label={`Select ${finish.name} finish - $${totalPrice.toFixed(
-								2
+							aria-label={`Select ${finish.name} finish - ${formatCurrency(
+								totalPrice
 							)}`}
 						>
 							<div className="flex items-center justify-between mb-2">
@@ -55,11 +56,11 @@ export const FinishSelector: React.FC<FinishSelectorProps> = ({
 								</div>
 								<div className="text-right">
 									<p className="font-bold text-ds-primary-charcoal">
-										${totalPrice.toFixed(2)}
+										{formatCurrency(totalPrice)}
 									</p>
 									{finish.price > 0 && (
 										<p className="text-xs text-gray-500">
-											+${finish.price.toFixed(2)}
+											+ {formatCurrency(finish.price)}
 										</p>
 									)}
 								</div>

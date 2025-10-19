@@ -712,7 +712,7 @@ const CartPage: React.FC = () => {
 													<span className="font-medium text-ds-primary-charcoal">
 														{option.price === 0
 															? "Free"
-															: `$${option.price.toFixed(2)}`}
+															: `${formatCurrency(option.price)}`}
 													</span>
 												</div>
 											</label>
@@ -781,7 +781,7 @@ const CartPage: React.FC = () => {
 											Subtotal ({cartItemCount} items)
 										</span>
 										<span className="font-medium text-ds-primary-charcoal">
-											${subtotal.toFixed(2)}
+											{formatCurrency(subtotal)}
 										</span>
 									</div>
 
@@ -790,21 +790,21 @@ const CartPage: React.FC = () => {
 										<span className="font-medium text-ds-primary-charcoal">
 											{shippingCost === 0
 												? "Free"
-												: `$${shippingCost.toFixed(2)}`}
+												: `${formatCurrency(shippingCost)}`}
 										</span>
 									</div>
 
 									{appliedPromo && (
 										<div className="flex justify-between text-green-600">
 											<span>Discount ({appliedPromo.code})</span>
-											<span>-${promoDiscount.toFixed(2)}</span>
+											<span>-{formatCurrency(promoDiscount)}</span>
 										</div>
 									)}
 
 									<div className="flex justify-between">
 										<span className="text-gray-600">Tax</span>
 										<span className="font-medium text-ds-primary-charcoal">
-											${tax.toFixed(2)}
+											{formatCurrency(tax)}
 										</span>
 									</div>
 
@@ -814,7 +814,7 @@ const CartPage: React.FC = () => {
 												Total
 											</span>
 											<span className="text-lg font-bold text-ds-primary-charcoal">
-												${total.toFixed(2)}
+												{formatCurrency(total)}
 											</span>
 										</div>
 									</div>

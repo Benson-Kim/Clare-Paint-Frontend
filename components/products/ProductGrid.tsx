@@ -7,6 +7,7 @@ import { Product } from "@/types/product";
 import { useCartStore } from "@/store/cart-store";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface ProductGridProps {
 	products: Product[];
@@ -155,7 +156,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 									</div>
 									<div className="text-right">
 										<p className="text-2xl font-bold text-ds-primary-charcoal">
-											${product.basePrice.toFixed(2)}
+											{formatCurrency(product.basePrice)}
 										</p>
 										<p className="text-sm text-gray-600">Starting price</p>
 									</div>
@@ -358,7 +359,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 						<div className="flex items-center justify-between">
 							<div>
 								<p className="text-lg font-bold text-ds-primary-charcoal">
-									${product.basePrice.toFixed(2)}
+									{formatCurrency(product.basePrice)}
 								</p>
 								<p className="text-xs text-gray-600">Starting price</p>
 							</div>
