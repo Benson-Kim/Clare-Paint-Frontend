@@ -522,7 +522,7 @@ const CartPage: React.FC = () => {
 																</div>
 
 																<span className="text-sm text-gray-500">
-																	{item.quantity} gallon
+																	{item.quantity} litre
 																	{item.quantity !== 1 ? "s" : ""}
 																</span>
 															</div>

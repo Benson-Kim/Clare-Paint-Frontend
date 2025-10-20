@@ -5,7 +5,6 @@ import {
 	LayoutDashboard,
 	History,
 	Heart,
-	Image,
 	MapPin,
 	CreditCard,
 	Palette,
@@ -15,11 +14,13 @@ import {
 	User,
 	Settings,
 	LogOut,
+	ImageIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAccountStore, DashboardSection } from "@/store/account-store";
 import { DashboardOverview } from "./DashboardOverview";
 import { OrderHistory } from "./OrderHistory";
+import { useAccountStore, DashboardSection } from "@/store/account-store";
+import AddressBook from "./AddressBook";
 
 interface NavItem {
 	id: DashboardSection;
@@ -77,10 +78,10 @@ export const UserAccountDashboard: React.FC = () => {
 		{
 			id: "project-gallery",
 			label: "Project Gallery",
-			icon: Image,
+			icon: ImageIcon,
 			component: (
 				<div className="p-8 text-center space-y-4">
-					<Image className="w-16 h-16 mx-auto text-ds-neutral-lightGray" />
+					<ImageIcon className="w-16 h-16 mx-auto text-ds-neutral-lightGray" />
 					<h3 className="text-lg font-semibold text-ds-primary-charcoal">
 						Project Gallery
 					</h3>
@@ -97,20 +98,21 @@ export const UserAccountDashboard: React.FC = () => {
 			id: "addresses",
 			label: "Address Book",
 			icon: MapPin,
-			component: (
-				<div className="p-8 text-center space-y-4">
-					<MapPin className="w-16 h-16 mx-auto text-ds-neutral-lightGray" />
-					<h3 className="text-lg font-semibold text-ds-primary-charcoal">
-						Address Book
-					</h3>
-					<p className="text-ds-neutral-mediumGray">
-						Manage your shipping and billing addresses.
-					</p>
-					<p className="text-sm text-ds-neutral-mediumGray bg-ds-primary-cream/30 p-4 rounded-lg">
-						This feature will be implemented in the next phase.
-					</p>
-				</div>
-			),
+			component: <AddressBook />,
+			// component: (
+			// 	<div className="p-8 text-center space-y-4">
+			// 		<MapPin className="w-16 h-16 mx-auto text-ds-neutral-lightGray" />
+			// 		<h3 className="text-lg font-semibold text-ds-primary-charcoal">
+			// 			Address Book
+			// 		</h3>
+			// 		<p className="text-ds-neutral-mediumGray">
+			// 			Manage your shipping and billing addresses.
+			// 		</p>
+			// 		<p className="text-sm text-ds-neutral-mediumGray bg-ds-primary-cream/30 p-4 rounded-lg">
+			// 			This feature will be implemented in the next phase.
+			// 		</p>
+			// 	</div>
+			// ),
 		},
 		{
 			id: "payment-methods",

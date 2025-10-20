@@ -250,7 +250,7 @@ export const ColorComparisonModal: React.FC<ColorComparisonModalProps> = ({
 													product.basePrice + (selectedFinish?.price || 0)
 												)}
 											</p>
-											<p className="text-xs text-gray-600">Per gallon</p>
+											<p className="text-xs text-gray-600">per litre</p>
 										</div>
 
 										{/* Key Features */}

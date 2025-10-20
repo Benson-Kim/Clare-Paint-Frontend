@@ -262,7 +262,7 @@ export const ProjectManagementTools: React.FC = () => {
 										{totalPaintUsed}
 									</p>
 									<p className="text-sm text-ds-neutral-mediumGray">
-										Gallons Used
+										litres Used
 									</p>
 								</div>
 							</div>
@@ -462,7 +462,7 @@ export const ProjectManagementTools: React.FC = () => {
 										Paint Used:
 									</span>
 									<span className="font-bold text-ds-primary-charcoal">
-										{totalPaintUsed} gallons
+										{totalPaintUsed} litres
 									</span>
 								</div>
 								<div className="flex justify-between">
@@ -470,7 +470,7 @@ export const ProjectManagementTools: React.FC = () => {
 										Avg per Project:
 									</span>
 									<span className="font-bold text-ds-primary-charcoal">
-										{Math.round(totalPaintUsed / projects.length)} gallons
+										{Math.round(totalPaintUsed / projects.length)} litres
 									</span>
 								</div>
 								<div className="flex justify-between">

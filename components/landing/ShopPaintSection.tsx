@@ -147,7 +147,7 @@ export const ShopPaintSection: React.FC = () => {
 
 														{/* Overlay Actions */}
 														<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300">
-															<div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-4 group-hover:translate-x-0">
+															<div className="absolute top-4 right-4 flex flex-col space-y-2 transition-all duration-300 transform translate-x-0">
 																<button
 																	onClick={(e) =>
 																		handleWishlistToggle(product, e)
@@ -172,12 +172,12 @@ export const ShopPaintSection: React.FC = () => {
 																	/>
 																</button>
 
-																<button className="p-2 bg-ds-neutral-white rounded-full shadow-lg cursor-pointer hover:bg-ds-primary-sage hover:text-ds-neutral-white transition-colors duration-200">
+																<button className="p-2 bg-ds-neutral-white rounded-full shadow-lg cursor-pointer opacity-0 group-hover:opacity-100  hover:bg-ds-primary-sage hover:text-ds-neutral-white transition-colors duration-200">
 																	<Eye className="w-4 h-4" />
 																</button>
 															</div>
 
-															<div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+															<div className="absolute bottom-4 left-4 right-4 transition-all duration-300 transform translate-y-0">
 																<button
 																	onClick={() => handleQuickAdd(product)}
 																	className="w-full py-3 bg-ds-accent-warmBeige text-ds-neutral-white rounded-lg hover:bg-ds-accent-warmBeige/90 transition-colors duration-200 font-semibold flex items-center justify-center space-x-2"

@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Palette, Lightbulb, Sparkles, ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export const HeroSection: React.FC = () => {
 	return (

@@ -2,14 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import {
-	Star,
-	ShoppingCart,
-	Heart,
-	Eye,
-	AlertCircle,
-	Search,
-} from "lucide-react";
+import { Star, ShoppingCart, Heart, AlertCircle } from "lucide-react";
 import { Product } from "@/types/product";
 import { useCartStore } from "@/store/cart-store";
 import { NoResultsOptimization } from "./NoResultsOptimization";
@@ -17,6 +10,7 @@ import { SearchRefinements } from "./SearchRefinements";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { RelatedProducts } from "./RelatedProducts";
+import { formatCurrency } from "@/utils/cartUtils";
 
 interface SearchResultsProps {
 	results: Product[];
@@ -217,7 +211,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 									</button>
 								</div>
 
-								<div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+								<div className="absolute bottom-4 left-4 right-4 opacity-100 transition-opacity duration-200">
 									<button
 										onClick={(e) => handleQuickAdd(product, e)}
 										disabled={!product.inStock}

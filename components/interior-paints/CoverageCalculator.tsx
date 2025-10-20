@@ -34,7 +34,7 @@ export const CoverageCalculator: React.FC<CoverageCalculatorProps> = ({
 		},
 	]);
 	const [coats, setCoats] = useState(2);
-	const [coverage, setCoverage] = useState(350); // sq ft per gallon
+	const [coverage, setCoverage] = useState(350); // sq ft per litre
 	const [activeTab, setActiveTab] = useState<"simple" | "detailed">("simple");
 
 	const addRoom = () => {
@@ -79,15 +79,15 @@ export const CoverageCalculator: React.FC<CoverageCalculatorProps> = ({
 		0
 	);
 	const totalAreaWithCoats = totalArea * coats;
-	const gallonsNeeded = Math.ceil(totalAreaWithCoats / coverage);
+	const litresNeeded = Math.ceil(totalAreaWithCoats / coverage);
 	const quartsNeeded = Math.ceil(
 		(totalAreaWithCoats % coverage) / (coverage / 4)
 	);
 
 	const estimatedCost = {
-		premium: gallonsNeeded * 89.99,
-		standard: gallonsNeeded * 69.99,
-		budget: gallonsNeeded * 49.99,
+		premium: litresNeeded * 89.99,
+		standard: litresNeeded * 69.99,
+		budget: litresNeeded * 49.99,
 	};
 
 	const handleBackdropClick = (e: React.MouseEvent) => {
@@ -327,7 +327,7 @@ export const CoverageCalculator: React.FC<CoverageCalculatorProps> = ({
 								</div>
 								<div>
 									<label className="block text-sm font-medium text-ds-primary-charcoal mb-2">
-										Paint Coverage (sq ft per gallon)
+										Paint Coverage (sq ft per litre)
 									</label>
 									<select
 										value={coverage}
@@ -360,9 +360,9 @@ export const CoverageCalculator: React.FC<CoverageCalculatorProps> = ({
 							</div>
 							<div className="text-center">
 								<div className="text-3xl font-bold text-ds-primary-sage mb-2">
-									{gallonsNeeded}
+									{litresNeeded}
 								</div>
-								<div className="text-sm text-gray-600">Gallons Needed</div>
+								<div className="text-sm text-gray-600">litres Needed</div>
 							</div>
 							<div className="text-center">
 								<div className="text-3xl font-bold text-ds-primary-sage mb-2">
@@ -385,7 +385,7 @@ export const CoverageCalculator: React.FC<CoverageCalculatorProps> = ({
 									<div className="text-2xl font-bold text-ds-primary-sage">
 										{formatCurrency(estimatedCost.budget)}
 									</div>
-									<div className="text-xs text-gray-600">~$50/gallon</div>
+									<div className="text-xs text-gray-600">~$50/litre</div>
 								</div>
 								<div className="bg-white p-4 rounded-lg border border-gray-200">
 									<div className="font-medium text-ds-primary-charcoal">
@@ -394,7 +394,7 @@ export const CoverageCalculator: React.FC<CoverageCalculatorProps> = ({
 									<div className="text-2xl font-bold text-ds-primary-sage">
 										{formatCurrency(estimatedCost.standard)}
 									</div>
-									<div className="text-xs text-gray-600">~$70/gallon</div>
+									<div className="text-xs text-gray-600">~$70/litre</div>
 								</div>
 								<div className="bg-white p-4 rounded-lg border border-gray-200">
 									<div className="font-medium text-ds-primary-charcoal">
@@ -403,7 +403,7 @@ export const CoverageCalculator: React.FC<CoverageCalculatorProps> = ({
 									<div className="text-2xl font-bold text-ds-primary-sage">
 										{formatCurrency(estimatedCost.premium)}
 									</div>
-									<div className="text-xs text-gray-600">~$90/gallon</div>
+									<div className="text-xs text-gray-600">~$90/litre</div>
 								</div>
 							</div>
 						</div>

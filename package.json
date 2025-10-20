@@ -8,7 +8,7 @@
 		"start": "next start",
 		"lint": "next lint",
 		"generate:db": "node generateDb.mjs",
-		"json-server": "nodemon --watch data --ext json --exec \"npm run generate:db && json-server --watch db.json --port 3001\"",
+		"json-server": "nodemon --watch data --ext json --exec \"npm run generate:db && node server.js\"",
 		"dev:full": "concurrently \"npm run dev --turbopack\" \"npm run json-server\""
 	},
 	"dependencies": {
@@ -18,8 +18,13 @@
 		"@tanstack/react-query": "^5.84.1",
 		"@tanstack/react-query-devtools": "^5.84.1",
 		"@tanstack/react-query-persist-client": "^5.90.4",
+		"bcryptjs": "^3.0.2",
 		"clsx": "^2.1.1",
+		"cors": "^2.8.5",
 		"date-fns": "^4.1.0",
+		"dotenv": "^17.2.3",
+		"express": "^5.1.0",
+		"jsonwebtoken": "^9.0.2",
 		"lucide-react": "^0.536.0",
 		"next": "15.4.5",
 		"nodemon": "^3.1.10",
@@ -34,6 +39,8 @@
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",
 		"@tailwindcss/postcss": "^4",
+		"@types/express": "^5.0.3",
+		"@types/jsonwebtoken": "^9.0.10",
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",

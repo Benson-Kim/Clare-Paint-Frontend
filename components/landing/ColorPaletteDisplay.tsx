@@ -89,7 +89,7 @@ export const ColorPaletteDisplay: React.FC = () => {
 					url: window.location.href,
 				});
 			} catch (err) {
-				console.log("Sharing cancelled");
+				console.log(`Sharing cancelled: ${err}`);
 			}
 		}
 	};
@@ -120,7 +120,7 @@ export const ColorPaletteDisplay: React.FC = () => {
 						<div className="grid grid-cols-3 gap-6">
 							{colorSwatches.map((color, index) => (
 								<button
-									key={color.hex}
+									key={index}
 									onClick={() => handleColorSelect(color)}
 									className={cn(
 										"group relative w-full aspect-square rounded-full border-4 transition-all duration-500 hover:scale-110 focus:scale-110 focus:outline-none",

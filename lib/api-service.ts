@@ -1,4 +1,5 @@
 // lib/api-service.ts
+
 import {
 	CheckoutFormData,
 	OrderConfirmationData,
@@ -23,34 +24,6 @@ import { useAuthStore } from "@/store/account-store";
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 const USE_JSON_SERVER = process.env.NEXT_PUBLIC_USE_JSON_SERVER === "true";
 
-/**
- * Generic API fetch wrapper
- */
-// export async function apiFetch<T>(
-// 	endpoint: string,
-// 	options?: RequestInit
-// ): Promise<T> {
-// 	const url = `${API_BASE_URL}${endpoint}`;
-
-// 	try {
-// 		const response = await fetch(url, {
-// 			...options,
-// 			headers: {
-// 				"Content-Type": "application/json",
-// 				...options?.headers,
-// 			},
-// 		});
-
-// 		if (!response.ok) {
-// 			throw new Error(`API Error: ${response.statusText}`);
-// 		}
-
-// 		return await response.json();
-// 	} catch (error) {
-// 		console.error(`API Fetch Error (${endpoint}):`, error);
-// 		throw error;
-// 	}
-// }
 export async function apiFetch<T>(
 	endpoint: string,
 	options: RequestInit = {}
@@ -97,7 +70,7 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 /**
  * Generic fetch-or-mock switch
  */
-async function fetchOrMock<T>(
+export async function fetchOrMock<T>(
 	endpoint: string,
 	mockData: T,
 	delayMs = 500,

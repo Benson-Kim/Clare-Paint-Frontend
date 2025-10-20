@@ -10,8 +10,6 @@ import {
 	Heart,
 	Settings,
 	LogOut,
-	Mail,
-	Lock,
 	Eye,
 	EyeOff,
 	X,
@@ -26,8 +24,7 @@ interface AccountDropdownProps {
 export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 	onClose,
 }) => {
-	const { user, login, register, logout, loading, error, hydrate } =
-		useAuthStore();
+	const { user, login, register, logout, error, hydrate } = useAuthStore();
 
 	const [showLoginForm, setShowLoginForm] = useState(false);
 	const [showRegisterForm, setShowRegisterForm] = useState(false);
@@ -53,11 +50,10 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 		const firstname = e.currentTarget.firstname.value;
 		const lastname = e.currentTarget.lastname.value;
 		const fullname = `${firstname} ${lastname}`;
-
 		const email = e.currentTarget.email.value;
 		const password = e.currentTarget.password.value;
 
-		await register(fullname, email, password);
+		await register({ email, password, name: fullname }); // Pass object
 		if (!error) {
 			setShowRegisterForm(false);
 			onClose();
@@ -217,7 +213,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 								name="email"
 								id="login-email"
 								placeholder="Email address"
-								className="w-full px-3 py-2 border border-ds-neutral-lightGray rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent text-sm"
+								className="w-full px-3 py-2 border border-ds-neutral-lightGray rounded-lg focus:ring-0 focus:ring-ds-primary-sage focus:border-transparent text-sm"
 								required
 							/>
 						</div>

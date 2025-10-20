@@ -83,12 +83,12 @@ export const ExteriorCoverageCalculator: React.FC<
 		0
 	);
 	const totalAreaWithCoats = totalArea * coats;
-	const gallonsNeeded = Math.ceil(totalAreaWithCoats / coverage);
+	const litresNeeded = Math.ceil(totalAreaWithCoats / coverage);
 
 	const estimatedCost = {
-		premium: gallonsNeeded * 99.99,
-		standard: gallonsNeeded * 79.99,
-		budget: gallonsNeeded * 59.99,
+		premium: litresNeeded * 99.99,
+		standard: litresNeeded * 79.99,
+		budget: litresNeeded * 59.99,
 	};
 
 	const handleBackdropClick = (e: React.MouseEvent) => {
@@ -397,14 +397,14 @@ export const ExteriorCoverageCalculator: React.FC<
 										htmlFor="paint-coverage"
 										className="block text-sm font-medium text-ds-primary-charcoal mb-2"
 									>
-										Paint Coverage (sq ft per gallon)
+										Paint Coverage (sq ft per litre)
 									</label>
 									<select
 										id="paint-coverage"
 										value={coverage}
 										onChange={(e) => setCoverage(Number(e.target.value))}
 										className="w-full px-8 py-2 border border-ds-neutral-lightGray rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent"
-										aria-label="Paint coverage per gallon"
+										aria-label="Paint coverage per litre"
 									>
 										<option value={80}>80 sq ft (Elastomeric)</option>
 										<option value={150}>150 sq ft (Solid Stain)</option>
@@ -434,10 +434,10 @@ export const ExteriorCoverageCalculator: React.FC<
 							</div>
 							<div className="text-center">
 								<div className="text-3xl font-bold text-ds-primary-sage mb-2">
-									{gallonsNeeded}
+									{litresNeeded}
 								</div>
 								<div className="text-sm text-ds-neutral-mediumGray">
-									Gallons Needed
+									litres Needed
 								</div>
 							</div>
 							<div className="text-center">
@@ -462,7 +462,7 @@ export const ExteriorCoverageCalculator: React.FC<
 										{formatCurrency(estimatedCost.budget)}
 									</div>
 									<div className="text-xs text-ds-neutral-mediumGray">
-										~$60/gallon
+										~$60/litre
 									</div>
 								</div>
 								<div className="bg-ds-neutral-white p-4 rounded-lg border border-ds-neutral-lightGray">
@@ -473,7 +473,7 @@ export const ExteriorCoverageCalculator: React.FC<
 										{formatCurrency(estimatedCost.standard)}
 									</div>
 									<div className="text-xs text-ds-neutral-mediumGray">
-										~$80/gallon
+										~$80/litre
 									</div>
 								</div>
 								<div className="bg-ds-neutral-white p-4 rounded-lg border border-ds-neutral-lightGray">
@@ -484,7 +484,7 @@ export const ExteriorCoverageCalculator: React.FC<
 										{formatCurrency(estimatedCost.premium)}
 									</div>
 									<div className="text-xs text-ds-neutral-mediumGray">
-										~$100/gallon
+										~$100/litre
 									</div>
 								</div>
 							</div>

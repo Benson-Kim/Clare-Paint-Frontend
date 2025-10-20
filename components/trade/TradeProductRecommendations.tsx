@@ -57,7 +57,7 @@ export const TradeProductRecommendations: React.FC = () => {
 			unitPrice: 89.99,
 			tradePrice: 72.0,
 			discount: 20,
-			coverage: "400-450 sq ft per gallon",
+			coverage: "400-450 sq ft per litre",
 			features: ["Zero-VOC", "Superior Hide", "Stain Resistant", "Quick Dry"],
 			rating: 4.9,
 			reviewCount: 245,
@@ -79,7 +79,7 @@ export const TradeProductRecommendations: React.FC = () => {
 			unitPrice: 119.99,
 			tradePrice: 95.99,
 			discount: 20,
-			coverage: "300-350 sq ft per gallon",
+			coverage: "300-350 sq ft per litre",
 			features: [
 				"Weather Resistant",
 				"Fade Proof",
@@ -106,7 +106,7 @@ export const TradeProductRecommendations: React.FC = () => {
 			unitPrice: 69.99,
 			tradePrice: 55.99,
 			discount: 20,
-			coverage: "350-400 sq ft per gallon",
+			coverage: "350-400 sq ft per litre",
 			features: [
 				"Stain Blocking",
 				"High Adhesion",
@@ -133,7 +133,7 @@ export const TradeProductRecommendations: React.FC = () => {
 			unitPrice: 159.99,
 			tradePrice: 127.99,
 			discount: 20,
-			coverage: "80-120 sq ft per gallon",
+			coverage: "80-120 sq ft per litre",
 			features: [
 				"Waterproof",
 				"Crack Bridging",
@@ -160,7 +160,7 @@ export const TradeProductRecommendations: React.FC = () => {
 			unitPrice: 89.99,
 			tradePrice: 71.99,
 			discount: 20,
-			coverage: "200-250 sq ft per gallon",
+			coverage: "200-250 sq ft per litre",
 			features: [
 				"Invisible Protection",
 				"Easy Cleanup",
@@ -187,7 +187,7 @@ export const TradeProductRecommendations: React.FC = () => {
 			unitPrice: 199.99,
 			tradePrice: 159.99,
 			discount: 20,
-			coverage: "150-200 sq ft per gallon",
+			coverage: "150-200 sq ft per litre",
 			features: [
 				"Chemical Resistant",
 				"High Durability",

@@ -104,7 +104,7 @@ export const BulkOrderingInterface: React.FC = () => {
 	const mockBulkProducts = [
 		{
 			id: "bulk-001",
-			name: "Premium Interior Latex - 5 Gallon",
+			name: "Premium Interior Latex - 5 litre",
 			brand: "Artisan Pro",
 			colors: ["White", "Antique White", "Eggshell", "Dove Gray"],
 			finishes: ["Flat", "Eggshell", "Satin"],
@@ -115,7 +115,7 @@ export const BulkOrderingInterface: React.FC = () => {
 		},
 		{
 			id: "bulk-002",
-			name: "Exterior Acrylic Latex - 5 Gallon",
+			name: "Exterior Acrylic Latex - 5 litre",
 			brand: "WeatherGuard Pro",
 			colors: ["White", "Cream", "Light Gray", "Sage Green"],
 			finishes: ["Satin", "Semi-Gloss"],
@@ -126,7 +126,7 @@ export const BulkOrderingInterface: React.FC = () => {
 		},
 		{
 			id: "bulk-003",
-			name: "Primer Sealer - 5 Gallon",
+			name: "Primer Sealer - 5 litre",
 			brand: "PrimeShield",
 			colors: ["White", "Gray"],
 			finishes: ["Flat"],
@@ -150,7 +150,7 @@ export const BulkOrderingInterface: React.FC = () => {
 			brand: product.brand,
 			color,
 			finish,
-			size: "5 Gallon",
+			size: "5 litre",
 			unitPrice: product.unitPrice,
 			quantity,
 			discount: 10, // Based on tier
@@ -1116,7 +1116,7 @@ export const BulkOrderingInterface: React.FC = () => {
 								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 									<div>
 										<label className="block text-sm font-medium text-ds-neutral-darkSlate mb-2">
-											Estimated Volume (gallons)
+											Estimated Volume (litres)
 										</label>
 										<input
 											type="number"

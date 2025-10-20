@@ -160,12 +160,15 @@ export const RoomRecommendations: React.FC<RoomRecommendationsProps> = ({
 					<div className="lg:col-span-2 space-y-6">
 						<div className="flex flex-col md:flex-row gap-6">
 							<div className="md:w-1/3">
-								<Image
-									src={currentRoom.image}
-									alt={currentRoom.name}
-									className="w-full h-48 object-cover rounded-lg"
-									loading="lazy"
-								/>
+								<div className="relative w-full h-48 rounded-lg overflow-hidden">
+									<Image
+										src={currentRoom.image}
+										alt={currentRoom.name}
+										fill
+										className="object-cover"
+										loading="lazy"
+									/>
+								</div>
 							</div>
 							<div className="md:w-2/3">
 								<p className="text-gray-700 mb-4 leading-relaxed">
@@ -248,15 +251,19 @@ export const RoomRecommendations: React.FC<RoomRecommendationsProps> = ({
 							{suitableProducts.map((product) => (
 								<div
 									key={product.id}
-									className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow duration-200"
+									className="bg-white p-4 rounded-[20px] border border-gray-200 hover:shadow-md transition-shadow duration-200"
 								>
 									<div className="flex items-start space-x-3">
-										<Image
-											src={product.colors[0].image}
-											alt={product.name}
-											className="w-16 h-16 object-cover rounded-lg"
-											loading="lazy"
-										/>
+										<div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+											<Image
+												src={product.colors[0].image}
+												alt={product.name}
+												fill
+												className="object-cover"
+												loading="lazy"
+											/>
+										</div>
+
 										<div className="flex-1">
 											<h4 className="font-semibold text-ds-primary-charcoal mb-1">
 												{product.name}

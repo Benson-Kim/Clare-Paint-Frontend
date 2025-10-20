@@ -74,20 +74,20 @@ export const calculateCoverage = (
 export const estimateProjectCost = (
 	squareFeet: number,
 	coatsNeeded: number = 2,
-	pricePerGallon: number = 89.99,
-	coveragePerGallon: number = 350
+	pricePerlitre: number = 89.99,
+	coveragePerlitre: number = 350
 ): {
-	gallonsNeeded: number;
+	litresNeeded: number;
 	totalCost: number;
 	costPerSqFt: number;
 } => {
 	const totalSqFt = squareFeet * coatsNeeded;
-	const gallonsNeeded = Math.ceil(totalSqFt / coveragePerGallon);
-	const totalCost = gallonsNeeded * pricePerGallon;
+	const litresNeeded = Math.ceil(totalSqFt / coveragePerlitre);
+	const totalCost = litresNeeded * pricePerlitre;
 	const costPerSqFt = totalCost / squareFeet;
 
 	return {
-		gallonsNeeded,
+		litresNeeded,
 		totalCost,
 		costPerSqFt,
 	};

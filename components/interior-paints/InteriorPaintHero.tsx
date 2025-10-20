@@ -87,12 +87,14 @@ export const InteriorPaintHero: React.FC<InteriorPaintHeroProps> = ({
 				{/* Room Selection */}
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
 					{roomTypes.map((room) => (
-						<button
-							key={room.id}
+						<div
+							role="button"
 							onClick={() => onRoomSelect(room.id)}
+							tabIndex={0}
+							key={room.id}
 							className="group bg-white/10 backdrop-blur-sm rounded-lg p-6 hover:bg-white/20 transition-all duration-200 text-left"
 						>
-							<div className="relative h-32 mb-4 rounded-lg overflow-hidden">
+							<div className="relative h-32 w-full mb-4 rounded-lg overflow-hidden group">
 								<Image
 									src={room.image}
 									alt={room.name}
@@ -105,13 +107,17 @@ export const InteriorPaintHero: React.FC<InteriorPaintHeroProps> = ({
 									{room.icon}
 								</div>
 							</div>
+
 							<h3 className="text-lg font-semibold mb-2">{room.name}</h3>
 							<p className="text-white/80 text-sm mb-3">{room.description}</p>
-							<div className="flex items-center space-x-2 text-white/90 group-hover:text-white transition-colors duration-200">
+							<button
+								onClick={() => onRoomSelect(room.id)}
+								className="flex items-center space-x-2 text-white/90 group-hover:text-white transition-colors duration-200 cursor-pointer"
+							>
 								<span className="text-sm font-medium">Explore Options</span>
 								<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-							</div>
-						</button>
+							</button>
+						</div>
 					))}
 				</div>
 

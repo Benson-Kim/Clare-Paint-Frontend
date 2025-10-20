@@ -42,7 +42,7 @@ export const PrimerCompatibility: React.FC = () => {
 			description:
 				"Superior coverage primer that blocks stains and provides excellent adhesion for interior surfaces.",
 			bestFor: ["Dramatic color changes", "Stain blocking", "New drywall"],
-			coverage: "350-400 sq ft per gallon",
+			coverage: "350-400 sq ft per litre",
 			dryTime: "2-4 hours",
 			price: 34.99,
 			features: [
@@ -68,7 +68,7 @@ export const PrimerCompatibility: React.FC = () => {
 			description:
 				"Advanced adhesion primer for challenging surfaces that typically require sanding.",
 			bestFor: ["Glossy surfaces", "Laminate", "Tile", "Glass"],
-			coverage: "300-350 sq ft per gallon",
+			coverage: "300-350 sq ft per litre",
 			dryTime: "1-2 hours",
 			price: 42.99,
 			features: [
@@ -100,7 +100,7 @@ export const PrimerCompatibility: React.FC = () => {
 				"Crayon marks",
 				"Tannin bleeding",
 			],
-			coverage: "350-400 sq ft per gallon",
+			coverage: "350-400 sq ft per litre",
 			dryTime: "4-6 hours",
 			price: 39.99,
 			features: [
@@ -125,7 +125,7 @@ export const PrimerCompatibility: React.FC = () => {
 			description:
 				"Environmentally safe primer with zero harmful emissions, perfect for sensitive environments.",
 			bestFor: ["Nurseries", "Bedrooms", "Eco-conscious projects"],
-			coverage: "300-350 sq ft per gallon",
+			coverage: "300-350 sq ft per litre",
 			dryTime: "2-3 hours",
 			price: 37.99,
 			features: [

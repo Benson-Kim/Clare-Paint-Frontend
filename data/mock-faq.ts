@@ -14,11 +14,11 @@ export const mockFAQData: FAQItem[] = [
 	},
 	{
 		id: "faq-002",
-		question: "How many gallons of paint do I need for a room?",
+		question: "How many litres of paint do I need for a room?",
 		answer:
-			"A general rule of thumb is that one gallon of paint covers approximately 350-400 square feet with one coat. To calculate your needs, measure the length and height of each wall, multiply them to get the square footage, and add them together. Subtract the area of windows and doors. We recommend two coats for optimal coverage and durability. Our online paint calculator can help you get a precise estimate!",
+			"A general rule of thumb is that one litre of paint covers approximately 350-400 square feet with one coat. To calculate your needs, measure the length and height of each wall, multiply them to get the square footage, and add them together. Subtract the area of windows and doors. We recommend two coats for optimal coverage and durability. Our online paint calculator can help you get a precise estimate!",
 		category: "product_questions",
-		keywords: ["gallons", "coverage", "calculator", "quantity"],
+		keywords: ["litres", "coverage", "calculator", "quantity"],
 		helpfulVotes: 60,
 		unhelpfulVotes: 5,
 		relatedQuestions: ["faq-001", "faq-003"],

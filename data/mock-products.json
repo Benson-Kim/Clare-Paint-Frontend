@@ -31,7 +31,7 @@
 					"description": "Natural matte finish",
 					"sheen": "5-10%",
 					"price": 0,
-					"coverage": "300-350 sq ft per gallon",
+					"coverage": "300-350 sq ft per litre",
 					"inStock": true
 				},
 				{
@@ -40,7 +40,7 @@
 					"description": "Eco-friendly satin finish",
 					"sheen": "25-35%",
 					"price": 6,
-					"coverage": "300-350 sq ft per gallon",
+					"coverage": "300-350 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -52,7 +52,7 @@
 				"Biodegradable",
 				"Sustainable packaging"
 			],
-			"coverage": "300-350 sq ft per gallon",
+			"coverage": "300-350 sq ft per litre",
 			"dryTime": "Touch dry: 3 hours, Recoat: 6 hours",
 			"application": ["Brush", "Roller"],
 			"reviews": [
@@ -102,7 +102,7 @@
 					"description": "Luxury eggshell finish",
 					"sheen": "10-25%",
 					"price": 10,
-					"coverage": "400-450 sq ft per gallon",
+					"coverage": "400-450 sq ft per litre",
 					"inStock": true
 				},
 				{
@@ -111,7 +111,7 @@
 					"description": "Premium semi-gloss finish",
 					"sheen": "35-70%",
 					"price": 15,
-					"coverage": "400-450 sq ft per gallon",
+					"coverage": "400-450 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -123,7 +123,7 @@
 				"Professional quality",
 				"Color-matched guarantee"
 			],
-			"coverage": "400-450 sq ft per gallon",
+			"coverage": "400-450 sq ft per litre",
 			"dryTime": "Touch dry: 1 hour, Recoat: 3 hours",
 			"application": ["Brush", "Roller", "Spray"],
 			"reviews": [
@@ -173,7 +173,7 @@
 					"description": "Basic flat finish",
 					"sheen": "0-5%",
 					"price": 0,
-					"coverage": "300-350 sq ft per gallon",
+					"coverage": "300-350 sq ft per litre",
 					"inStock": false
 				},
 				{
@@ -182,7 +182,7 @@
 					"description": "Standard eggshell finish",
 					"sheen": "10-25%",
 					"price": 3,
-					"coverage": "300-350 sq ft per gallon",
+					"coverage": "300-350 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -194,7 +194,7 @@
 				"Great value",
 				"Multiple color options"
 			],
-			"coverage": "300-350 sq ft per gallon",
+			"coverage": "300-350 sq ft per litre",
 			"dryTime": "Touch dry: 2 hours, Recoat: 4 hours",
 			"application": ["Brush", "Roller"],
 			"reviews": [
@@ -244,7 +244,7 @@
 					"description": "Magnetic chalkboard finish",
 					"sheen": "0%",
 					"price": 0,
-					"coverage": "200-250 sq ft per gallon",
+					"coverage": "200-250 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -256,7 +256,7 @@
 				"Kid-safe formula",
 				"Creative possibilities"
 			],
-			"coverage": "200-250 sq ft per gallon",
+			"coverage": "200-250 sq ft per litre",
 			"dryTime": "Touch dry: 4 hours, Recoat: 8 hours",
 			"application": ["Brush", "Roller"],
 			"reviews": [
@@ -306,7 +306,7 @@
 					"description": "Moisture-resistant satin",
 					"sheen": "25-35%",
 					"price": 0,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": false
 				},
 				{
@@ -315,7 +315,7 @@
 					"description": "High-moisture semi-gloss",
 					"sheen": "35-70%",
 					"price": 8,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -327,7 +327,7 @@
 				"Antimicrobial protection",
 				"Long-lasting color"
 			],
-			"coverage": "350-400 sq ft per gallon",
+			"coverage": "350-400 sq ft per litre",
 			"dryTime": "Touch dry: 2 hours, Recoat: 4 hours",
 			"application": ["Brush", "Roller"],
 			"reviews": [
@@ -386,7 +386,7 @@
 					"description": "Low sheen for sophisticated, modern look",
 					"sheen": "5-10%",
 					"price": 0,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				},
 				{
@@ -395,7 +395,7 @@
 					"description": "Subtle sheen with easy cleaning",
 					"sheen": "10-25%",
 					"price": 5,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				},
 				{
@@ -404,7 +404,7 @@
 					"description": "Smooth finish with durability",
 					"sheen": "25-35%",
 					"price": 8,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -416,7 +416,7 @@
 				"Fade-resistant pigments",
 				"Mildew-resistant"
 			],
-			"coverage": "350-400 sq ft per gallon",
+			"coverage": "350-400 sq ft per litre",
 			"dryTime": "Touch dry: 2 hours, Recoat: 4 hours",
 			"application": ["Brush", "Roller", "Spray"],
 			"reviews": [
@@ -474,7 +474,7 @@
 					"description": "Moisture-resistant satin finish",
 					"sheen": "25-35%",
 					"price": 0,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				},
 				{
@@ -483,7 +483,7 @@
 					"description": "High-moisture semi-gloss finish",
 					"sheen": "35-70%",
 					"price": 8,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -495,7 +495,7 @@
 				"Antimicrobial protection",
 				"Stain resistant"
 			],
-			"coverage": "350-400 sq ft per gallon",
+			"coverage": "350-400 sq ft per litre",
 			"dryTime": "Touch dry: 2 hours, Recoat: 4 hours",
 			"application": ["Brush", "Roller"],
 			"reviews": [
@@ -553,7 +553,7 @@
 					"description": "Ultra-smooth flat finish",
 					"sheen": "0-5%",
 					"price": 0,
-					"coverage": "400-450 sq ft per gallon",
+					"coverage": "400-450 sq ft per litre",
 					"inStock": false
 				},
 				{
@@ -562,7 +562,7 @@
 					"description": "Low-sheen matte finish",
 					"sheen": "5-10%",
 					"price": 3,
-					"coverage": "400-450 sq ft per gallon",
+					"coverage": "400-450 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -574,7 +574,7 @@
 				"Zero-VOC certified",
 				"Hypoallergenic"
 			],
-			"coverage": "400-450 sq ft per gallon",
+			"coverage": "400-450 sq ft per litre",
 			"dryTime": "Touch dry: 1 hour, Recoat: 3 hours",
 			"application": ["Brush", "Roller"],
 			"reviews": [
@@ -632,7 +632,7 @@
 					"description": "Elegant eggshell finish",
 					"sheen": "10-25%",
 					"price": 5,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				},
 				{
@@ -641,7 +641,7 @@
 					"description": "Luxurious satin finish",
 					"sheen": "25-35%",
 					"price": 10,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				},
 				{
@@ -650,7 +650,7 @@
 					"description": "Premium semi-gloss finish",
 					"sheen": "35-70%",
 					"price": 15,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -662,7 +662,7 @@
 				"Easy to clean and maintain",
 				"Professional-grade quality"
 			],
-			"coverage": "350-400 sq ft per gallon",
+			"coverage": "350-400 sq ft per litre",
 			"dryTime": "Touch dry: 2 hours, Recoat: 4 hours",
 			"application": ["Brush", "Roller", "Spray"],
 			"reviews": [
@@ -720,7 +720,7 @@
 					"description": "Natural matte finish",
 					"sheen": "5-10%",
 					"price": 0,
-					"coverage": "300-350 sq ft per gallon",
+					"coverage": "300-350 sq ft per litre",
 					"inStock": true
 				},
 				{
@@ -729,7 +729,7 @@
 					"description": "Eco-friendly eggshell finish",
 					"sheen": "10-25%",
 					"price": 4,
-					"coverage": "300-350 sq ft per gallon",
+					"coverage": "300-350 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -741,7 +741,7 @@
 				"Sustainable packaging",
 				"GREENGUARD Gold certified"
 			],
-			"coverage": "300-350 sq ft per gallon",
+			"coverage": "300-350 sq ft per litre",
 			"dryTime": "Touch dry: 3 hours, Recoat: 6 hours",
 			"application": ["Brush", "Roller"],
 			"reviews": [
@@ -791,7 +791,7 @@
 					"description": "Ultra-flat ceiling finish",
 					"sheen": "0-5%",
 					"price": 0,
-					"coverage": "400-450 sq ft per gallon",
+					"coverage": "400-450 sq ft per litre",
 					"inStock": false
 				}
 			],
@@ -803,7 +803,7 @@
 				"Easy roller application",
 				"Quick drying formula"
 			],
-			"coverage": "400-450 sq ft per gallon",
+			"coverage": "400-450 sq ft per litre",
 			"dryTime": "Touch dry: 1 hour, Recoat: 2 hours",
 			"application": ["Roller"],
 			"reviews": [
@@ -862,7 +862,7 @@
 					"description": "Smooth, low-sheen finish with excellent durability and easy cleaning.",
 					"sheen": "25-35%",
 					"price": 0,
-					"coverage": "300-350 sq ft per gallon",
+					"coverage": "300-350 sq ft per litre",
 					"inStock": true
 				},
 				{
@@ -871,7 +871,7 @@
 					"description": "Durable, higher-sheen finish ideal for trim, doors, and high-traffic areas.",
 					"sheen": "35-70%",
 					"price": 8,
-					"coverage": "300-350 sq ft per gallon",
+					"coverage": "300-350 sq ft per litre",
 					"inStock": false
 				}
 			],
@@ -883,7 +883,7 @@
 				"Fast drying for quick recoat",
 				"Resists cracking, peeling, and blistering"
 			],
-			"coverage": "300-350 sq ft per gallon",
+			"coverage": "300-350 sq ft per litre",
 			"dryTime": "Touch dry: 1 hour, Recoat: 4 hours",
 			"application": ["Brush", "Roller", "Spray"],
 			"reviews": [
@@ -954,7 +954,7 @@
 					"description": "High-sheen, durable finish for maximum protection and easy cleaning.",
 					"sheen": "70%+",
 					"price": 0,
-					"coverage": "250-300 sq ft per gallon",
+					"coverage": "250-300 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -965,7 +965,7 @@
 				"Resists chipping and cracking",
 				"Ideal for doors, windows, and trim"
 			],
-			"coverage": "250-300 sq ft per gallon",
+			"coverage": "250-300 sq ft per litre",
 			"dryTime": "Touch dry: 6 hours, Recoat: 24 hours",
 			"application": ["Brush", "Roller"],
 			"reviews": [
@@ -1036,7 +1036,7 @@
 					"description": "Matte finish that helps hide surface imperfections and provides a natural look.",
 					"sheen": "0-5%",
 					"price": 0,
-					"coverage": "80-120 sq ft per gallon (high build)",
+					"coverage": "80-120 sq ft per litre (high build)",
 					"inStock": false
 				}
 			],
@@ -1048,7 +1048,7 @@
 				"Mildew resistant",
 				"Flexible and durable"
 			],
-			"coverage": "80-120 sq ft per gallon",
+			"coverage": "80-120 sq ft per litre",
 			"dryTime": "Touch dry: 2 hours, Recoat: 24 hours",
 			"application": ["Roller (heavy nap)", "Spray"],
 			"reviews": [
@@ -1119,7 +1119,7 @@
 					"description": "Opaque finish that provides maximum color and protection while allowing some wood texture to show.",
 					"sheen": "Low Sheen",
 					"price": 0,
-					"coverage": "150-200 sq ft per gallon",
+					"coverage": "150-200 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -1130,7 +1130,7 @@
 				"Resists scuffing and foot traffic",
 				"Easy to apply and clean up"
 			],
-			"coverage": "150-200 sq ft per gallon",
+			"coverage": "150-200 sq ft per litre",
 			"dryTime": "Touch dry: 2 hours, Recoat: 4 hours",
 			"application": ["Brush", "Roller", "Pad Applicator"],
 			"reviews": [
@@ -1201,7 +1201,7 @@
 					"description": "Durable satin finish with excellent rust protection.",
 					"sheen": "25-35%",
 					"price": 0,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -1212,7 +1212,7 @@
 				"Resists chipping and flaking",
 				"Fast drying formula"
 			],
-			"coverage": "350-400 sq ft per gallon",
+			"coverage": "350-400 sq ft per litre",
 			"dryTime": "Touch dry: 2 hours, Recoat: 4 hours",
 			"application": ["Brush", "Roller", "Spray"],
 			"reviews": [
@@ -1283,7 +1283,7 @@
 					"description": "High-build primer for maximum adhesion and stain blocking.",
 					"sheen": "Flat",
 					"price": 0,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -1294,7 +1294,7 @@
 				"Fast drying for quick topcoat application",
 				"Compatible with all topcoats"
 			],
-			"coverage": "350-400 sq ft per gallon",
+			"coverage": "350-400 sq ft per litre",
 			"dryTime": "Touch dry: 1 hour, Recoat: 2 hours",
 			"application": ["Brush", "Roller", "Spray"],
 			"reviews": [
@@ -1396,7 +1396,7 @@
 					"description": "Low sheen for sophisticated, modern look",
 					"sheen": "5-10%",
 					"price": 0,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": false
 				},
 				{
@@ -1405,7 +1405,7 @@
 					"description": "Subtle sheen with easy cleaning",
 					"sheen": "10-25%",
 					"price": 5,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				},
 				{
@@ -1414,7 +1414,7 @@
 					"description": "Smooth finish with durability",
 					"sheen": "25-35%",
 					"price": 8,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": false
 				},
 				{
@@ -1423,7 +1423,7 @@
 					"description": "High durability for high-traffic areas",
 					"sheen": "35-70%",
 					"price": 12,
-					"coverage": "350-400 sq ft per gallon",
+					"coverage": "350-400 sq ft per litre",
 					"inStock": true
 				}
 			],
@@ -1435,7 +1435,7 @@
 				"Fade-resistant pigments",
 				"Mildew-resistant"
 			],
-			"coverage": "350-400 sq ft per gallon",
+			"coverage": "350-400 sq ft per litre",
 			"dryTime": "Touch dry: 2 hours, Recoat: 4 hours",
 			"application": ["Brush", "Roller", "Spray"],
 			"reviews": [

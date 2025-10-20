@@ -143,11 +143,15 @@ export const InstagramFeedSection: React.FC = () => {
 									{/* Engagement Stats */}
 									<div
 										className={cn(
-											"absolute top-4 left-4 right-4 flex justify-between items-start transition-all duration-300",
-											hoveredPost === post.id
-												? "opacity-100 translate-y-0"
-												: "opacity-0 -translate-y-2"
+											"absolute top-4 left-4 right-4 flex justify-between items-start transition-all duration-300 opacity-100 translate-y-0"
 										)}
+									// <div
+									// 	className={cn(
+									// 		"absolute top-4 left-4 right-4 flex justify-between items-start transition-all duration-300",
+									// 		hoveredPost === post.id
+									// 			? "opacity-100 translate-y-0"
+									// 			: "opacity-0 -translate-y-2"
+									// 	)}
 									>
 										<div className="bg-ds-neutral-white/90 backdrop-blur-sm rounded-lg px-3 py-2">
 											<div className="flex items-center space-x-4 text-sm">

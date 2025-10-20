@@ -96,7 +96,7 @@ export const QuantitySelector: React.FC<QuantitySelectorProps> = ({
 					{350 * quantity}-{400 * quantity} sq ft
 				</p>
 				<p className="text-xs text-gray-600 mt-1">
-					Based on {quantity} gallon{quantity !== 1 ? "s" : ""}
+					Based on {quantity} litre{quantity !== 1 ? "s" : ""}
 				</p>
 			</div>
 		</div>

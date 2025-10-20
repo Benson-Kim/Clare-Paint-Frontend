@@ -42,7 +42,7 @@ const sortOptions: SortOption[] = [
 	{
 		value: "coverage",
 		label: "Best Coverage",
-		description: "Most coverage per gallon",
+		description: "Most coverage per litre",
 	},
 ];
 

@@ -1,0 +1,52 @@
+// data/mock-addresses.ts
+
+import { UserAddress } from "@/types/account";
+
+export const mockAddresses: UserAddress[] = [
+	{
+		id: 1,
+		userId: 1,
+		firstName: "James",
+		lastName: "Kihara",
+		address1: "123 Main Street",
+		address2: "Apt 4B",
+		city: "Nairobi",
+		state: "NA",
+		zipCode: "00100",
+		country: "Kenya",
+		phone: "+254-123-456789",
+		isDefault: true,
+		type: "shipping",
+	},
+	{
+		id: 2,
+		userId: 1,
+		firstName: "Jane",
+		lastName: "Doe",
+		address1: "456 Elm Street",
+		address2: "",
+		city: "Nairobi",
+		state: "NA",
+		zipCode: "00200",
+		country: "Kenya",
+		phone: "+254-987-654321",
+		isDefault: false,
+		type: "billing",
+	},
+	{
+		id: 3,
+		userId: 1,
+		company: "QBoard Inc.",
+		firstName: "Jane",
+		lastName: "Doe",
+		address1: "456 Elm Street",
+		address2: "",
+		city: "Nairobi",
+		state: "NA",
+		zipCode: "00200",
+		country: "Kenya",
+		phone: "+254-987-654321",
+		isDefault: false,
+		type: "billing",
+	},
+];

@@ -131,45 +131,51 @@ export class ErrorBoundary extends Component<
 			return (
 				<div className="min-h-screen bg-ds-neutral-white flex items-center justify-center p-4">
 					<div className="max-w-md w-full">
-						<div className="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
-							<AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-							<h1 className="text-2xl font-bold text-red-700 mb-2">
+						<div className=" border-red-200 rounded-lg py-8 text-center">
+							<AlertTriangle className="w-16 h-16 text-ds-primary-sage/50 mx-auto mb-8" />
+							<h1 className="text-2xl font-bold text-ds-primary-sage mb-3">
 								Oops! Something went wrong
 							</h1>
-							<p className="text-sm text-red-600 mb-6">
-								{this.state.error?.message || "An unexpected error occurred"}
+							<p className="text-sm text-gray-700 mb-6">
+								{process.env.NODE_ENV === "development"
+									? this.state.error?.message || "An unexpected error occurred"
+									: "An unexpected error occurred"}
 							</p>
 
-							{process.env.NODE_ENV === "development" &&
+							{/* <p className="text-sm text-gray-700 mb-6">
+								An unexpected error occurred
+							</p> */}
+
+							{/* {process.env.NODE_ENV === "development" &&
 								this.state.errorInfo && (
 									<details className="text-left mb-6 p-4 bg-red-100 rounded text-xs">
-										<summary className="cursor-pointer font-medium text-red-700 mb-2">
+										<summary className="cursor-pointer font-medium text-ds-primary-charcoal mb-2">
 											Error Details (Development Only)
 										</summary>
-										<pre className="whitespace-pre-wrap overflow-x-auto text-red-800">
+										<pre className="whitespace-pre-wrap overflow-x-auto text-gray-700">
 											{this.state.error?.stack}
 										</pre>
 										<pre className="whitespace-pre-wrap overflow-x-auto text-red-800 mt-2">
 											{this.state.errorInfo.componentStack}
 										</pre>
 									</details>
-								)}
+								)} */}
 
-							<div className="flex flex-col sm:flex-row gap-3 justify-center">
-								<button
-									onClick={this.reset}
-									className="inline-flex items-center justify-center space-x-2 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-								>
-									<RefreshCcw className="w-4 h-4" />
-									<span>Try Again</span>
-								</button>
+							<div className="flex flex-col sm:flex-row gap-3 justify-evenly">
 								<Link
 									href="/"
-									className="inline-flex items-center justify-center space-x-2 px-6 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors"
+									className="inline-flex items-center justify-center space-x-2 px-6 py-2 border border-ds-primary-sage text-ds-primary-sage rounded-lg hover:bg-ds-primary-sage/10 hover:text-gray-700 transition-colors"
 								>
 									<Home className="w-4 h-4" />
 									<span>Go Home</span>
 								</Link>
+								<button
+									onClick={this.reset}
+									className="cursor-pointer inline-flex items-center justify-center space-x-2 px-6 py-2 bg-ds-primary-sage text-white rounded-lg hover:bg-red-700 transition-colors"
+								>
+									<RefreshCcw className="w-4 h-4" />
+									<span>Try Again</span>
+								</button>
 							</div>
 						</div>
 					</div>

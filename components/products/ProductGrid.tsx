@@ -254,14 +254,14 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 
 						{/* Overlay Actions */}
 						<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200">
-							<div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+							<div className="absolute top-4 right-4 flex flex-col space-y-2 opacity-100 transition-opacity duration-200">
 								<button
 									onClick={(e) => handleAddToCompare(product, e)}
 									disabled={
 										isInComparison(product.id) || compareProducts.length >= 3
 									}
 									className={cn(
-										"p-2 rounded-full shadow-lg transition-all duration-200",
+										"p-2 bg-ds-neutral-white rounded-full shadow-lg cursor-pointer opacity-0 group-hover:opacity-100 hover:bg-ds-primary-sage hover:text-ds-neutral-white transition-all duration-200",
 										isInComparison(product.id)
 											? "bg-ds-primary-sage text-white"
 											: "bg-white text-gray-600 hover:bg-ds-primary-sage hover:text-white"
@@ -279,19 +279,19 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
 								</button>
 							</div>
 
-							<div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+							<div className="absolute bottom-4 left-4 right-4 opacity-100 transition-opacity duration-200">
 								<button
 									onClick={(e) => handleQuickAdd(product, e)}
 									disabled={!product.inStock}
 									className={cn(
-										"w-full py-2 px-4 rounded-lg font-medium transition-all duration-200 flex items-center justify-center space-x-2",
+										"w-full py-2 px-4 rounded-lg font-medium cursor-pointer transition-all duration-200 flex items-center justify-center space-x-2",
 										product.inStock
 											? "bg-white text-ds-primary-sage hover:bg-ds-primary-sage hover:text-white"
 											: "bg-gray-300 text-gray-500 cursor-not-allowed"
 									)}
 								>
 									<ShoppingCart className="w-4 h-4" />
-									<span className="cursor-pointer">Quick Add</span>
+									<span className="">Quick Add</span>
 								</button>
 							</div>
 						</div>

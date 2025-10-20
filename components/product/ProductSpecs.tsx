@@ -23,7 +23,7 @@ export const ProductSpecs: React.FC<ProductSpecsProps> = ({ product }) => {
 			icon: <Paintbrush className="w-5 h-5" />,
 			label: "Coverage",
 			value: product.coverage,
-			detail: "Per gallon on smooth surfaces",
+			detail: "per litre on smooth surfaces",
 		},
 		{
 			icon: <Clock className="w-5 h-5" />,
@@ -79,8 +79,8 @@ export const ProductSpecs: React.FC<ProductSpecsProps> = ({ product }) => {
 		{
 			category: "Coverage & Consumption",
 			specs: [
-				{ label: "Theoretical Coverage", value: "400 sq ft/gallon" },
-				{ label: "Practical Coverage", value: "350-375 sq ft/gallon" },
+				{ label: "Theoretical Coverage", value: "400 sq ft/litre" },
+				{ label: "Practical Coverage", value: "350-375 sq ft/litre" },
 				{ label: "Recommended Coats", value: "2 coats for optimal results" },
 				{ label: "Primer Required", value: "On bare surfaces" },
 				{ label: "Touch-up Time", value: "After 30 days for best match" },
@@ -196,12 +196,12 @@ export const ProductSpecs: React.FC<ProductSpecsProps> = ({ product }) => {
 						<p className="text-xs text-gray-500 mt-1">Small rooms, touch-ups</p>
 					</div>
 					<div className="text-center p-4 bg-white rounded-lg">
-						<p className="font-medium text-ds-primary-charcoal">1 Gallon</p>
+						<p className="font-medium text-ds-primary-charcoal">1 litre</p>
 						<p className="text-gray-600">350-400 sq ft</p>
 						<p className="text-xs text-gray-500 mt-1">Average room</p>
 					</div>
 					<div className="text-center p-4 bg-white rounded-lg">
-						<p className="font-medium text-ds-primary-charcoal">5 Gallons</p>
+						<p className="font-medium text-ds-primary-charcoal">5 litres</p>
 						<p className="text-gray-600">1,750-2,000 sq ft</p>
 						<p className="text-xs text-gray-500 mt-1">Whole house projects</p>
 					</div>

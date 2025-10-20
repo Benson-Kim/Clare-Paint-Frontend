@@ -13,8 +13,7 @@ import {
 	Sparkles,
 } from "lucide-react";
 import { Product } from "@/types/product";
-import { InteriorPaintFilterState } from "@/app/interior-paints/page";
-import { cn } from "@/lib/utils";
+import { InteriorPaintFilterState } from "@/app/products/interior-paints/page";
 
 interface InteriorPaintFiltersProps {
 	filters: InteriorPaintFilterState;
@@ -245,36 +244,6 @@ export const InteriorPaintFilters: React.FC<InteriorPaintFiltersProps> = ({
 				))}
 			</FilterSection>
 
-			{/* Sheen Levels */}
-			<FilterSection
-				title="Sheen Level"
-				icon={<Sparkles className="w-4 h-4" />}
-			>
-				{sheenLevels.map((sheen) => (
-					<label
-						key={sheen.id}
-						className="flex items-start space-x-3 cursor-pointer group"
-					>
-						<input
-							type="checkbox"
-							checked={filters.sheenLevels.includes(sheen.id)}
-							onChange={(e) =>
-								handleCheckboxChange("sheenLevels", sheen.id, e.target.checked)
-							}
-							className="w-4 h-4 text-ds-primary-sage border-gray-300 rounded focus:ring-ds-primary-sage focus:ring-2 mt-0.5"
-						/>
-						<div className="flex-1">
-							<span className="text-sm font-medium text-gray-700 group-hover:text-ds-primary-charcoal transition-colors duration-200">
-								{sheen.name}
-							</span>
-							<p className="text-xs text-gray-500 mt-0.5">
-								{sheen.description}
-							</p>
-						</div>
-					</label>
-				))}
-			</FilterSection>
-
 			{/* Color Families */}
 			<FilterSection
 				title="Color Family"
@@ -353,6 +322,21 @@ export const InteriorPaintFilters: React.FC<InteriorPaintFiltersProps> = ({
 						<span>${priceRange.max}</span>
 					</div>
 				</div>
+			</FilterSection>
+
+			{/* Availability */}
+			<FilterSection title="Availability">
+				<label className="flex items-center space-x-3 cursor-pointer group">
+					<input
+						type="checkbox"
+						checked={filters.inStockOnly}
+						onChange={(e) => onFilterChange("inStockOnly", e.target.checked)}
+						className="w-4 h-4 text-ds-primary-sage border-gray-300 rounded focus:ring-ds-primary-sage focus:ring-2"
+					/>
+					<span className="text-sm text-gray-700 group-hover:text-ds-primary-charcoal transition-colors duration-200">
+						In Stock Only
+					</span>
+				</label>
 			</FilterSection>
 
 			{/* Coverage */}
@@ -434,19 +418,34 @@ export const InteriorPaintFilters: React.FC<InteriorPaintFiltersProps> = ({
 				))}
 			</FilterSection>
 
-			{/* Availability */}
-			<FilterSection title="Availability">
-				<label className="flex items-center space-x-3 cursor-pointer group">
-					<input
-						type="checkbox"
-						checked={filters.inStockOnly}
-						onChange={(e) => onFilterChange("inStockOnly", e.target.checked)}
-						className="w-4 h-4 text-ds-primary-sage border-gray-300 rounded focus:ring-ds-primary-sage focus:ring-2"
-					/>
-					<span className="text-sm text-gray-700 group-hover:text-ds-primary-charcoal transition-colors duration-200">
-						In Stock Only
-					</span>
-				</label>
+			{/* Sheen Levels */}
+			<FilterSection
+				title="Sheen Level"
+				icon={<Sparkles className="w-4 h-4" />}
+			>
+				{sheenLevels.map((sheen) => (
+					<label
+						key={sheen.id}
+						className="flex items-start space-x-3 cursor-pointer group"
+					>
+						<input
+							type="checkbox"
+							checked={filters.sheenLevels.includes(sheen.id)}
+							onChange={(e) =>
+								handleCheckboxChange("sheenLevels", sheen.id, e.target.checked)
+							}
+							className="w-4 h-4 text-ds-primary-sage border-gray-300 rounded focus:ring-ds-primary-sage focus:ring-2 mt-0.5"
+						/>
+						<div className="flex-1">
+							<span className="text-sm font-medium text-gray-700 group-hover:text-ds-primary-charcoal transition-colors duration-200">
+								{sheen.name}
+							</span>
+							<p className="text-xs text-gray-500 mt-0.5">
+								{sheen.description}
+							</p>
+						</div>
+					</label>
+				))}
 			</FilterSection>
 		</div>
 	);

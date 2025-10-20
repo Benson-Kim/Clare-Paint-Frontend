@@ -91,7 +91,7 @@ export const BrandMessagingSection: React.FC = () => {
 								<span>Our Quality Promise</span>
 							</h3>
 							<p className="text-sm text-ds-neutral-white/90 leading-relaxed">
-								Every gallon of paint undergoes 47 quality checks before it
+								Every litre of paint undergoes 47 quality checks before it
 								reaches your home. If you&apos;re not completely satisfied,
 								we&apos;ll make it right—guaranteed.
 							</p>
