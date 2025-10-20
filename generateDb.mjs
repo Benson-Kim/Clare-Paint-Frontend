@@ -30,5 +30,9 @@ fs.readdirSync(dataDir)
 		}
 	});
 
+if (!db.users) {
+	db.users = [];
+}
+
 fs.writeFileSync(outputFile, JSON.stringify(db, null, 2));
 console.log("Combined all JSON files into db.json");

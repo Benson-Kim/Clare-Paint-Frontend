@@ -17,6 +17,7 @@ import { mockCustomerReviews } from "@/data/mock-customer-reviews";
 import { mockWishlistItems } from "@/data/mock-wishlist";
 import { ColorPalette } from "@/types/colors";
 import { mockColorPalettes } from "@/data/mock-color-palette";
+import { useAuthStore } from "@/store/account-store";
 
 // Configuration
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
@@ -25,30 +26,67 @@ const USE_JSON_SERVER = process.env.NEXT_PUBLIC_USE_JSON_SERVER === "true";
 /**
  * Generic API fetch wrapper
  */
-async function apiFetch<T>(
+// export async function apiFetch<T>(
+// 	endpoint: string,
+// 	options?: RequestInit
+// ): Promise<T> {
+// 	const url = `${API_BASE_URL}${endpoint}`;
+
+// 	try {
+// 		const response = await fetch(url, {
+// 			...options,
+// 			headers: {
+// 				"Content-Type": "application/json",
+// 				...options?.headers,
+// 			},
+// 		});
+
+// 		if (!response.ok) {
+// 			throw new Error(`API Error: ${response.statusText}`);
+// 		}
+
+// 		return await response.json();
+// 	} catch (error) {
+// 		console.error(`API Fetch Error (${endpoint}):`, error);
+// 		throw error;
+// 	}
+// }
+export async function apiFetch<T>(
 	endpoint: string,
-	options?: RequestInit
+	options: RequestInit = {}
 ): Promise<T> {
-	const url = `${API_BASE_URL}${endpoint}`;
+	const { accessToken, refreshAccessToken } = useAuthStore.getState();
 
-	try {
-		const response = await fetch(url, {
-			...options,
-			headers: {
-				"Content-Type": "application/json",
-				...options?.headers,
-			},
-		});
+	const url = endpoint.startsWith("http")
+		? endpoint
+		: `${API_BASE_URL}${endpoint}`;
 
-		if (!response.ok) {
-			throw new Error(`API Error: ${response.statusText}`);
+	const headers: Record<string, string> = {
+		"Content-Type": "application/json",
+		...((options.headers as Record<string, string>) || {}),
+	};
+
+	if (accessToken) headers["Authorization"] = `Bearer ${accessToken}`;
+
+	let response = await fetch(url, { ...options, headers });
+
+	// If unauthorized, try refreshing
+	if (response.status === 401) {
+		await refreshAccessToken();
+		const newToken = useAuthStore.getState().accessToken;
+
+		if (newToken) {
+			headers["Authorization"] = `Bearer ${newToken}`;
+			response = await fetch(url, { ...options, headers });
 		}
-
-		return await response.json();
-	} catch (error) {
-		console.error(`API Fetch Error (${endpoint}):`, error);
-		throw error;
 	}
+
+	if (!response.ok) {
+		const errorText = await response.text();
+		throw new Error(`API error: ${response.statusText} - ${errorText}`);
+	}
+
+	return response.json();
 }
 
 /**
@@ -69,9 +107,10 @@ async function fetchOrMock<T>(
 		try {
 			const res = await apiFetch<T>(endpoint, options);
 			return res;
-		} catch {
+		} catch (error) {
 			console.warn(
-				`JSON server not reachable, using mock data for ${endpoint}`
+				`JSON server not reachable, using mock data for ${endpoint}`,
+				error
 			);
 		}
 	}

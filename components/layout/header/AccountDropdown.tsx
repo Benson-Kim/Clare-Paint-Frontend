@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
 	User,
@@ -16,8 +16,8 @@ import {
 	EyeOff,
 	X,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useAuthStore } from "@/store/account-store";
 
 interface AccountDropdownProps {
 	onClose: () => void;
@@ -26,25 +26,45 @@ interface AccountDropdownProps {
 export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 	onClose,
 }) => {
-	// Mock authentication state - in production, this would come from auth context
-	const [isAuthenticated] = useState(false);
+	const { user, login, register, logout, loading, error, hydrate } =
+		useAuthStore();
+
 	const [showLoginForm, setShowLoginForm] = useState(false);
 	const [showRegisterForm, setShowRegisterForm] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
-	const [user] = useState({
-		name: "John Doe",
-		email: "john@example.com",
-		avatar: null,
-		memberSince: "2023",
-	});
 
-	const handleFormSubmit = (e: React.FormEvent) => {
+	useEffect(() => {
+		hydrate();
+	}, [hydrate]);
+
+	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		// Handle login/register logic here
-		console.log("Form submitted");
+		const email = e.currentTarget.email.value;
+		const password = e.currentTarget.password.value;
+		await login(email, password);
+		if (!error) {
+			setShowLoginForm(false);
+			onClose();
+		}
 	};
 
-	if (isAuthenticated) {
+	const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const firstname = e.currentTarget.firstname.value;
+		const lastname = e.currentTarget.lastname.value;
+		const fullname = `${firstname} ${lastname}`;
+
+		const email = e.currentTarget.email.value;
+		const password = e.currentTarget.password.value;
+
+		await register(fullname, email, password);
+		if (!error) {
+			setShowRegisterForm(false);
+			onClose();
+		}
+	};
+
+	if (user) {
 		return (
 			<div className="absolute top-full right-0 mt-2 w-72 bg-ds-neutral-white border border-ds-neutral-lightGray rounded-lg shadow-xl z-50 overflow-hidden">
 				{/* User Info */}
@@ -54,7 +74,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 							{user.avatar ? (
 								<Image
 									src={user.avatar}
-									alt={user.name}
+									alt={user.name || "avatar"}
 									width={48}
 									height={48}
 									className="rounded-full object-cover"
@@ -142,6 +162,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 					<button
 						onClick={() => {
 							// Handle logout
+							logout();
 							onClose();
 						}}
 						className="flex items-center space-x-3 p-3 rounded-lg hover:bg-red-50 transition-colors duration-200 group w-full text-left"
@@ -186,13 +207,14 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 						</button>
 					</div>
 
-					<form onSubmit={handleFormSubmit} className="space-y-3">
+					<form onSubmit={handleLogin} className="space-y-3">
 						<div>
 							<label htmlFor="login-email" className="sr-only">
 								Email
 							</label>
 							<input
 								type="email"
+								name="email"
 								id="login-email"
 								placeholder="Email address"
 								className="w-full px-3 py-2 border border-ds-neutral-lightGray rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent text-sm"
@@ -206,6 +228,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 							<input
 								type={showPassword ? "text" : "password"}
 								id="login-password"
+								name="password"
 								placeholder="Password"
 								className="w-full px-3 py-2 pr-10 border border-ds-neutral-lightGray rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent text-sm"
 								required
@@ -256,16 +279,18 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 						</button>
 					</div>
 
-					<form onSubmit={handleFormSubmit} className="space-y-3">
+					<form onSubmit={handleRegister} className="space-y-3">
 						<div className="grid grid-cols-2 gap-2">
 							<input
 								type="text"
+								name="firstname"
 								placeholder="First name"
 								className="px-3 py-2 border border-ds-neutral-lightGray rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent text-sm"
 								required
 							/>
 							<input
 								type="text"
+								name="lastname"
 								placeholder="Last name"
 								className="px-3 py-2 border border-ds-neutral-lightGray rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent text-sm"
 								required
@@ -273,6 +298,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 						</div>
 						<input
 							type="email"
+							name="email"
 							placeholder="Email address"
 							className="w-full px-3 py-2 border border-ds-neutral-lightGray rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent text-sm"
 							required
@@ -280,6 +306,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 						<div className="relative">
 							<input
 								type={showPassword ? "text" : "password"}
+								name="password"
 								placeholder="Password"
 								className="w-full px-3 py-2 pr-10 border border-ds-neutral-lightGray rounded-lg focus:ring-2 focus:ring-ds-primary-sage focus:border-transparent text-sm"
 								required
